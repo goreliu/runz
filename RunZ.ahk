@@ -160,7 +160,29 @@ ExitRunZ:
 
     if (saveConf)
     {
+        ; 有时文件会丢失，怀疑是 EasyIni 的 bug，先备份下
+        FileGetSize, oldFileSize, %g_ConfFile%
+        FileCopy, %g_ConfFile%, %g_ConfFile%.auto.bak
         g_Conf.Save()
+        if (!FileExist(g_ConfFile))
+        {
+            MsgBox, 配置文件 %g_ConfFile% 写入失败，将恢复之前配置，此次运行的数据丢失！
+            FileCopy, %g_ConfFile%.auto.bak, %g_ConfFile%
+        }
+        FileGetSize, newFileSize, %g_ConfFile%
+
+        if (oldFileSize - newFileSize >= 50)
+        {
+            MsgBox, % "配置文件 " g_ConfFile
+                . "`n减小了 " oldFileSize - newFileSize " 字节"
+                . "`n如有疑问请不要退出或重新启动 RunZ，以免配置丢失"
+                . "`n配置文件已备份到"
+                . "`n" . g_ConfFile . ".auto.bak"
+        }
+        else
+        {
+            FileDelete, %g_ConfFile%.auto.bak
+        }
     }
 
     ExitApp
@@ -784,11 +806,11 @@ return
 
 UrlDownloadToString(url)
 {
-	static whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
-	whr.Open("GET", url, true)
-	whr.Send()
-	whr.WaitForResponse()
-	return whr.ResponseText
+    static whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+    whr.Open("GET", url, true)
+    whr.Send()
+    whr.WaitForResponse()
+    return whr.ResponseText
 }
 
 ; 修改自万年书妖的 Candy 里的 SksSub_UrlEncode 函数，用于转换编码。感谢！
@@ -812,22 +834,22 @@ UrlEncode(url, enc = "UTF-8")
 ; 0：英文 1：中文
 GetInputState(WinTitle = "A")
 {
-	ControlGet, hwnd, HWND, , , %WinTitle%
-	if (A_Cursor = "IBeam")
-		return 1
-	if (WinActive(WinTitle))
-	{
-		ptrSize := !A_PtrSize ? 4 : A_PtrSize
-		VarSetCapacity(stGTI, cbSize := 4 + 4 + (PtrSize * 6) + 16, 0)
-		NumPut(cbSize, stGTI, 0, "UInt")   ;   DWORD   cbSize;
-		hwnd := DllCall("GetGUIThreadInfo", Uint, 0, Uint, &stGTI)
-						 ? NumGet(stGTI, 8 + PtrSize, "UInt") : hwnd
-	}
-	return DllCall("SendMessage"
-		, UInt, DllCall("imm32\ImmGetDefaultIMEWnd", Uint, hwnd)
-		, UInt, 0x0283  ;Message : WM_IME_CONTROL
-		, Int, 0x0005  ;wParam  : IMC_GETOPENSTATUS
-		, Int, 0)      ;lParam  : 0
+    ControlGet, hwnd, HWND, , , %WinTitle%
+    if (A_Cursor = "IBeam")
+        return 1
+    if (WinActive(WinTitle))
+    {
+        ptrSize := !A_PtrSize ? 4 : A_PtrSize
+        VarSetCapacity(stGTI, cbSize := 4 + 4 + (PtrSize * 6) + 16, 0)
+        NumPut(cbSize, stGTI, 0, "UInt")   ;   DWORD   cbSize;
+        hwnd := DllCall("GetGUIThreadInfo", Uint, 0, Uint, &stGTI)
+                         ? NumGet(stGTI, 8 + PtrSize, "UInt") : hwnd
+    }
+    return DllCall("SendMessage"
+        , UInt, DllCall("imm32\ImmGetDefaultIMEWnd", Uint, hwnd)
+        , UInt, 0x0283  ;Message : WM_IME_CONTROL
+        , Int, 0x0005  ;wParam  : IMC_GETOPENSTATUS
+        , Int, 0)      ;lParam  : 0
 }
 
 
