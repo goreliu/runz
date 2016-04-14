@@ -14,6 +14,7 @@ Functions:
     @("EditConfig", "编辑配置文件")
     @("ClearClipboardFormat", "清除剪切板中文字的格式")
     @("RunClipboard", "使用 ahk 的 Run 运行剪切板内容")
+    @("EmptyRecycle", "清空回收站")
     @("LogOff", "注销 登出")
     @("RestartMachine", "重启")
     @("ShutdownMachine", "关机")
@@ -221,4 +222,8 @@ TurnMonitorOff:
 	; 0x112 is WM_SYSCOMMAND, 0xF170 is SC_MONITORPOWER.
 	; 对上面命令的注释: 使用 -1 代替 2 来打开显示器.
 	; 使用 1 代替 2 来激活显示器的节能模式.
+return
+
+EmptyRecycle:
+    FileRecycleEmpty,
 return
