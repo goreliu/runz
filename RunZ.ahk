@@ -462,7 +462,7 @@ IncreaseRank(cmd, show = false, inc := 1)
 {
     splitedCmd := StrSplit(cmd, " | ")
 
-    if (splitedCmd.Length() >= 3)
+    if (splitedCmd.Length() >= 3 && splitedCmd[1] == "function")
     {
         ; 去掉参数
         cmd := splitedCmd[1]  " | " splitedCmd[2]
