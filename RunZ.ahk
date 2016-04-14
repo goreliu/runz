@@ -12,7 +12,17 @@ global g_ConfFile := A_ScriptDir . "\RunZ.ini"
 
 if !FileExist(g_ConfFile)
 {
-    FileCopy, %g_ConfFile%.help.txt, %g_ConfFile%
+    if (FileExist(g_ConfFile ".EasyIni.bak"))
+    {
+        MsgBox, % "发现上次写入配置的备份文件：`n"
+            . g_ConfFile . ".EasyIni.bak"
+            . "`n确定则将其恢复，否则请手动检查文件内容再继续"
+        FileMove, % g_ConfFile ".EasyIni.bak", % g_ConfFile
+    }
+    else
+    {
+        FileCopy, %g_ConfFile%.help.txt, %g_ConfFile%
+    }
 }
 
 global g_Conf := class_EasyINI(g_ConfFile)
@@ -160,17 +170,27 @@ ExitRunZ:
 
     if (saveConf)
     {
-        ; 有时文件会丢失，怀疑是 EasyIni 的 bug，先备份下
+        g_Conf.Save()
+
+        Loop
+        {
+            if (!FileExist(g_ConfFile))
+            {
+                MsgBox, 配置文件 %g_ConfFile% 写入后丢失，请检查磁盘并点确定来重试
+            }
+            else
+            {
+                break
+            }
+        }
+
+        /*
+        应该没有这个问题，备用
         FileGetSize, oldFileSize, %g_ConfFile%
         FileCopy, %g_ConfFile%, %g_ConfFile%.auto.bak
         g_Conf.Save()
-        if (!FileExist(g_ConfFile))
-        {
-            MsgBox, 配置文件 %g_ConfFile% 写入失败，将恢复之前配置，此次运行的数据丢失！
-            FileCopy, %g_ConfFile%.auto.bak, %g_ConfFile%
-        }
+        ;...
         FileGetSize, newFileSize, %g_ConfFile%
-
         if (oldFileSize - newFileSize >= 50)
         {
             MsgBox, % "配置文件 " g_ConfFile
@@ -179,10 +199,7 @@ ExitRunZ:
                 . "`n配置文件已备份到"
                 . "`n" . g_ConfFile . ".auto.bak"
         }
-        else
-        {
-            FileDelete, %g_ConfFile%.auto.bak
-        }
+        */
     }
 
     ExitApp

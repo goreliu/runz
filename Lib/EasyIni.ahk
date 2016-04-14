@@ -458,7 +458,8 @@ class EasyIni
 		}
 
 		; Formatting is preserved in ini object.
-		FileDelete, %sFile%
+		; FileDelete, %sFile%
+		FileMove, %sFile%, %sFile%.EasyIni.bak
 
 		bIsFirstLine := true
 		for k, v in this.EasyIni_ReservedFor_TopComments
@@ -491,6 +492,8 @@ class EasyIni
 					FileAppend, % "`n" (A_LoopField == Chr(14) ? "" : A_LoopField), %sFile%
 			}
 		}
+
+		FileDelete, %sFile%.EasyIni.bak
 		return true
 	}
 
