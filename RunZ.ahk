@@ -41,6 +41,8 @@ global g_DisplayCols := g_Conf.Gui.DisplayCols
 global g_UseDisplay
 ; 历史命令
 global g_HistoryCommands
+; 运行命令时临时设置，避免因为自身退出无法运行需要提权的软件
+global g_DisableAutoExit
 ; 当前输入命令的参数，数组，为了方便没有添加 g_ 前缀
 global Arg
 
@@ -92,6 +94,7 @@ Hotkey, ^x, DeleteCurrentFile
 Hotkey, ^s, ShowCurrentFile
 Hotkey, ^r, ReloadFiles
 Hotkey, ^h, DisplayHistoryCommands
+Hotkey, ^b, DecreaseRank
 Hotkey, ^b, DecreaseRank
 
 if (g_Conf.Config.RunInBackground)
@@ -396,6 +399,8 @@ MatchCommand(Haystack, Needle)
 
 RunCommand(originCmd)
 {
+    g_DisableAutoExit := true
+
     splitedOriginCmd := StrSplit(originCmd, " | ")
     ; 去掉括号内的注释
     cmd := StrSplit(splitedOriginCmd[2], "（")[1]
@@ -456,6 +461,8 @@ RunCommand(originCmd)
     {
         IncreaseRank(originCmd)
     }
+
+    g_DisableAutoExit := false
 }
 
 IncreaseRank(cmd, show = false, inc := 1)
@@ -751,6 +758,11 @@ return
 
 WM_ACTIVATE(wParam, lParam)
 {
+    if (g_DisableAutoExit)
+    {
+        return
+    }
+
     if (wParam >= 1) ; 窗口激活
     {
         return

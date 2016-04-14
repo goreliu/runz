@@ -212,7 +212,7 @@ return
 
 WinRRun:
     Send, #r
-    sleep, 100
+    Sleep, 100
     Send, %Arg%
     Send, {enter}
 return

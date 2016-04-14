@@ -30,5 +30,6 @@ file | compmgmt.msc | 计算机管理
 file | taskmgr.exe | 任务管理器
 file | calc.exe | 计算器
 file | mspaint.exe | 画图
-file | cmd.exe | 命令提示符（cmd.exe）
+file | cmd.exe | 命令提示符 DOS（cmd.exe）
 file | C:\Program Files\Internet Explorer\iexplore.exe | IE浏览器
+file | regedit.exe | 注册表
