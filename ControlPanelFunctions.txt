@@ -28,3 +28,5 @@ file | devmgmt.msc | 设备管理器
 file | eventvwr.msc | 事件查看器
 file | compmgmt.msc | 计算机管理
 file | taskmgr.exe | 任务管理器
+file | calc.exe | 计算器
+file | mspaint.exe | 画图

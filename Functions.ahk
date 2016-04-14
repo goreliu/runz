@@ -6,11 +6,15 @@ Functions:
     @("CmdRun", "使用 cmd 运行 : cmd", true)
     @("WinRRun", "使用 win + r 运行", true)
     @("RunAndDisplay", "使用 cmd 运行，并显示结果", true)
+    @("Dictionary", "有道在线词典翻译", true)
     @("ReloadFiles", "重新加载需要搜索的文件")
     @("Clip", "显示剪切板内容")
     @("Calc", "计算器")
-    @("SearchInWeb", "在浏览器（百度）搜索剪切板或输入内容", true)
-    @("Dictionary", "有道在线词典翻译", true)
+    @("SearchOnBaidu", "使用 Baidu（百度）搜索剪切板或输入内容", true)
+    @("SearchOnGoogle", "使用 Google（谷歌）搜索剪切板或输入内容", true)
+    @("SearchOnBing", "使用 Bing（必应）搜索剪切板或输入内容", true)
+    @("SearchOnTaobao", "使用 Taobao（淘宝）搜索剪切板或输入内容")
+    @("SearchOnJingdong", "使用 JD (京东）搜索剪切板或输入内容")
     @("EditConfig", "编辑配置文件")
     @("ClearClipboardFormat", "清除剪切板中文字的格式")
     @("RunClipboard", "使用 ahk 的 Run 运行剪切板内容")
@@ -162,14 +166,34 @@ ClearClipboardFormat:
     clipboard := clipboard
 return
 
-SearchInWeb:
-    word := clipboard
-    if (Arg != "")
-    {
-        word := Arg
-    }
+SearchOnBaidu:
+    word := Arg == "" ? clipboard : Arg
 
     Run, https://www.baidu.com/s?wd=%word%
+return
+
+SearchOnGoogle:
+    word := UrlEncode(Arg == "" ? clipboard : Arg)
+
+    Run, https://www.google.com.hk/#newwindow=1&safe=strict&q=%word%
+return
+
+SearchOnBing:
+    word := Arg == "" ? clipboard : Arg
+
+    Run, http://cn.bing.com/search?q=%word%
+return
+
+SearchOnTaobao:
+    word := Arg == "" ? clipboard : Arg
+
+    Run, https://s.taobao.com/search?q=%word%
+return
+
+SearchOnJingdong:
+    word := Arg == "" ? clipboard : Arg
+
+    Run, http://search.jd.com/Search?keyword=%word%&enc=utf-8
 return
 
 RunClipboard:
