@@ -216,6 +216,10 @@ PrevPage:
     Send, {pgup}
 return
 
+ActivateWindow:
+    WinActivate, %g_WindowName%
+return
+
 TabFunction:
     ControlGetFocus, ctrl,
     if (ctrl == "Edit1")
