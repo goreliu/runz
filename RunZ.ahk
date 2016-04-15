@@ -81,15 +81,18 @@ Gui, Add, Edit, % "ReadOnly vDisplayArea "
         . (g_Conf.Gui.HideDisplayAreaVScroll ? "-VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
         , % SearchCommand("", true)
+
 if (g_Conf.Gui.ShowCurrentCommand)
 {
     Gui, Add, Edit, % "ReadOnly"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 }
+
 if (g_Conf.Gui.HideTitle)
 {
     Gui -Caption
 }
+
 Gui, Show, , % g_WindowName
 
 if (g_Conf.Config.WindowAlwaysOnTop)
@@ -131,6 +134,8 @@ Hotkey, ^i, HomeKey
 Hotkey, ^o, EndKey
 Hotkey, ^j, NextCommand
 Hotkey, ^k, PrevCommand
+Hotkey, down, NextCommand
+Hotkey, up, PrevCommand
 
 ; 剩余按键 e g j m q t w n p
 
@@ -219,7 +224,7 @@ ChangeCommand(step)
 
     if (SubStr(g_CurrentInput, 1, 1) != "@")
     {
-        g_CurrentLine := 1
+        g_CurrentLine := g_CurrentCommandList.Length() >= 2 ? 2 : 1
     }
     else if (g_CurrentLine + step <= g_CurrentCommandList.Length() && g_CurrentLine + step >= 1)
     {
@@ -464,13 +469,12 @@ SearchCommand(command = "", firstRun = false)
             if (order == g_FirstChar)
             {
                 g_CurrentCommand := element
+                result .= Chr(order++) . ">| " . elementToShow
             }
             else
             {
-                result .= "`n"
+                result .= "`n" Chr(order++) . " | " . elementToShow
             }
-
-            result .= Chr(order++) . " | " . elementToShow
 
             if (order - g_FirstChar >= g_DisplayRows)
             {
