@@ -127,7 +127,8 @@ Hotkey, ^x, DeleteCurrentFile
 Hotkey, ^s, ShowCurrentFile
 Hotkey, ^r, ReloadFiles
 Hotkey, ^h, DisplayHistoryCommands
-Hotkey, ^u, DecreaseRank
+Hotkey, ^n, IncreaseRank
+Hotkey, ^p, DecreaseRank
 Hotkey, ^f, NextPage
 Hotkey, ^b, PrevPage
 Hotkey, ^i, HomeKey
@@ -147,7 +148,7 @@ Loop, % g_DisplayRows
     ; tab +
     Hotkey, ~%key%, RunSelectedCommand2
     ; shift +
-    Hotkey, ~+%key%, IncreaseRank
+    Hotkey, ~+%key%, GoToCommand
 }
 
 ; 用户映射的按键
@@ -249,6 +250,22 @@ return
 
 PrevCommand:
     ChangeCommand(-1)
+return
+
+GoToCommand:
+    ControlGetFocus, ctrl,
+    if (ctrl == "Edit1")
+    {
+        return
+    }
+
+    index := Asc(SubStr(A_ThisHotkey, 3, 1)) - g_FirstChar + 1
+
+    if (g_CurrentCommandList[index] != "")
+    {
+        g_CurrentLine = 1
+        ChangeCommand(index - 1)
+    }
 return
 
 ChangeCommand(step)
@@ -754,17 +771,9 @@ RunSelectedCommand2:
 return
 
 IncreaseRank:
-    ControlGetFocus, ctrl,
-    if (ctrl == "Edit1")
+    if (g_CurrentCommand != "")
     {
-        return
-    }
-
-    index := Asc(SubStr(A_ThisHotkey, 3, 1)) - g_FirstChar + 1
-
-    if (g_CurrentCommandList[index] != "")
-    {
-        IncreaseRank(g_CurrentCommandList[index], true)
+        IncreaseRank(g_CurrentCommand, true)
         LoadFiles()
     }
 return
