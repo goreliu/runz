@@ -126,6 +126,7 @@ Hotkey, !f4, ExitRunZ
 
 Hotkey, tab, TabFunction
 Hotkey, f1, Help
+Hotkey, +f1, KeyHelp
 Hotkey, f2, EditConfig
 Hotkey, ^l, ClearInput
 Hotkey, ^d, OpenCurrentFileDir
@@ -540,7 +541,7 @@ SearchCommand(command = "", firstRun = false)
             if (firstRun && (order - g_FirstChar >= g_DisplayRows - 4))
             {
                 result .= "`n`n现有 " g_Commands.Length() " 条命令。"
-                result .= "`n`n键入内容 搜索，回车 执行第一条，Alt + 字母 执行，F1 帮助，Esc 退出。"
+                result .= "`n`n键入内容 搜索，回车 执行当前命令，Alt + 字母 执行，F1 帮助，Esc 退出。"
 
                 break
             }
@@ -1037,6 +1038,30 @@ ToExit:
 
     SetTimer, ToExit, Off
 return
+
+KeyHelpText()
+{
+    return ""
+	. "键入内容 搜索，回车 执行，Alt + 字母 执行，Esc 退出`n"
+    . "按 Tab 后再按 字母或数字 也可执行字母对应功能`n"
+	. "按 Tab 后 Shift + 字母或数字 定位到对应功能`n"
+	. "Ctrl + j 移动到下一条命令`n"
+	. "Ctrl + k 移动到上一条命令`n"
+	. "Ctrl + f 翻到下一页`n"
+	. "Ctrl + b 翻到上一页`n"
+	. "Win  + j 激活窗口`n"
+	. "Ctrl + h 显示历史记录`n"
+	. "Ctrl + n 可增加当前功能的权重`n"
+	. "Ctrl + p 可减少当前功能的权重`n"
+	. "Ctrl + l 清除编辑框内容`n"
+	. "Ctrl + r 重新创建待搜索文件列表`n"
+	. "Ctrl + d 用 TC 打开第一个文件所在目录`n"
+	. "Ctrl + s 显示并复制当前文件的完整路径`n"
+	. "Ctrl + x 删除当前文件`n"
+	. "Ctrl + i 移动光标当行首`n"
+	. "Ctrl + o 移动光标当行尾`n"
+	. "F2       编辑配置文件`n`n"
+}
 
 UrlDownloadToString(url)
 {

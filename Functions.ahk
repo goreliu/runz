@@ -2,6 +2,7 @@
 
 Functions:
     @("Help", "帮助信息")
+    @("KeyHelp", "置顶的按键帮助信息")
     @("AhkRun", "使用 Ahk 的 Run 运行 `; cmd", true)
     @("CmdRun", "使用 cmd 运行 : cmd", true)
     @("WinRRun", "使用 win + r 运行", true)
@@ -33,25 +34,8 @@ return
 
 Help:
     helpText := "帮助：`n`n"
-        . "键入内容 搜索，回车 执行，Alt + 字母 执行，F1 帮助，Esc 退出`n"
-        . "按 Tab 后 字母或数字 也可执行字母对应功能`n"
-        . "按 Tab 后 Shift + 字母或数字 定位到对应功能`n"
-        . "Ctrl + j 移动到下一条命令`n"
-        . "Ctrl + k 移动到上一条命令`n"
-        . "Ctrl + f 翻到下一页`n"
-        . "Ctrl + b 翻到上一页`n"
-        . "Win + j 激活窗口`n"
-        . "Ctrl + h 显示历史记录`n"
-        . "Ctrl + n 可增加当前功能的权重`n"
-        . "Ctrl + p 可减少当前功能的权重`n"
-        . "Ctrl + l 清除编辑框内容`n"
-        . "Ctrl + r 重新创建待搜索文件列表`n"
-        . "Ctrl + d 用 TC 打开第一个文件所在目录`n"
-        . "Ctrl + s 显示并复制当前文件的完整路径`n"
-        . "Ctrl + x 删除当前文件`n"
-        . "Ctrl + i 移动光标当行首`n"
-        . "Ctrl + o 移动光标当行尾`n"
-        . "F2 编辑配置文件`n`n"
+        . "Shift + F1 显示置顶的按键提示`n`n"
+        . KeyHelpText()
         . "可直接输入网址，如 www.baidu.com`n"
         . "分号开头则使用 ahk 的 Run 运行命令，如 `;ping www.bidu.com`n"
         . "冒号开头则在 cmd 运行命令，如 :ping www.baidu.com`n"
@@ -61,6 +45,10 @@ Help:
         . GetAllFunctions()
 
     DisplayResult(helpText)
+return
+
+KeyHelp:
+    ToolTip, % KeyHelpText()
 return
 
 CmdRun:
