@@ -32,6 +32,8 @@ else if (!FileExist(g_AutoConfFile))
 global g_Conf := class_EasyINI(g_ConfFile)
 global g_AutoConf := class_EasyINI(g_AutoConfFile)
 
+; 当前输入命令的参数，数组，为了方便没有添加 g_ 前缀
+global Arg
 ; 不能是 RunZ.ahk 的子串，否则按键绑定会有问题
 global g_WindowName := "RunZ "
 ; 所有命令
@@ -58,8 +60,6 @@ global g_UseDisplay
 global g_HistoryCommands
 ; 运行命令时临时设置，避免因为自身退出无法运行需要提权的软件
 global g_DisableAutoExit
-; 当前输入命令的参数，数组，为了方便没有添加 g_ 前缀
-global Arg
 
 if (FileExist(g_SearchFileList))
 {
@@ -123,8 +123,12 @@ Hotkey, ^h, DisplayHistoryCommands
 Hotkey, ^u, DecreaseRank
 Hotkey, ^f, NextPage
 Hotkey, ^b, PrevPage
+Hotkey, ^i, HomeKey
+Hotkey, ^o, EndKey
+Hotkey, ^j, NextCommand
+Hotkey, ^k, PrevCommand
 
-; 剩余按键 e g i j m n o p q t w
+; 剩余按键 e g j m q t w n p
 
 Loop, % g_DisplayRows
 {
@@ -167,6 +171,14 @@ return
 Default:
 return
 
+HomeKey:
+    Send, {home}
+return
+
+EndKey:
+    Send, {End}
+return
+
 NextPage:
     ControlFocus, Edit2
     Send, {pgdn}
@@ -187,6 +199,12 @@ TabFunction:
     {
         ControlFocus, Edit1
     }
+return
+
+NextCommand:
+return
+
+PrevCommand:
 return
 
 GuiClose:
@@ -390,7 +408,7 @@ SearchCommand(command = "", firstRun = false)
             }
         }
 
-        if (MatchCommand(elementToSearch, command))
+        if (command == "" || MatchCommand(elementToSearch, command))
         {
             fullResult .= element "`n"
             g_CurrentCommandList.Push(element)
@@ -442,6 +460,10 @@ SearchCommand(command = "", firstRun = false)
     {
         useFallbackCommands := false
     }
+
+    result := StrReplace(result, "file | ", "文件 | ")
+    result := StrReplace(result, "function | ", "功能 | ")
+    result := StrReplace(result, "cmd | ", "命令 | ")
 
     DisplaySearchResult(result)
     return result
@@ -724,7 +746,10 @@ LoadHistoryCommands()
 {
     for key, value in g_AutoConf.History
     {
-        g_HistoryCommands.Push(value)
+        if (value != "")
+        {
+            g_HistoryCommands.Push(value)
+        }
     }
 }
 
