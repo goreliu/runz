@@ -764,7 +764,7 @@ GetAllFunctions()
 
     for index, element in g_Commands
     {
-        if (InStr(element, "function | ") == 1)
+        if (InStr(element, "function | ") == 1 and !InStr(result, element "`n"))
         {
             result .= element "`n"
         }
