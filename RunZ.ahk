@@ -499,12 +499,15 @@ SearchCommand(command = "", firstRun = false)
 
         for index, element in g_FallbackCommands
         {
-            if (index != 1)
+            if (index == 1)
+            {
+                result .= Chr(g_FirstChar - 1 + index++) . ">| " . element
+            }
+            else
             {
                 result .= "`n"
+                result .= Chr(g_FirstChar - 1 + index++) . " | " . element
             }
-
-            result .= Chr(g_FirstChar - 1 + index++) . " | " . element
         }
     }
     else

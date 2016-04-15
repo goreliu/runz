@@ -97,11 +97,7 @@ ShowIp:
 return
 
 Dictionary:
-    word := Arg
-    if (word == "")
-    {
-        word := clipboard
-    }
+    word := Arg == "" ? clipboard : Arg
 
     url := "http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&"
             . "type=data&doctype=json&version=1.2&q=" UrlEncode(word)
@@ -156,6 +152,7 @@ Dictionary:
 	}
 
     DisplayResult(result)
+    clipboard := result
 return
 
 Calendar:
