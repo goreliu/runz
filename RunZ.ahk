@@ -65,6 +65,11 @@ global g_CurrentLine
 ; 使用备用的命令
 global g_UseFallbackCommands
 
+if (g_Conf.Gui.ShowTrayIcon)
+{
+    Menu, Tray, Icon
+}
+
 if (FileExist(g_SearchFileList))
 {
     LoadFiles()
@@ -109,14 +114,9 @@ Hotkey, IfWinActive, % g_WindowName
 ; 如果是 ~enter，有时候会响
 Hotkey, enter, RunCurrentCommand
 
-if (g_Conf.Config.RunInBackground)
-{
-    Hotkey, esc, WindowMin
-}
-else
-{
-    Hotkey, esc, ExitRunZ
-}
+; 如果是后台运行模式，Esc 键只关闭窗口，不退出程序
+Hotkey, esc, EscFunction
+Hotkey, !f4, ExitRunZ
 
 Hotkey, tab, TabFunction
 Hotkey, f1, Help
@@ -217,7 +217,7 @@ PrevPage:
 return
 
 ActivateWindow:
-    WinActivate, %g_WindowName%
+    Gui, Show, , % g_WindowName
 return
 
 TabFunction:
@@ -229,6 +229,17 @@ TabFunction:
     else
     {
         ControlFocus, Edit1
+    }
+return
+
+EscFunction:
+    if (g_Conf.Config.RunInBackground)
+    {
+        Gui, Hide
+    }
+    else
+    {
+        GoSub, ExitRunZ
     }
 return
 
@@ -285,9 +296,13 @@ ChangeCommand(step)
     Send, {end}
 }
 
-GuiClose:
-    GoSub, ExitRunZ
-return
+GuiClose()
+{
+    if (!g_Conf.Config.RunInBackground)
+    {
+        GoSub, ExitRunZ
+    }
+}
 
 ExitRunZ:
     saveConf := false
@@ -354,10 +369,6 @@ ExitRunZ:
     ExitApp
 return
 
-WindowMin:
-    WinMinimize, A
-return
-
 GenerateSearchFileList()
 {
     FileDelete, %g_SearchFileList%
@@ -398,7 +409,6 @@ return
 
 ProcessInputCommand:
     ControlGetText, g_CurrentInput, Edit1
-    ; GuiControlGet, g_CurrentInput, , SearchArea
 
     SearchCommand(g_CurrentInput)
 return

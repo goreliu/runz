@@ -35,6 +35,7 @@ AutoRank=1
 
 ; 图形界面相关参数
 [Gui]
+ShowTrayIcon=0
 FontName=宋体
 FontSize=12
 WidgetWidth=600
