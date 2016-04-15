@@ -9,7 +9,7 @@ SearchFileExclude=卸载
 ; 排除的文件，正则表达式
 SearchFullPath=0
 ; 搜索完整路径，否则只搜文件名
-TCMatchPath=c:\totalcmd\tcmatch.dll
+TCMatchPath=Lib\TCMatch\tcmatch.dll
 ; tcmatch.dll 地址，如果没有则使用 InStr 匹配
 SaveInputText=0
 ; 退出时保存编辑框内容

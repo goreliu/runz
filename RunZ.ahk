@@ -4,6 +4,7 @@
 
 FileEncoding, utf-8
 SendMode Input
+SetWorkingDir %A_ScriptDir%
 
 ; 自动生成的命令文件
 global g_SearchFileList := A_ScriptDir . "\SearchFileList.txt"
