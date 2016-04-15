@@ -739,7 +739,7 @@ IncreaseRank(cmd, show = false, inc := 1)
         cmdRank := inc
     }
 
-    if (cmdRank > 0)
+    if (cmdRank > 0 && cmd != "")
     {
         g_AutoConf.AddKey("Rank", cmd, cmdRank)
     }
@@ -797,7 +797,10 @@ LoadFiles()
     rankString := ""
     for command, rank in g_AutoConf.Rank
     {
-        rankString .= rank "`t" command "`n"
+        if (StrLen(command) > 0)
+        {
+            rankString .= rank "`t" command "`n"
+        }
     }
 
     if (rankString != "")
