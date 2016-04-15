@@ -697,7 +697,7 @@ RunCommand(originCmd)
         {
             g_HistoryCommands.InsertAt(1, originCmd " | " Arg)
         }
-        else
+        else if (originCmd != "")
         {
             g_HistoryCommands.InsertAt(1, originCmd)
         }
