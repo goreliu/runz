@@ -80,6 +80,8 @@ Gui, Show, , % g_WindowName
 if (g_Conf.Gui.HideTitle)
 {
     WinSet, Style, -0xC00000, A
+    WinGetPos, , , , windowHeight, A
+    WinMove, A, , , , , % windowHeight - 29
 }
 
 if (g_Conf.Config.WindowAlwaysOnTop)
