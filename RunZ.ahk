@@ -589,7 +589,8 @@ DisplaySearchResult(result)
 
     if (g_Conf.Gui.ShowCurrentCommand)
     {
-        ControlSetText, %g_CommandArea%, %g_CurrentCommand%
+        commandToShow := SubStr(g_CurrentCommand, InStr(g_CurrentCommand, " | ") + 3)
+        ControlSetText, %g_CommandArea%, %commandToShow%
     }
 }
 
