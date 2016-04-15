@@ -341,7 +341,10 @@ ExitRunZ:
 
         for index, element in g_HistoryCommands
         {
-            g_AutoConf.AddKey("History", index, element)
+            if (element != "")
+            {
+                g_AutoConf.AddKey("History", index, element)
+            }
         }
 
         saveConf := true
@@ -875,7 +878,7 @@ LoadHistoryCommands()
 {
     for key, value in g_AutoConf.History
     {
-        if (value != "")
+        if (StrLen(value) > 0)
         {
             g_HistoryCommands.Push(value)
         }
