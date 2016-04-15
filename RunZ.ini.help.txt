@@ -70,3 +70,14 @@ HideTitle=0
 ; 如：
 ; cmd | ipconfig | 查看 IP 地址
 [Command]
+
+; 映射按键：
+; key=label
+; 等同于
+; Hotkey, key, label
+; 如：
+; f1=EditConfig
+; 具体功能请直接在代码里搜 Hotkey 对应的标签
+; key=Default 可取消代码中的按键映射
+; 注意优先级比默认的 Alt + 字母数字 系列按键高，如无特殊原因不要修改 Alt 的映射
+[Hotkey]

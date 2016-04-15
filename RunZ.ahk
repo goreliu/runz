@@ -101,22 +101,30 @@ if (g_Conf.Config.ExitIfInactivate)
 Hotkey, IfWinActive, % g_WindowName
 ; 如果是 ~enter，有时候会响
 Hotkey, enter, RunCurrentCommand
-Hotkey, ^j, ClearInput
-Hotkey, f1, Help
-Hotkey, f2, EditConfig
-Hotkey, esc, ExitRunZ
-Hotkey, ^d, OpenCurrentFileDir
-Hotkey, ^x, DeleteCurrentFile
-Hotkey, ^s, ShowCurrentFile
-Hotkey, ^r, ReloadFiles
-Hotkey, ^h, DisplayHistoryCommands
-Hotkey, ^b, DecreaseRank
-Hotkey, ^b, DecreaseRank
 
 if (g_Conf.Config.RunInBackground)
 {
     Hotkey, esc, WindowMin
 }
+else
+{
+    Hotkey, esc, ExitRunZ
+}
+
+Hotkey, tab, TabFunction
+Hotkey, f1, Help
+Hotkey, f2, EditConfig
+Hotkey, ^l, ClearInput
+Hotkey, ^d, OpenCurrentFileDir
+Hotkey, ^x, DeleteCurrentFile
+Hotkey, ^s, ShowCurrentFile
+Hotkey, ^r, ReloadFiles
+Hotkey, ^h, DisplayHistoryCommands
+Hotkey, ^u, DecreaseRank
+Hotkey, ^f, NextPage
+Hotkey, ^b, PrevPage
+
+; 剩余按键 e g i j m n o p q t w
 
 Loop, % g_DisplayRows
 {
@@ -127,6 +135,20 @@ Loop, % g_DisplayRows
     Hotkey, ~%key%, RunSelectedCommand2
     ; shift +
     Hotkey, ~+%key%, IncreaseRank
+}
+
+; 用户映射的按键
+
+for key, label in g_Conf.Hotkey
+{
+    if (label != "Default")
+    {
+        Hotkey, %key%, %label%
+    }
+    else
+    {
+        Hotkey, %key%, Off
+    }
 }
 
 if (g_Conf.Config.SaveInputText && g_AutoConf.Auto.InputText != "")
@@ -140,6 +162,31 @@ if (g_Conf.Config.SaveHistory)
     LoadHistoryCommands()
 }
 
+return
+
+Default:
+return
+
+NextPage:
+    ControlFocus, Edit2
+    Send, {pgdn}
+return
+
+PrevPage:
+    ControlFocus, Edit2
+    Send, {pgup}
+return
+
+TabFunction:
+    ControlGetFocus, ctrl,
+    if (ctrl == "Edit1")
+    {
+        ControlFocus, Edit2
+    }
+    else
+    {
+        ControlFocus, Edit1
+    }
 return
 
 GuiClose:
