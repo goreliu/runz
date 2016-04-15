@@ -148,7 +148,7 @@ Loop, % g_DisplayRows
     ; tab +
     Hotkey, ~%key%, RunSelectedCommand2
     ; shift +
-    Hotkey, ~+%key%, GoToCommand
+    Hotkey, ~+%key%, GotoCommand
 }
 
 ; 用户映射的按键
@@ -252,7 +252,7 @@ PrevCommand:
     ChangeCommand(-1)
 return
 
-GoToCommand:
+GotoCommand:
     ControlGetFocus, ctrl,
     if (ctrl == "Edit1")
     {
@@ -263,26 +263,23 @@ GoToCommand:
 
     if (g_CurrentCommandList[index] != "")
     {
-        g_CurrentLine = 1
-        ChangeCommand(index - 1)
+        ChangeCommand(index - 1, true)
     }
 return
 
-ChangeCommand(step)
+ChangeCommand(step, resetCurrentLine = false)
 {
     ControlGetText, g_CurrentInput, Edit1
 
-    if (SubStr(g_CurrentInput, 1, 1) != "@")
+    if (resetCurrentLine || SubStr(g_CurrentInput, 1, 1) != "@")
     {
-        g_CurrentLine := g_CurrentCommandList.Length() >= 2 ? 2 : 1
+        g_CurrentLine := 1
     }
-    else if (g_CurrentLine + step <= g_CurrentCommandList.Length() && g_CurrentLine + step >= 1)
+
+    g_CurrentLine := Mod(g_CurrentLine + step, g_CurrentCommandList.Length())
+    if (g_CurrentLine == 0)
     {
-        g_CurrentLine += step
-    }
-    else
-    {
-        return
+        g_CurrentLine := g_CurrentCommandList.Length()
     }
 
     ; 重置当前命令
