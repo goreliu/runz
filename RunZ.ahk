@@ -64,6 +64,9 @@ global g_DisableAutoExit
 global g_CurrentLine
 ; 使用备用的命令
 global g_UseFallbackCommands
+global g_InputArea := "Edit1"
+global g_OutputArea := "Edit3"
+global g_CommandArea := "Edit5"
 
 if (g_Conf.Gui.ShowTrayIcon)
 {
@@ -82,7 +85,7 @@ else
 Gui, Font, % "s" g_Conf.Gui.FontSize, % g_Conf.Gui.FontName
 Gui, Add, Edit, % "gProcessInputCommand vSearchArea"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
-Gui, Add, Button, w0 h0,
+Gui, Add, Edit, w0 h0 ReadOnly,
 Gui, Add, Edit, % "ReadOnly vDisplayArea "
         . (g_Conf.Gui.HideDisplayAreaVScroll ? "-VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
@@ -90,7 +93,7 @@ Gui, Add, Edit, % "ReadOnly vDisplayArea "
 
 if (g_Conf.Gui.ShowCurrentCommand)
 {
-    Gui, Add, Button, w0 h0,
+    Gui, Add, Edit, w0 h0 ReadOnly,
     Gui, Add, Edit, % "ReadOnly"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 }
@@ -148,9 +151,9 @@ Loop, % g_DisplayRows
     ; lalt +
     Hotkey, !%key%, RunSelectedCommand1
     ; tab +
-    Hotkey, %key%, RunSelectedCommand2
+    Hotkey, ~%key%, RunSelectedCommand2
     ; shift +
-    Hotkey, +%key%, GotoCommand
+    Hotkey, ~+%key%, GotoCommand
 }
 
 ; 用户映射的按键
@@ -210,12 +213,12 @@ EndKey:
 return
 
 NextPage:
-    ControlFocus, Edit2
+    ControlFocus, %g_OutputArea%
     Send, {pgdn}
 return
 
 PrevPage:
-    ControlFocus, Edit2
+    ControlFocus, %g_OutputArea%
     Send, {pgup}
 return
 
@@ -225,13 +228,14 @@ return
 
 TabFunction:
     ControlGetFocus, ctrl,
-    if (ctrl == "Edit1")
+    if (ctrl == g_InputArea)
     {
-        ControlFocus, Button1
+        ; 定位到一个隐藏编辑框
+        ControlFocus, Edit2
     }
     else
     {
-        ControlFocus, Edit1
+        ControlFocus, %g_InputArea%
     }
 return
 
@@ -256,9 +260,8 @@ return
 
 GotoCommand:
     ControlGetFocus, ctrl,
-    if (ctrl == "Edit1")
+    if (ctrl == g_InputArea)
     {
-        SendInput, % Chr(Asc(SubStr(A_ThisHotkey, 0, 1)) - 32)
         return
     }
 
@@ -272,7 +275,7 @@ return
 
 ChangeCommand(step, resetCurrentLine = false)
 {
-    ControlGetText, g_CurrentInput, Edit1
+    ControlGetText, g_CurrentInput, %g_InputArea%
 
     if (resetCurrentLine || SubStr(g_CurrentInput, 1, 1) != "@")
     {
@@ -304,12 +307,12 @@ ChangeCommand(step, resetCurrentLine = false)
         }
     }
 
-    ControlGetText, result, Edit2
+    ControlGetText, result, %g_OutputArea%
     result := StrReplace(result, ">| ", " | ")
     result := StrReplace(result, currentChar " | ", currentChar ">| ")
     DisplaySearchResult(result)
 
-    ControlSetText, Edit1, %newInput%
+    ControlSetText, %g_InputArea%, %newInput%
     Send, {end}
 }
 
@@ -425,7 +428,7 @@ ReloadFiles:
 return
 
 ProcessInputCommand:
-    ControlGetText, g_CurrentInput, Edit1
+    ControlGetText, g_CurrentInput, %g_InputArea%
 
     SearchCommand(g_CurrentInput)
 return
@@ -583,12 +586,12 @@ DisplaySearchResult(result)
 
     if (g_Conf.Gui.ShowCurrentCommand)
     {
-        ControlSetText, Edit3, %g_CurrentCommand%
+        ControlSetText, %g_CommandArea%, %g_CurrentCommand%
     }
 }
 
 ClearInput:
-    ControlSetText, Edit1,
+    ControlSetText, %g_InputArea%,
 return
 
 RunCurrentCommand:
@@ -760,9 +763,8 @@ return
 
 RunSelectedCommand2:
     ControlGetFocus, ctrl,
-    if (ctrl == "Edit1")
+    if (ctrl == g_InputArea)
     {
-        SendInput, %A_ThisHotkey%
         return
     }
 
@@ -857,7 +859,7 @@ LoadFiles()
 DisplayText(text)
 {
     textToDisplay := StrReplace(text, "`n", "`r`n")
-    ControlSetText, Edit2, %textToDisplay%
+    ControlSetText, %g_OutputArea%, %textToDisplay%
 }
 
 DisplayResult(result)
