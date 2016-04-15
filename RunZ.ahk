@@ -164,6 +164,20 @@ for key, label in g_Conf.Hotkey
     }
 }
 
+Hotkey, IfWinActive
+
+for key, label in g_Conf.GlobalHotkey
+{
+    if (label != "Default")
+    {
+        Hotkey, %key%, %label%
+    }
+    else
+    {
+        Hotkey, %key%, Off
+    }
+}
+
 if (g_Conf.Config.SaveInputText && g_AutoConf.Auto.InputText != "")
 {
     Send, % g_AutoConf.Auto.InputText
@@ -178,6 +192,10 @@ if (g_Conf.Config.SaveHistory)
 return
 
 Default:
+return
+
+Test:
+    MsgBox Test
 return
 
 HomeKey:
