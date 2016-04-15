@@ -52,7 +52,7 @@ DisplayCols=68
 HideTitle=0
 ; 隐藏标题栏
 
-[Command]
+
 ; 这里的 command 优先显示
 ;
 ; 格式：
@@ -65,6 +65,7 @@ HideTitle=0
 ; url | www.baidu.com=bd
 ; cmd 在 cmd.exe 运行，会自动加上暂停
 ; cmd | ipconfig
+[Command]
 
 [Auto]
 InputText=
