@@ -82,6 +82,7 @@ else
 Gui, Font, % "s" g_Conf.Gui.FontSize, % g_Conf.Gui.FontName
 Gui, Add, Edit, % "gProcessInputCommand vSearchArea"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
+Gui, Add, Button, w0 h0,
 Gui, Add, Edit, % "ReadOnly vDisplayArea "
         . (g_Conf.Gui.HideDisplayAreaVScroll ? "-VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
@@ -89,6 +90,7 @@ Gui, Add, Edit, % "ReadOnly vDisplayArea "
 
 if (g_Conf.Gui.ShowCurrentCommand)
 {
+    Gui, Add, Button, w0 h0,
     Gui, Add, Edit, % "ReadOnly"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 }
@@ -225,7 +227,7 @@ TabFunction:
     ControlGetFocus, ctrl,
     if (ctrl == "Edit1")
     {
-        ControlFocus, Edit2
+        ControlFocus, Button1
     }
     else
     {
