@@ -9,23 +9,28 @@ SendMode Input
 global g_SearchFileList := A_ScriptDir . "\SearchFileList.txt"
 ; 配置文件
 global g_ConfFile := A_ScriptDir . "\RunZ.ini"
+; 自动写入的配置文件
+global g_AutoConfFile := A_ScriptDir . "\RunZ.auto.ini"
 
 if !FileExist(g_ConfFile)
 {
-    if (FileExist(g_ConfFile ".EasyIni.bak"))
-    {
-        MsgBox, % "发现上次写入配置的备份文件：`n"
-            . g_ConfFile . ".EasyIni.bak"
-            . "`n确定则将其恢复，否则请手动检查文件内容再继续"
-        FileMove, % g_ConfFile ".EasyIni.bak", % g_ConfFile
-    }
-    else
-    {
-        FileCopy, %g_ConfFile%.help.txt, %g_ConfFile%
-    }
+    FileCopy, %g_ConfFile%.help.txt, %g_ConfFile%
+}
+
+if (FileExist(g_AutoConfFile ".EasyIni.bak"))
+{
+    MsgBox, % "发现上次写入配置的备份文件：`n"
+        . g_AutoConfFile . ".EasyIni.bak"
+        . "`n确定则将其恢复，否则请手动检查文件内容再继续"
+    FileMove, % g_AutoConfFile ".EasyIni.bak", % g_AutoConfFile
+}
+else if (!FileExist(g_AutoConfFile))
+{
+    FileAppend, % "; 请不要手动修改此文件`n`n[Auto]`n[Rank]`n[History]" , % g_AutoConfFile
 }
 
 global g_Conf := class_EasyINI(g_ConfFile)
+global g_AutoConf := class_EasyINI(g_AutoConfFile)
 
 ; 不能是 RunZ.ahk 的子串，否则按键绑定会有问题
 global g_WindowName := "RunZ "
@@ -124,9 +129,9 @@ Loop, % g_DisplayRows
     Hotkey, ~+%key%, IncreaseRank
 }
 
-if (g_Conf.Config.SaveInputText && g_Conf.Auto.InputText != "")
+if (g_Conf.Config.SaveInputText && g_AutoConf.Auto.InputText != "")
 {
-    Send, % g_Conf.Auto.InputText
+    Send, % g_AutoConf.Auto.InputText
 }
 
 if (g_Conf.Config.SaveHistory)
@@ -146,38 +151,38 @@ ExitRunZ:
 
     if (g_Conf.Config.SaveInputText)
     {
-        g_Conf.DeleteKey("Auto", "InputText")
-        g_Conf.AddKey("Auto", "InputText", g_CurrentInput)
+        g_AutoConf.DeleteKey("Auto", "InputText")
+        g_AutoConf.AddKey("Auto", "InputText", g_CurrentInput)
         saveConf := true
     }
 
     if (g_Conf.Config.SaveHistory)
     {
-        g_Conf.DeleteSection("History")
-        g_Conf.AddSection("History")
+        g_AutoConf.DeleteSection("History")
+        g_AutoConf.AddSection("History")
 
         for index, element in g_HistoryCommands
         {
-            g_Conf.AddKey("History", index, element)
+            g_AutoConf.AddKey("History", index, element)
         }
 
         saveConf := true
     }
 
-    if (g_Conf.AutoRank)
+    if (g_Conf.Config.AutoRank)
     {
         saveConf := true
     }
 
     if (saveConf)
     {
-        g_Conf.Save()
+        g_AutoConf.Save()
 
         Loop
         {
-            if (!FileExist(g_ConfFile))
+            if (!FileExist(g_AutoConfFile))
             {
-                MsgBox, 配置文件 %g_ConfFile% 写入后丢失，请检查磁盘并点确定来重试
+                MsgBox, 配置文件 %g_AutoConfFile% 写入后丢失，请检查磁盘并点确定来重试
             }
             else
             {
@@ -187,18 +192,18 @@ ExitRunZ:
 
         /*
         应该没有这个问题，备用
-        FileGetSize, oldFileSize, %g_ConfFile%
-        FileCopy, %g_ConfFile%, %g_ConfFile%.auto.bak
-        g_Conf.Save()
+        FileGetSize, oldFileSize, %g_AutoConfFile%
+        FileCopy, %g_AutoConfFile%, %g_AutoConfFile%.debug
+        g_AutoConf.Save()
         ;...
-        FileGetSize, newFileSize, %g_ConfFile%
+        FileGetSize, newFileSize, %g_AutoConfFile%
         if (oldFileSize - newFileSize >= 50)
         {
-            MsgBox, % "配置文件 " g_ConfFile
+            MsgBox, % "配置文件 " g_AutoConfFile
                 . "`n减小了 " oldFileSize - newFileSize " 字节"
                 . "`n如有疑问请不要退出或重新启动 RunZ，以免配置丢失"
                 . "`n配置文件已备份到"
-                . "`n" . g_ConfFile . ".auto.bak"
+                . "`n" . g_AutoConfFile . ".debug"
         }
         */
     }
@@ -515,10 +520,10 @@ IncreaseRank(cmd, show = false, inc := 1)
         cmd := splitedCmd[1]  " | " splitedCmd[2]
     }
 
-    cmdRank := g_Conf.GetValue("Rank", cmd)
+    cmdRank := g_AutoConf.GetValue("Rank", cmd)
     if cmdRank is integer
     {
-        g_Conf.DeleteKey("Rank", cmd)
+        g_AutoConf.DeleteKey("Rank", cmd)
         cmdRank += inc
     }
     else
@@ -528,7 +533,7 @@ IncreaseRank(cmd, show = false, inc := 1)
 
     if (cmdRank > 0)
     {
-        g_Conf.AddKey("Rank", cmd, cmdRank)
+        g_AutoConf.AddKey("Rank", cmd, cmdRank)
     }
     else
     {
@@ -590,7 +595,7 @@ LoadFiles()
     g_FallbackCommands := Object()
 
     rankString := ""
-    for command, rank in g_Conf.Rank
+    for command, rank in g_AutoConf.Rank
     {
         rankString .= rank "`t" command "`n"
     }
@@ -665,7 +670,7 @@ DisplayResult(result)
 
 LoadHistoryCommands()
 {
-    for key, value in g_Conf.History
+    for key, value in g_AutoConf.History
     {
         g_HistoryCommands.Push(value)
     }
