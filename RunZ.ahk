@@ -68,7 +68,8 @@ else
 Gui, Font, % "s" g_Conf.Gui.FontSize, % g_Conf.Gui.FontName
 Gui, Add, Edit, % "gProcessInputCommand vSearchArea"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
-Gui, Add, Edit, % "ReadOnly vDisplayArea"
+Gui, Add, Edit, % "ReadOnly vDisplayArea "
+        . (g_Conf.Gui.HideDisplayAreaVScroll ? "-VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
         , % SearchCommand("", true)
 if (g_Conf.Gui.ShowCurrentCommand)

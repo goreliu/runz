@@ -8,6 +8,7 @@ UserFunctions:
     @("UserTest2", "用户测试（ut2）")
     @("UserTest3", "用户测试（ut3）")
     @("UserTest4", "用户测试（ut4）")
+    @("UserTest5", "用户测试（ut5）")
 return
 
 UserTest1:
@@ -28,4 +29,9 @@ return
 UserTest4:
     ; 调用参数，输入的内容空格之后为参数，可根据自己的喜欢分割
     MsgBox, % Arg
+return
+
+UserTest5:
+    ; 显示 url 内容
+    DisplayResult(UrlDownloadToString(Arg))
 return

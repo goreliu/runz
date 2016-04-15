@@ -39,6 +39,8 @@ FontSize=12
 WidgetWidth=600
 EditHeight=25
 DisplayAreaHeight=250
+HideDisplayAreaVScroll=0
+; 不显示纵向滚动条
 ShowCurrentCommand=0
 ; 在下方显示当前命令
 FirstChar=a
