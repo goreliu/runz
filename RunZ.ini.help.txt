@@ -54,16 +54,19 @@ HideTitle=0
 ; 隐藏标题栏
 
 
-; 这里的 command 优先显示
+; 这里的 command 优先显示，请在下边的 [Command] 后边添加
 ;
-; 格式：
-; type | command=按键
-; 按键可以为空
+; 文件类型（直接使用 AHK 的 Run() 运行）：
+; file | 文件路径 | 注释
+; 如：
+; file | notepad | 记事本
+; 注释里可以包含要搜索的字符串，也可以没有：
+; file | c:\mine\mine.exe
+; 文件路径也可以是网址：
+; file | www.baidu.com | 百度 bd
+; 如果需要在指定目录运行软件，该配置不支持，请直接在 UserFunctions.ahk 添加
 ;
-; 示例：
-; file 和 url 都用 ahk 的 Run 运行
-; file | notepad=note
-; url | www.baidu.com=bd
-; cmd 在 cmd.exe 运行，会自动加上暂停
-; cmd | ipconfig
+; cmd 类型，在 cmd.exe 运行命令，运行后会自动暂停：
+; 如：
+; cmd | ipconfig | 查看 IP 地址
 [Command]

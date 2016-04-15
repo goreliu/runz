@@ -336,6 +336,11 @@ SearchCommand(command = "", firstRun = false)
         {
             elementToShow := SubStr(element, 1, g_DisplayCols)
             elementToSearch := splitedElement[2]
+
+            if (splitedElement.Length() >= 3)
+            {
+                elementToSearch .= " " . splitedElement[3]
+            }
         }
 
         if (MatchCommand(elementToSearch, command))
@@ -450,7 +455,7 @@ RunCommand(originCmd)
     ; 去掉括号内的注释
     cmd := StrSplit(splitedOriginCmd[2], "（")[1]
 
-    if (splitedOriginCmd[1] == "file" || splitedOriginCmd[1] == "url")
+    if (splitedOriginCmd[1] == "file")
     {
         if (InStr(cmd, ".lnk"))
         {
