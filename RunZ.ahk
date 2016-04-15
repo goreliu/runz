@@ -76,13 +76,11 @@ if (g_Conf.Gui.ShowCurrentCommand)
     Gui, Add, Edit, % "ReadOnly"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 }
-Gui, Show, , % g_WindowName
 if (g_Conf.Gui.HideTitle)
 {
-    WinSet, Style, -0xC00000, A
-    WinGetPos, , , , windowHeight, A
-    WinMove, A, , , , , % windowHeight - 29
+    Gui -Caption
 }
+Gui, Show, , % g_WindowName
 
 if (g_Conf.Config.WindowAlwaysOnTop)
 {
