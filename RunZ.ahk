@@ -694,7 +694,7 @@ RunCommand(originCmd)
 
     if (g_Conf.Config.RunOnce && !g_UseDisplay)
     {
-        GoSub, ExitRunZ
+        GoSub, EscFunction
     }
 }
 
