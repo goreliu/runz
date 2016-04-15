@@ -146,11 +146,11 @@ Loop, % g_DisplayRows
 {
     key := Chr(g_FirstChar + A_Index - 1)
     ; lalt +
-    Hotkey, <!%key%, RunSelectedCommand1
+    Hotkey, !%key%, RunSelectedCommand1
     ; tab +
-    Hotkey, ~%key%, RunSelectedCommand2
+    Hotkey, %key%, RunSelectedCommand2
     ; shift +
-    Hotkey, ~+%key%, GotoCommand
+    Hotkey, +%key%, GotoCommand
 }
 
 ; 用户映射的按键
@@ -261,7 +261,7 @@ GotoCommand:
         return
     }
 
-    index := Asc(SubStr(A_ThisHotkey, 3, 1)) - g_FirstChar + 1
+    index := Asc(SubStr(A_ThisHotkey, 0, 1)) - g_FirstChar + 1
 
     if (g_CurrentCommandList[index] != "")
     {
@@ -752,7 +752,7 @@ IncreaseRank(cmd, show = false, inc := 1)
 }
 
 RunSelectedCommand1:
-    index := Asc(SubStr(A_ThisHotkey, 3, 1)) - g_FirstChar + 1
+    index := Asc(SubStr(A_ThisHotkey, 0, 1)) - g_FirstChar + 1
 
     RunCommand(g_CurrentCommandList[index])
 return
@@ -764,7 +764,7 @@ RunSelectedCommand2:
         return
     }
 
-    index := Asc(SubStr(A_ThisHotkey, 2, 1)) - g_FirstChar + 1
+    index := Asc(A_ThisHotkey) - g_FirstChar + 1
 
     RunCommand(g_CurrentCommandList[index])
 return
