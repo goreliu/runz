@@ -32,6 +32,7 @@ HistorySize=26
 AutoRank=1
 ; 自动根据使用频率调节顺序，因为效率问题，结果不能实时体现，重启或 ctrl + r 后更新
 
+
 ; 图形界面相关参数
 [Gui]
 FontName=宋体
@@ -66,8 +67,3 @@ HideTitle=0
 ; cmd 在 cmd.exe 运行，会自动加上暂停
 ; cmd | ipconfig
 [Command]
-
-[Auto]
-InputText=
-[Rank]
-[History]
