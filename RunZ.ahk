@@ -258,6 +258,7 @@ GotoCommand:
     ControlGetFocus, ctrl,
     if (ctrl == "Edit1")
     {
+        SendInput, % Chr(Asc(SubStr(A_ThisHotkey, 0, 1)) - 32)
         return
     }
 
@@ -761,6 +762,7 @@ RunSelectedCommand2:
     ControlGetFocus, ctrl,
     if (ctrl == "Edit1")
     {
+        SendInput, %A_ThisHotkey%
         return
     }
 
