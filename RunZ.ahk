@@ -60,6 +60,10 @@ global g_UseDisplay
 global g_HistoryCommands
 ; 运行命令时临时设置，避免因为自身退出无法运行需要提权的软件
 global g_DisableAutoExit
+; 当前的命令在搜索结果的行数
+global g_CurrentLine
+; 使用备用的命令
+global g_UseFallbackCommands
 
 if (FileExist(g_SearchFileList))
 {
@@ -202,10 +206,57 @@ TabFunction:
 return
 
 NextCommand:
+    ChangeCommand(1)
 return
 
 PrevCommand:
+    ChangeCommand(-1)
 return
+
+ChangeCommand(step)
+{
+    ControlGetText, g_CurrentInput, Edit1
+
+    if (SubStr(g_CurrentInput, 1, 1) != "@")
+    {
+        g_CurrentLine := 1
+    }
+    else if (g_CurrentLine + step <= g_CurrentCommandList.Length() && g_CurrentLine + step >= 1)
+    {
+        g_CurrentLine += step
+    }
+    else
+    {
+        return
+    }
+
+    ; 重置当前命令
+    g_CurrentCommand := g_CurrentCommandList[g_CurrentLine]
+
+    ; 修改输入框内容
+    currentChar := Chr(g_FirstChar + g_CurrentLine - 1)
+    newInput := "@" currentChar " "
+
+    if (g_UseFallbackCommands)
+    {
+        if (SubStr(g_CurrentInput, 1, 1) == "@")
+        {
+            newInput .= SubStr(g_CurrentInput, 4)
+        }
+        else
+        {
+            newInput .= g_CurrentInput
+        }
+    }
+
+    ControlGetText, result, Edit2
+    result := StrReplace(result, ">| ", " | ")
+    result := StrReplace(result, currentChar " | ", currentChar ">| ")
+    DisplaySearchResult(result)
+
+    ControlSetText, Edit1, %newInput%
+    Send, {end}
+}
 
 GuiClose:
     GoSub, ExitRunZ
@@ -319,13 +370,14 @@ ReloadFiles:
 return
 
 ProcessInputCommand:
-    GuiControlGet, g_CurrentInput, , SearchArea
+    ControlGetText, g_CurrentInput, Edit1
+    ; GuiControlGet, g_CurrentInput, , SearchArea
+
     SearchCommand(g_CurrentInput)
 return
 
 SearchCommand(command = "", firstRun = false)
 {
-    static useFallbackCommands
     result := ""
     ; 供去重使用
     fullResult := ""
@@ -344,21 +396,17 @@ SearchCommand(command = "", firstRun = false)
 
         g_CurrentCommandList.Push(g_CurrentCommand)
         result .= "a | " . g_CurrentCommand
-        Arg := SubStr(g_CurrentInput, 2)
         DisplaySearchResult(result)
         return result
     }
-    ; 用空格来判断参数
+    else if (commandPrefix == "@")
+    {
+        ; 搜索结果被锁定，直接退出
+        return
+    }
     else if (InStr(command, " ") && g_CurrentCommand != "")
     {
-        if (useFallbackCommands)
-        {
-            Arg := command
-        }
-        else
-        {
-            Arg := SubStr(command, InStr(command, " ") + 1)
-        }
+        ; 输入包含空格时锁定搜索结果
         return
     }
 
@@ -441,10 +489,9 @@ SearchCommand(command = "", firstRun = false)
 
     if (result == "")
     {
-        useFallbackCommands := true
+        g_UseFallbackCommands := true
         g_CurrentCommand := g_FallbackCommands[1]
         g_CurrentCommandList := g_FallbackCommands
-        Arg := g_CurrentInput
 
         for index, element in g_FallbackCommands
         {
@@ -458,7 +505,7 @@ SearchCommand(command = "", firstRun = false)
     }
     else
     {
-        useFallbackCommands := false
+        g_UseFallbackCommands := false
     }
 
     result := StrReplace(result, "file | ", "文件 | ")
@@ -475,7 +522,7 @@ DisplaySearchResult(result)
 
     if (g_CurrentCommandList.Length() == 1 && g_Conf.Config.RunIfOnlyOne)
     {
-        GoSub, RunCurrentCommand
+        RunCommand(g_CurrentCommand)
     }
 
     if (g_Conf.Gui.ShowCurrentCommand)
@@ -496,13 +543,33 @@ RunCurrentCommand:
 
     if (g_CurrentInput != "")
     {
-        g_UseDisplay := false
-
         RunCommand(g_CurrentCommand)
-        if (g_Conf.Config.RunOnce && !g_UseDisplay)
-        {
-            GoSub, ExitRunZ
-        }
+    }
+return
+
+ParseArg:
+    commandPrefix := SubStr(g_CurrentInput, 1, 1)
+
+    if (commandPrefix == ";" || commandPrefix == ":")
+    {
+        Arg := SubStr(g_CurrentInput, 2)
+        return
+    }
+    else if (commandPrefix == "@")
+    {
+        ; 处理调整过顺序的命令
+        Arg := SubStr(g_CurrentInput, 4)
+        return
+    }
+
+    ; 用空格来判断参数
+    if (InStr(g_CurrentInput, " ") && !g_UseFallbackCommands)
+    {
+        Arg := SubStr(g_CurrentInput, InStr(g_CurrentInput, " ") + 1)
+    }
+    else
+    {
+        Arg := g_CurrentInput
     }
 return
 
@@ -518,6 +585,9 @@ MatchCommand(Haystack, Needle)
 
 RunCommand(originCmd)
 {
+    GoSub, ParseArg
+
+    g_UseDisplay := false
     g_DisableAutoExit := true
 
     splitedOriginCmd := StrSplit(originCmd, " | ")
@@ -582,6 +652,11 @@ RunCommand(originCmd)
     }
 
     g_DisableAutoExit := false
+
+    if (g_Conf.Config.RunOnce && !g_UseDisplay)
+    {
+        GoSub, ExitRunZ
+    }
 }
 
 IncreaseRank(cmd, show = false, inc := 1)
@@ -658,7 +733,7 @@ return
 DecreaseRank:
     if (g_CurrentCommand != "")
     {
-        IncreaseRank(g_currentCommand, true, -1)
+        IncreaseRank(g_CurrentCommand, true, -1)
         LoadFiles()
     }
 return

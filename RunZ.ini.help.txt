@@ -42,7 +42,7 @@ EditHeight=25
 DisplayAreaHeight=250
 HideDisplayAreaVScroll=0
 ; 不显示纵向滚动条
-ShowCurrentCommand=0
+ShowCurrentCommand=1
 ; 在下方显示当前命令
 FirstChar=a
 ; 列表第一行的首字母或数字
@@ -50,7 +50,7 @@ DisplayRows=15
 ; 在列表中显示的行数
 DisplayCols=68
 ; 在列表中显示的文字列数（多出的会被截断），注意包含中文的情况
-HideTitle=0
+HideTitle=1
 ; 隐藏标题栏
 
 

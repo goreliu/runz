@@ -79,7 +79,7 @@ ArgTest:
 
     for index, argument in Args
     {
-        result .= "第 " . index - 1 " 个参数：" . argument . "`n"
+        result .= "第 " . index . " 个参数：" . argument . "`n"
     }
 
     DisplayResult(result)
