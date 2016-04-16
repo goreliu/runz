@@ -22,7 +22,7 @@ RunInBackground=0
 LoadControlPanelFunctions=1
 ; 加载控制面板中的功能
 ExitIfInactivate=0
-; 窗口失去焦点后程序退出，启用后窗口置顶显示功能失效
+; 窗口失去焦点后窗口关闭，启用后窗口置顶显示功能失效
 WindowAlwaysOnTop=0
 ; 窗口置顶显示
 SaveHistory=1

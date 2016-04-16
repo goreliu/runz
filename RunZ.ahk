@@ -284,10 +284,16 @@ ChangeCommand(step, resetCurrentLine = false)
         g_CurrentLine := 1
     }
 
-    g_CurrentLine := Mod(g_CurrentLine + step, g_CurrentCommandList.Length())
+    row := g_CurrentCommandList.Length()
+    if (row > g_DisplayRows)
+    {
+        row := g_DisplayRows
+    }
+
+    g_CurrentLine := Mod(g_CurrentLine + step, row)
     if (g_CurrentLine == 0)
     {
-        g_CurrentLine := g_CurrentCommandList.Length()
+        g_CurrentLine := row
     }
 
     ; 重置当前命令
@@ -311,7 +317,15 @@ ChangeCommand(step, resetCurrentLine = false)
 
     ControlGetText, result, %g_OutputArea%
     result := StrReplace(result, ">| ", " | ")
-    result := StrReplace(result, currentChar " | ", currentChar ">| ")
+    if (currentChar == Chr(g_FirstChar))
+    {
+        result := currentChar ">" SubStr(result, 3)
+    }
+    else
+    {
+        result := StrReplace(result, "`n" currentChar " | ", "`n" currentChar ">| ")
+    }
+
     DisplaySearchResult(result)
 
     ControlSetText, %g_InputArea%, %newInput%
@@ -457,7 +471,7 @@ SearchCommand(command = "", firstRun = false)
         }
 
         g_CurrentCommandList.Push(g_CurrentCommand)
-        result .= "a | " . g_CurrentCommand
+        result .= Chr(g_FirstChar) ">| " . g_CurrentCommand
         DisplaySearchResult(result)
         return result
     }
@@ -891,14 +905,18 @@ LoadHistoryCommands()
 DisplayHistoryCommands:
     result := ""
     g_CurrentCommandList := Object()
+    g_CurrentLine := 1
 
     for index, element in g_HistoryCommands
     {
-        result .= Chr(g_FirstChar + index - 1) . " | " . element "`n"
-
         if (index == 1)
         {
+            result .= Chr(g_FirstChar + index - 1) . ">| " . element "`n"
             g_CurrentCommand := element
+        }
+        else
+        {
+            result .= Chr(g_FirstChar + index - 1) . " | " . element "`n"
         }
 
         g_CurrentCommandList.Push(element)
