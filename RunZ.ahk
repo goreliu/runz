@@ -72,6 +72,10 @@ global g_CommandArea := "Edit5"
 if (g_Conf.Gui.ShowTrayIcon)
 {
     Menu, Tray, Icon
+    Menu, Tray, NoStandard
+    Menu, Tray, Add, 帮助(&H), KeyHelp
+    Menu, Tray, Add, 重启(&R), RestartRunZ
+    Menu, Tray, Add, 退出(&X), ExitRunZ
 }
 
 Menu, Tray, Icon, %A_ScriptDir%\RunZ.ico
@@ -153,9 +157,9 @@ Loop, % g_DisplayRows
 {
     key := Chr(g_FirstChar + A_Index - 1)
     ; lalt +
-    Hotkey, !%key%, RunSelectedCommand1
+    Hotkey, !%key%, RunSelectedCommand
     ; tab +
-    Hotkey, ~%key%, RunSelectedCommand2
+    Hotkey, ~%key%, RunSelectedCommand
     ; shift +
     Hotkey, ~+%key%, GotoCommand
 }
@@ -783,20 +787,17 @@ IncreaseRank(cmd, show = false, inc := 1)
     }
 }
 
-RunSelectedCommand1:
-    index := Asc(SubStr(A_ThisHotkey, 0, 1)) - g_FirstChar + 1
-
-    RunCommand(g_CurrentCommandList[index])
-return
-
-RunSelectedCommand2:
-    ControlGetFocus, ctrl,
-    if (ctrl == g_InputArea)
+RunSelectedCommand:
+    if (SubStr(A_ThisHotkey, 1, 1) == "~")
     {
-        return
+        ControlGetFocus, ctrl,
+        if (ctrl == g_InputArea)
+        {
+            return
+        }
     }
 
-    index := Asc(A_ThisHotkey) - g_FirstChar + 1
+    index := Asc(SubStr(A_ThisHotkey, 0, 1)) - g_FirstChar + 1
 
     RunCommand(g_CurrentCommandList[index])
 return
@@ -1076,6 +1077,7 @@ return
 KeyHelpText()
 {
     return ""
+    . "Win + j 显示窗口`n"
     . "键入内容 搜索，回车 执行，Alt + 字母 执行，Esc 退出`n"
     . "按 Tab 后再按 字母或数字 也可执行字母对应功能`n"
     . "按 Tab 后 Shift + 字母或数字 定位到对应功能`n"
