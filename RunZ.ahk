@@ -36,7 +36,7 @@ global g_AutoConf := class_EasyINI(g_AutoConfFile)
 ; 当前输入命令的参数，数组，为了方便没有添加 g_ 前缀
 global Arg
 ; 不能是 RunZ.ahk 的子串，否则按键绑定会有问题
-global g_WindowName := "RunZ "
+global g_WindowName := "RunZ    "
 ; 所有命令
 global g_Commands
 ; 当搜索无结果时使用的命令
