@@ -470,6 +470,7 @@ SearchCommand(command = "", firstRun = false)
             g_CurrentCommand := g_FallbackCommands[2]
         }
 
+        g_CurrentCommandList := Object()
         g_CurrentCommandList.Push(g_CurrentCommand)
         result .= Chr(g_FirstChar) ">| " . g_CurrentCommand
         DisplaySearchResult(result)
