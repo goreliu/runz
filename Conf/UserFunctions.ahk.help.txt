@@ -20,21 +20,21 @@ UserTest1:
 return
 
 UserTest2:
-    ; 在列表框显示指定内容
+    ; DisplayResult(text) 内置函数用来在列表框展示文本
     DisplayResult(clipboard)
 return
 
 UserTest3:
-    ; 在 cmd.exe 里运行命令
+    ; RunWithCmd(cmd) 函数用来在 cmd.exe 里运行命令并暂停
     RunWithCmd("ipconfig")
 return
 
 UserTest4:
-    ; 调用参数，输入的内容空格之后为参数，可根据自己的喜欢分割
+    ; Arg 是用户在编辑框输入的参数，输入的内容空格之后为参数，可根据自己的喜好分割
     MsgBox, % Arg
 return
 
 UserTest5:
-    ; 显示 url 内容
+    ; UrlDownloadToString(url) 内置函数用来下载文件内容到字符串
     DisplayResult(UrlDownloadToString(Arg))
 return
