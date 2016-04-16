@@ -217,6 +217,7 @@ Default:
 return
 
 RestartRunZ:
+    SaveAutoConf()
     Reload
 return
 
@@ -359,7 +360,8 @@ GuiClose()
     }
 }
 
-ExitRunZ:
+SaveAutoConf()
+{
     if (g_Conf.Config.SaveInputText)
     {
         g_AutoConf.DeleteKey("Auto", "InputText")
@@ -393,24 +395,10 @@ ExitRunZ:
             break
         }
     }
+}
 
-    /*
-    应该没有这个问题，备用
-    FileGetSize, oldFileSize, %g_AutoConfFile%
-    FileCopy, %g_AutoConfFile%, %g_AutoConfFile%.debug
-    g_AutoConf.Save()
-    ;...
-    FileGetSize, newFileSize, %g_AutoConfFile%
-    if (oldFileSize - newFileSize >= 50)
-    {
-        MsgBox, % "配置文件 " g_AutoConfFile
-            . "`n减小了 " oldFileSize - newFileSize " 字节"
-            . "`n如有疑问请不要退出或重新启动 RunZ，以免配置丢失"
-            . "`n配置文件已备份到"
-            . "`n" . g_AutoConfFile . ".debug"
-    }
-    */
-
+ExitRunZ:
+    SaveAutoConf()
     ExitApp
 return
 
