@@ -23,24 +23,24 @@ GenerateQR:
     Gdip_DisposeImage(bitmap)
     Gdip_Shutdown(GdipToken)
 
-	Gui, QR:Destroy
-	Gui, QR:Add, Picture, w%imageWidth% h-1 gQRSaveAs, % file := QRfile
-	Gui, QR:Show, % "w" imageWidth + 20
+    Gui, QR:Destroy
+    Gui, QR:Add, Picture, w%imageWidth% h-1 gQRSaveAs, % file := QRfile
+    Gui, QR:Show, % "w" imageWidth + 20
 return
 
 QRSaveAs:
     Fileselectfile, selectedFile, s16, 二维码.png, 另存为, PNG图片(*.png)
     if (selectedFile == "")
-	{
-		return
-	}
+    {
+        return
+    }
 
     if (!RegExMatch(selectedFile,"i)\.png"))
     {
         selectedFile .= ".png"
     }
 
-	FileMove, %file%, %selectedFile%, 1
+    FileMove, %file%, %selectedFile%, 1
     GUI, QR:Destroy
 return
 
@@ -52,14 +52,14 @@ return
 
 GenerateQR(string, file = "")
 {
-	if (file == "")
-	{
-		  file := A_Temp "\RunZ.QR.png"
-	}
+    if (file == "")
+    {
+        file := A_Temp "\RunZ.QR.png"
+    }
 
-	DllCall(A_ScriptDir "\Lib\Reserved\quricol32.dll\GeneratePNG"
-		, "str", file, "str", string, "int", 4, "int", 2, "int", 0)
-	return file
+    DllCall(A_ScriptDir "\Lib\Reserved\quricol32.dll\GeneratePNG"
+        , "str", file, "str", string, "int", 4, "int", 2, "int", 0)
+    return file
 }
 
 ; GenerateQR end
