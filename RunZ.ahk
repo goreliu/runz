@@ -632,6 +632,7 @@ DisplaySearchResult(result)
 
 ClearInput:
     ControlSetText, %g_InputArea%,
+    ControlFocus, %g_InputArea%
 return
 
 RunCurrentCommand:
