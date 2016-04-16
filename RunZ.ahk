@@ -930,8 +930,7 @@ DisplayHistoryCommands:
     DisplayResult(result)
 return
 
-; AddFunction(label, info, fallback)
-@(label, info, fallback = false)
+@(label, info, fallback = false, key = "")
 {
     if (!IsLabel(label))
     {
@@ -943,6 +942,11 @@ return
     if (fallback)
     {
         g_FallbackCommands.Push("function | " . label . "（" . info . "）")
+    }
+
+    if (key != "")
+    {
+        Hotkey, %key%, %label%
     }
 }
 

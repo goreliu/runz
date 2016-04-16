@@ -3,8 +3,11 @@
 global Arg
 
 UserFunctions:
-    ; 第一个参数为标签名，第二个为搜索项（内容随意）
-    @("UserTest1", "用户测试（ut1）")
+    ; 第一个参数为标签名
+    ; 第二个为搜索项（内容随意）
+    ; 第三个参数为 true 时，当搜索无结果也会显示，默认为 false
+    ; 第四个参数为绑定的全局热键，默认无
+    @("UserTest1", "用户测试（ut1）", false, "#p")
     @("UserTest2", "用户测试（ut2）")
     @("UserTest3", "用户测试（ut3）")
     @("UserTest4", "用户测试（ut4）")
