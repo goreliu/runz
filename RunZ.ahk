@@ -27,7 +27,7 @@ if (FileExist(g_AutoConfFile ".EasyIni.bak"))
 }
 else if (!FileExist(g_AutoConfFile))
 {
-    FileAppend, % "; 请不要手动修改此文件`n`n[Auto]`n[Rank]`n[History]" , % g_AutoConfFile
+    FileAppend, % "; 此文件由 RunZ 自动写入，如需手动修改请先关闭 RunZ ！`n`n[Auto]`n[Rank]`n[History]" , % g_AutoConfFile
 }
 
 global g_Conf := class_EasyINI(g_ConfFile)
@@ -795,6 +795,10 @@ IncreaseRank(cmd, show = false, inc := 1)
         SetTimer, RemoveToolTip, 800
     }
 }
+
+CleanupRank:
+    ; TODO
+return
 
 RunSelectedCommand:
     if (SubStr(A_ThisHotkey, 1, 1) == "~")
