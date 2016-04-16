@@ -912,16 +912,20 @@ DisplayHistoryCommands:
     {
         if (index == 1)
         {
-            result .= Chr(g_FirstChar + index - 1) . ">| " . element "`n"
+            result .= SubStr(Chr(g_FirstChar + index - 1) . ">| " . element, 1, g_DisplayCols) "`n"
             g_CurrentCommand := element
         }
         else
         {
-            result .= Chr(g_FirstChar + index - 1) . " | " . element "`n"
+            result .= SubStr(Chr(g_FirstChar + index - 1) . " | " . element, 1, g_DisplayCols) "`n"
         }
 
         g_CurrentCommandList.Push(element)
     }
+
+    result := StrReplace(result, "file | ", "文件 | ")
+    result := StrReplace(result, "function | ", "功能 | ")
+    result := StrReplace(result, "cmd | ", "命令 | ")
 
     DisplayResult(result)
 return
