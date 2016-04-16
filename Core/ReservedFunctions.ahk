@@ -24,8 +24,8 @@ GenerateQR:
     Gdip_Shutdown(GdipToken)
 
     Gui, QR:Destroy
-    Gui, QR:Add, Picture, w%imageWidth% h-1 gQRSaveAs, % file := QRfile
-    Gui, QR:Show, % "w" imageWidth + 20
+    Gui, QR:Add, Picture, x50 y50 w%imageWidth% h-1 gQRSaveAs, % file := QRfile
+    Gui, QR:Show, % "w" imageWidth + 100 " h" imageWidth + 100
 return
 
 QRSaveAs:
