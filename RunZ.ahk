@@ -7,11 +7,11 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; 自动生成的命令文件
-global g_SearchFileList := A_ScriptDir . "\SearchFileList.txt"
+global g_SearchFileList := A_ScriptDir . "\Conf\SearchFileList.txt"
 ; 配置文件
-global g_ConfFile := A_ScriptDir . "\RunZ.ini"
+global g_ConfFile := A_ScriptDir . "\Conf\RunZ.ini"
 ; 自动写入的配置文件
-global g_AutoConfFile := A_ScriptDir . "\RunZ.auto.ini"
+global g_AutoConfFile := A_ScriptDir . "\Conf\RunZ.auto.ini"
 
 if !FileExist(g_ConfFile)
 {
@@ -86,7 +86,7 @@ if (g_Conf.Gui.ShowTrayIcon)
     Menu, Tray, Add, 退出(&X), ExitRunZ
 }
 
-Menu, Tray, Icon, %A_ScriptDir%\RunZ.ico
+Menu, Tray, Icon, %A_ScriptDir%\Core\RunZ.ico
 
 if (FileExist(g_SearchFileList))
 {
@@ -867,7 +867,7 @@ LoadFiles()
         }
     }
 
-    if (FileExist(A_ScriptDir "\UserFunctions.ahk"))
+    if (FileExist(A_ScriptDir "\Conf\UserFunctions.ahk"))
     {
         userFunctionLabel := "UserFunctions"
         if (IsLabel(userFunctionLabel))
@@ -876,7 +876,7 @@ LoadFiles()
         }
         else
         {
-            MsgBox, 未在 %A_ScriptDir%\UserFunctions.ahk 中发现 %userFunctionLabel% 标签，请修改！
+            MsgBox, 未在 %A_ScriptDir%\Conf\UserFunctions.ahk 中发现 %userFunctionLabel% 标签，请修改！
         }
     }
 
@@ -889,7 +889,7 @@ LoadFiles()
 
     if (g_Conf.Config.LoadControlPanelFunctions)
     {
-        Loop, Read, %A_ScriptDir%\ControlPanelFunctions.txt
+        Loop, Read, %A_ScriptDir%\Core\ControlPanelFunctions.txt
         {
             g_Commands.Push(A_LoopReadLine)
         }
@@ -950,7 +950,7 @@ return
 {
     if (!IsLabel(label))
     {
-        MsgBox, 未找到 %label% 标签，请检查 %A_ScriptDir%\UserFunctions.ahk 文件格式！
+        MsgBox, 未找到 %label% 标签，请检查 %A_ScriptDir%\Conf\UserFunctions.ahk 文件格式！
         return
     }
 
@@ -1162,6 +1162,6 @@ GetInputState(WinTitle = "A")
 #include %A_ScriptDir%\Lib\Eval.ahk
 #include %A_ScriptDir%\Lib\JSON.ahk
 #include %A_ScriptDir%\Lib\Kanji\Kanji.ahk
-#include %A_ScriptDir%\Functions.ahk
+#include %A_ScriptDir%\Core\Functions.ahk
 ; 用户自定义命令
-#include *i %A_ScriptDir%\UserFunctions.ahk
+#include *i %A_ScriptDir%\Conf\UserFunctions.ahk
