@@ -30,6 +30,11 @@ Functions:
     @("ShowIp", "显示 IP")
     @("Calendar", "用浏览器打开万年历")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
+
+    if (IsLabel("ReservedFunctions"))
+    {
+        GoSub, ReservedFunctions
+    }
 return
 
 Help:

@@ -1169,6 +1169,8 @@ GetInputState(WinTitle = "A")
 #include %A_ScriptDir%\Lib\Eval.ahk
 #include %A_ScriptDir%\Lib\JSON.ahk
 #include %A_ScriptDir%\Lib\Kanji\Kanji.ahk
+#include %A_ScriptDir%\Lib\Gdip.ahk
 #include %A_ScriptDir%\Core\Functions.ahk
+#include %A_ScriptDir%\Core\ReservedFunctions.ahk
 ; 用户自定义命令
 #include *i %A_ScriptDir%\Conf\UserFunctions.ahk
