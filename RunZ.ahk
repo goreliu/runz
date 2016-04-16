@@ -76,7 +76,10 @@ if (g_Conf.Gui.ShowTrayIcon)
     if (!g_Conf.Config.ExitIfInactivate)
     {
         Menu, Tray, Add, 显示(&S), ActivateWindow
+        Menu, Tray, Default, 显示(&S)
+        Menu, Tray, Click, 1
     }
+    Menu, Tray, Add, 配置(&H), EditConfig
     Menu, Tray, Add, 帮助(&H), KeyHelp
     Menu, Tray, Add,
     Menu, Tray, Add, 重启(&R), RestartRunZ
