@@ -1,19 +1,50 @@
-﻿TCMatchOn(aDllPath, aOff:=False)
+﻿global g_TCMatchDllPath
+global g_TCMatchModule
+
+TCMatchOn(dllPath = "")
 {
-    Static hModule := 0
-    If !hModule && FileExist(aDllPath)
-        hModule := DllCall("LoadLibrary", "Str", aDllPath, "Ptr")  
-    If aOff
-        hModule := 0
-    Return hModule
+    if (g_TCMatchModule != "")
+    {
+        return g_TCMatchModule
+    }
+
+    if (dllPath == "" && g_TCMatchDllPath == "")
+    {
+        return 0
+    }
+    else if (dllPath != "")
+    {
+        if (!FileExist(dllPath))
+        {
+            return 0
+        }
+        else
+        {
+            g_TCMatchDllPath := dllPath
+        }
+    }
+
+    g_TCMatchModule := DllCall("LoadLibrary", "Str", g_TCMatchDllPath, "Ptr")
+    return g_TCMatchModule
 }
 
 TCMatchOff()
 {
-    DllCall("FreeLibrary", "Ptr", hModule)
+    DllCall("FreeLibrary", "Ptr", g_TCMatchModule)
+    g_TCMatchModule := ""
 }
 
-TCMatch(aString, aMatch)
+TCMatch(aHaystack, aNeedle)
 {
-    Return DllCall("TCMatch\MatchFileW",  "WStr", aMatch, "WStr", aString)
+    ; 这个函数有内存泄漏...
+    static matchTimes := 0
+    matchTimes++
+    if (matchTimes > 1000)
+    {
+        TCMatchOff()
+        TCMatchOn()
+        matchTimes := 0
+    }
+
+    return DllCall("TCMatch\MatchFileW", "WStr", aNeedle, "WStr", aHaystack)
 }
