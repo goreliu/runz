@@ -17,7 +17,7 @@ RunOnce=0
 ; 运行一次命令就退出，对展示信息的命令无效
 TCPath=c:\totalcmd\totalcmd.exe
 ; TotalCommander 路径，如果为空则使用资源管理器打开
-RunInBackground=0
+RunInBackground=1
 ; 在后台运行
 LoadControlPanelFunctions=1
 ; 加载控制面板中的功能
@@ -35,7 +35,7 @@ AutoRank=1
 
 ; 图形界面相关参数
 [Gui]
-ShowTrayIcon=0
+ShowTrayIcon=1
 FontName=宋体
 FontSize=12
 WidgetWidth=600
@@ -86,4 +86,4 @@ HideTitle=1
 ; 语法和 [Hotkey] 一样，但作用范围是全局的
 [GlobalHotkey]
 #j=ActivateWindow
-;!space=ActivateWindow
+!space=ActivateWindow
