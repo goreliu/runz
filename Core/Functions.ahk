@@ -29,6 +29,7 @@ Functions:
     @("T2S", "将剪切板中的内容繁体转简体")
     @("ShowIp", "显示 IP")
     @("Calendar", "用浏览器打开万年历")
+    @("CleanupRank", "清理命令权重中的无效命令")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
 
     if (IsLabel("ReservedFunctions"))

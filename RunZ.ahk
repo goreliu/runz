@@ -360,13 +360,10 @@ GuiClose()
 }
 
 ExitRunZ:
-    saveConf := false
-
     if (g_Conf.Config.SaveInputText)
     {
         g_AutoConf.DeleteKey("Auto", "InputText")
         g_AutoConf.AddKey("Auto", "InputText", g_CurrentInput)
-        saveConf := true
     }
 
     if (g_Conf.Config.SaveHistory)
@@ -381,48 +378,38 @@ ExitRunZ:
                 g_AutoConf.AddKey("History", index, element)
             }
         }
-
-        saveConf := true
     }
 
-    if (g_Conf.Config.AutoRank)
-    {
-        saveConf := true
-    }
-
-    if (saveConf)
+    Loop
     {
         g_AutoConf.Save()
 
-        Loop
+        if (!FileExist(g_AutoConfFile))
         {
-            if (!FileExist(g_AutoConfFile))
-            {
-                MsgBox, 配置文件 %g_AutoConfFile% 写入后丢失，请检查磁盘并点确定来重试
-            }
-            else
-            {
-                break
-            }
+            MsgBox, 配置文件 %g_AutoConfFile% 写入后丢失，请检查磁盘并点确定来重试
         }
-
-        /*
-        应该没有这个问题，备用
-        FileGetSize, oldFileSize, %g_AutoConfFile%
-        FileCopy, %g_AutoConfFile%, %g_AutoConfFile%.debug
-        g_AutoConf.Save()
-        ;...
-        FileGetSize, newFileSize, %g_AutoConfFile%
-        if (oldFileSize - newFileSize >= 50)
+        else
         {
-            MsgBox, % "配置文件 " g_AutoConfFile
-                . "`n减小了 " oldFileSize - newFileSize " 字节"
-                . "`n如有疑问请不要退出或重新启动 RunZ，以免配置丢失"
-                . "`n配置文件已备份到"
-                . "`n" . g_AutoConfFile . ".debug"
+            break
         }
-        */
     }
+
+    /*
+    应该没有这个问题，备用
+    FileGetSize, oldFileSize, %g_AutoConfFile%
+    FileCopy, %g_AutoConfFile%, %g_AutoConfFile%.debug
+    g_AutoConf.Save()
+    ;...
+    FileGetSize, newFileSize, %g_AutoConfFile%
+    if (oldFileSize - newFileSize >= 50)
+    {
+        MsgBox, % "配置文件 " g_AutoConfFile
+            . "`n减小了 " oldFileSize - newFileSize " 字节"
+            . "`n如有疑问请不要退出或重新启动 RunZ，以免配置丢失"
+            . "`n配置文件已备份到"
+            . "`n" . g_AutoConfFile . ".debug"
+    }
+    */
 
     ExitApp
 return
@@ -796,8 +783,43 @@ IncreaseRank(cmd, show = false, inc := 1)
     }
 }
 
+; 比较耗时，必要时才使用，也可以手动编辑 RunZ.auto.ini
 CleanupRank:
-    ; TODO
+    ; 先把 g_Commands 里的 Rank 信息清掉
+    LoadFiles(false)
+
+    for command, rank in g_AutoConf.Rank
+    {
+        cleanup := true
+        for index, element in g_Commands
+        {
+            if (InStr(element, command) == 1)
+            {
+                cleanup := false
+                break
+            }
+        }
+        if (cleanup)
+        {
+            g_AutoConf.DeleteKey("Rank", command)
+        }
+    }
+
+    Loop
+    {
+        g_AutoConf.Save()
+
+        if (!FileExist(g_AutoConfFile))
+        {
+            MsgBox, 配置文件 %g_AutoConfFile% 写入后丢失，请检查磁盘并点确定来重试
+        }
+        else
+        {
+            break
+        }
+    }
+
+    LoadFiles()
 return
 
 RunSelectedCommand:
@@ -831,32 +853,35 @@ DecreaseRank:
     }
 return
 
-LoadFiles()
+LoadFiles(loadRank := true)
 {
     g_Commands := Object()
     g_FallbackCommands := Object()
 
-    rankString := ""
-    for command, rank in g_AutoConf.Rank
+    if (loadRank)
     {
-        if (StrLen(command) > 0)
+        rankString := ""
+        for command, rank in g_AutoConf.Rank
         {
-            rankString .= rank "`t" command "`n"
-        }
-    }
-
-    if (rankString != "")
-    {
-        Sort, rankString, R N
-
-        Loop, Parse, rankString, `n
-        {
-            if (A_LoopField == "")
+            if (StrLen(command) > 0)
             {
-                continue
+                rankString .= rank "`t" command "`n"
             }
+        }
 
-            g_Commands.Push(StrSplit(A_loopField, "`t")[2])
+        if (rankString != "")
+        {
+            Sort, rankString, R N
+
+            Loop, Parse, rankString, `n
+            {
+                if (A_LoopField == "")
+                {
+                    continue
+                }
+
+                g_Commands.Push(StrSplit(A_loopField, "`t")[2])
+            }
         }
     }
 
