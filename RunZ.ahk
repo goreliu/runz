@@ -86,7 +86,7 @@ if (g_Conf.Gui.ShowTrayIcon)
     Menu, Tray, Add, 退出(&X), ExitRunZ
 }
 
-Menu, Tray, Icon, %A_ScriptDir%\Core\RunZ.ico
+Menu, Tray, Icon, %A_ScriptDir%\RunZ.ico
 
 if (FileExist(g_SearchFileList))
 {
