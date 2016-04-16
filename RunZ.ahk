@@ -74,6 +74,8 @@ if (g_Conf.Gui.ShowTrayIcon)
     Menu, Tray, Icon
 }
 
+Menu, Tray, Icon, %A_ScriptDir%\RunZ.ico
+
 if (FileExist(g_SearchFileList))
 {
     LoadFiles()
