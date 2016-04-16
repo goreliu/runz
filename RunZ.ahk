@@ -1026,6 +1026,8 @@ GetAllFunctions()
         }
     }
 
+    result := StrReplace(result, "function | ", "功能 | ")
+
     return result
 }
 
