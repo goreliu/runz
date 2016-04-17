@@ -55,8 +55,6 @@ global g_EnableTCMatch = TCMatchOn(g_Conf.Config.TCMatchPath)
 global g_FirstChar := Asc(g_Conf.Gui.FirstChar)
 ; 在列表中显示的行数
 global g_DisplayRows := g_Conf.Gui.DisplayRows
-; 在列表中显示的文字列数（多出的会被截断）
-global g_DisplayCols := g_Conf.Gui.DisplayCols
 ; 命令使用了显示框
 global g_UseDisplay
 ; 历史命令
@@ -103,7 +101,7 @@ Gui, Font, % "s" g_Conf.Gui.FontSize, % g_Conf.Gui.FontName
 Gui, Add, Edit, % "gProcessInputCommand vSearchArea"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 Gui, Add, Edit, w0 h0 ReadOnly,
-Gui, Add, Edit, % "ReadOnly vDisplayArea "
+Gui, Add, Edit, % "ReadOnly vDisplayArea -Wrap "
         . (g_Conf.Gui.HideDisplayAreaVScroll ? "-VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
         , % SearchCommand("", true)
@@ -598,8 +596,6 @@ SearchCommand(command = "", firstRun = false)
                 elementToShow .= "（" . splitedElement[3] . "）"
             }
 
-            elementToShow := SubStr(elementToShow, 1, g_DisplayCols)
-
             if (g_Conf.Config.SearchFullPath)
             {
                 ; TCMatch 在搜索路径时只搜索文件名，强行将 \ 转成空格
@@ -608,7 +604,7 @@ SearchCommand(command = "", firstRun = false)
         }
         else
         {
-            elementToShow := SubStr(element, 1, g_DisplayCols)
+            elementToShow := element
             elementToSearch := splitedElement[2]
 
             if (splitedElement.Length() >= 3)
@@ -1037,12 +1033,12 @@ DisplayHistoryCommands:
     {
         if (index == 1)
         {
-            result .= SubStr(Chr(g_FirstChar + index - 1) . ">| " . element, 1, g_DisplayCols) "`n"
+            result .= Chr(g_FirstChar + index - 1) . ">| " . element "`n"
             g_CurrentCommand := element
         }
         else
         {
-            result .= SubStr(Chr(g_FirstChar + index - 1) . " | " . element, 1, g_DisplayCols) "`n"
+            result .= Chr(g_FirstChar + index - 1) . " | " . element "`n"
         }
 
         g_CurrentCommandList.Push(element)
