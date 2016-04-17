@@ -41,9 +41,10 @@ SwitchToEngIME=1
 
 
 ; 图形界面相关参数
+; 如果指定皮肤名，[Gui] 其他部分配置失效
 [Gui]
 Skin=Default
-; 如果指定皮肤名，[Gui] 其他部分配置失效
+; 指定皮肤名，如果为空则使用此 [Gui] 中的配置
 HideTitle=1
 ; 隐藏标题栏
 ShowTrayIcon=1
