@@ -90,4 +90,4 @@ HideTitle=1
 ; 语法和 [Hotkey] 一样，但作用范围是全局的
 [GlobalHotkey]
 #j=ActivateWindow
-!space=ActivateWindow
+!space=ToggleWindow

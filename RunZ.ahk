@@ -258,6 +258,17 @@ ActivateWindow:
     }
 return
 
+ToggleWindow:
+    if (WinActive(g_WindowName))
+    {
+        Gui, Hide
+    }
+    else
+    {
+        GoSub, ActivateWindow
+    }
+return
+
 getMouseCurrentLine()
 {
     MouseGetPos, , mouseY, , classnn,
