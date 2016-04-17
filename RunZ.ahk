@@ -252,7 +252,7 @@ return
 
 ActivateWindow:
     Gui, Show, , % g_WindowName
-    if (g_conf.Config.SwitchToEngIME)
+    if (g_Conf.Config.SwitchToEngIME)
     {
         SwitchToEngIME()
     }
