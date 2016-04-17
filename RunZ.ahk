@@ -254,7 +254,7 @@ getMouseCurrentLine()
     MouseGetPos, , mouseY, , classnn,
     if (classnn != g_OutputArea)
     {
-        return
+        return -1
     }
 
     ControlGetPos, , y, , h, %g_OutputArea%
@@ -264,7 +264,17 @@ getMouseCurrentLine()
 }
 
 ClickFunction:
+    if (g_UseDisplay)
+    {
+        return
+    }
+
     index := getMouseCurrentLine()
+    if (index < 0)
+    {
+        return
+    }
+
     if (g_CurrentCommandList[index] != "")
     {
         ChangeCommand(index - 1, true)
@@ -501,6 +511,7 @@ return
 
 SearchCommand(command = "", firstRun = false)
 {
+    g_UseDisplay := false
     result := ""
     ; 供去重使用
     fullResult := ""
@@ -991,6 +1002,7 @@ LoadHistoryCommands()
 }
 
 DisplayHistoryCommands:
+    g_UseDisplay := false
     result := ""
     g_CurrentCommandList := Object()
     g_CurrentLine := 1
@@ -1014,7 +1026,7 @@ DisplayHistoryCommands:
     result := StrReplace(result, "function | ", "功能 | ")
     result := StrReplace(result, "cmd | ", "命令 | ")
 
-    DisplayResult(result)
+    DisplayText(result)
 return
 
 @(label, info, fallback = false, key = "")
