@@ -158,6 +158,7 @@ Hotkey, ^j, NextCommand
 Hotkey, ^k, PrevCommand
 Hotkey, down, NextCommand
 Hotkey, up, PrevCommand
+Hotkey, rbutton, OpenContextMenu
 
 ; 剩余按键 e g j m t w
 
@@ -222,7 +223,7 @@ RestartRunZ:
 return
 
 Test:
-    MsgBox Test
+    MsgBox, 测试
 return
 
 HomeKey:
@@ -245,6 +246,27 @@ return
 
 ActivateWindow:
     Gui, Show, , % g_WindowName
+return
+
+OpenContextMenu:
+    currentCommandText := "运行当前命令："
+    if (!g_CurrentLine > 0)
+    {
+        currentCommandText .= Chr(g_FirstChar)
+    }
+    else
+    {
+        currentCommandText .= Chr(g_FirstChar + g_CurrentLine - 1)
+    }
+    Menu, ContextMenu, Add, %currentCommandText%, RunCurrentCommand
+    Menu, ContextMenu, Add, 显示帮助(&A), Help
+    Menu, ContextMenu, Add, 编辑配置(&E), EditConfig
+    Menu, ContextMenu, Add, 重载文件(&S), ReloadFiles
+    Menu, ContextMenu, Add, 显示历史(&H), DisplayHistoryCommands
+    Menu, ContextMenu, Add, 重新启动(&R), RestartRunZ
+    Menu, ContextMenu, Add, 退出程序(&X), ExitRunZ
+    Menu, ContextMenu, Show
+    Menu, ContextMenu, DeleteAll
 return
 
 TabFunction:
@@ -348,7 +370,7 @@ ChangeCommand(step, resetCurrentLine = false)
 
     DisplaySearchResult(result)
 
-    ControlSetText, %g_InputArea%, %newInput%
+    ControlSetText, %g_InputArea%, %newInput%, %g_WindowName%
     Send, {end}
 }
 
@@ -601,12 +623,12 @@ DisplaySearchResult(result)
     if (g_Conf.Gui.ShowCurrentCommand)
     {
         commandToShow := SubStr(g_CurrentCommand, InStr(g_CurrentCommand, " | ") + 3)
-        ControlSetText, %g_CommandArea%, %commandToShow%
+        ControlSetText, %g_CommandArea%, %commandToShow%, %g_WindowName%
     }
 }
 
 ClearInput:
-    ControlSetText, %g_InputArea%,
+    ControlSetText, %g_InputArea%, , %g_WindowName%
     ControlFocus, %g_InputArea%
 return
 
@@ -917,7 +939,7 @@ LoadFiles(loadRank := true)
 DisplayText(text)
 {
     textToDisplay := StrReplace(text, "`n", "`r`n")
-    ControlSetText, %g_OutputArea%, %textToDisplay%
+    ControlSetText, %g_OutputArea%, %textToDisplay%, %g_WindowName%
 }
 
 DisplayResult(result)
