@@ -290,16 +290,20 @@ ClickFunction:
 return
 
 OpenContextMenu:
-    currentCommandText := "运行命令："
-    if (!g_CurrentLine > 0)
+    if (!g_UseDisplay)
     {
-        currentCommandText .= Chr(g_FirstChar)
+        currentCommandText := "运行命令："
+        if (!g_CurrentLine > 0)
+        {
+            currentCommandText .= Chr(g_FirstChar)
+        }
+        else
+        {
+            currentCommandText .= Chr(g_FirstChar + g_CurrentLine - 1)
+        }
+        Menu, ContextMenu, Add, %currentCommandText%, RunCurrentCommand
     }
-    else
-    {
-        currentCommandText .= Chr(g_FirstChar + g_CurrentLine - 1)
-    }
-    Menu, ContextMenu, Add, %currentCommandText%, RunCurrentCommand
+
     Menu, ContextMenu, Add, 编辑配置(&E), EditConfig
     Menu, ContextMenu, Add, 重载文件(&S), ReloadFiles
     Menu, ContextMenu, Add, 显示历史(&H), DisplayHistoryCommands
