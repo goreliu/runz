@@ -66,7 +66,8 @@ global g_CurrentLine
 ; 使用备用的命令
 global g_UseFallbackCommands
 global g_InputArea := "Edit1"
-global g_OutputArea := "Edit3"
+global g_ControlArea := "Edit3"
+global g_DisplayArea := "Edit4"
 global g_CommandArea := "Edit5"
 
 if (g_Conf.Gui.ShowTrayIcon)
@@ -98,20 +99,27 @@ else
 }
 
 Gui, Font, % "s" g_Conf.Gui.FontSize, % g_Conf.Gui.FontName
-Gui, Add, Edit, % "gProcessInputCommand vSearchArea"
+Gui, Add, Edit, % "y+15 gProcessInputCommand "
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
-Gui, Add, Edit, w0 h0 ReadOnly,
-Gui, Add, Edit, % "ReadOnly vDisplayArea -Wrap "
-        . (g_Conf.Gui.HideDisplayAreaVScroll ? "-VScroll " : "")
+Gui, Add, Edit, y+0 w0 h0 ReadOnly,
+Gui, Add, Edit, % "y+15 ReadOnly -Wrap "
+        . (g_Conf.Gui.HideDisplayAreaVScroll ? " -VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
         , % SearchCommand("", true)
 
+; 重叠的编辑框，用来显示换行的文本
+Gui, Add, Edit, % "Hidden ReadOnly x15 y" 15 * 2 + g_Conf.Gui.EditHeight
+        . (g_Conf.Gui.HideDisplayAreaVScroll ? " -VScroll " : "")
+        . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
+
 if (g_Conf.Gui.ShowCurrentCommand)
 {
-    Gui, Add, Edit, w0 h0 ReadOnly,
-    Gui, Add, Edit, % "ReadOnly"
+    Gui, Add, Edit, % "y+15 ReadOnly"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 }
+
+; 用来调整边框
+Gui, Add, Edit, y+5 w0 h0 ReadOnly Hidden,
 
 if (g_Conf.Gui.HideTitle)
 {
@@ -241,12 +249,28 @@ EndKey:
 return
 
 NextPage:
-    ControlFocus, %g_OutputArea%
+    if (g_UseDisplay)
+    {
+        ControlFocus, %g_DisplayArea%
+    }
+    else
+    {
+        ControlFocus, %g_ControlArea%
+    }
+
     Send, {pgdn}
 return
 
 PrevPage:
-    ControlFocus, %g_OutputArea%
+    if (g_UseDisplay)
+    {
+        ControlFocus, %g_DisplayArea%
+    }
+    else
+    {
+        ControlFocus, %g_ControlArea%
+    }
+
     Send, {pgup}
 return
 
@@ -272,12 +296,12 @@ return
 getMouseCurrentLine()
 {
     MouseGetPos, , mouseY, , classnn,
-    if (classnn != g_OutputArea)
+    if (classnn != g_ControlArea)
     {
         return -1
     }
 
-    ControlGetPos, , y, , h, %g_OutputArea%
+    ControlGetPos, , y, , h, %g_ControlArea%
     lineHeight := h / g_DisplayRows
     index := Ceil((mouseY - y) / lineHeight)
     return index
@@ -360,10 +384,22 @@ EscFunction:
 return
 
 NextCommand:
+    if (g_UseDisplay)
+    {
+        ControlFocus, %g_DisplayArea%
+        Send {down}
+        return
+    }
     ChangeCommand(1)
 return
 
 PrevCommand:
+    if (g_UseDisplay)
+    {
+        ControlFocus, %g_DisplayArea%
+        Send {up}
+        return
+    }
     ChangeCommand(-1)
 return
 
@@ -422,7 +458,7 @@ ChangeCommand(step, resetCurrentLine = false)
         }
     }
 
-    ControlGetText, result, %g_OutputArea%
+    ControlGetText, result, %g_ControlArea%
     result := StrReplace(result, ">| ", " | ")
     if (currentChar == Chr(g_FirstChar))
     {
@@ -677,7 +713,7 @@ SearchCommand(command = "", firstRun = false)
 
 DisplaySearchResult(result)
 {
-    DisplayText(result)
+    DisplayControlText(result)
 
     if (g_CurrentCommandList.Length() == 1 && g_Conf.Config.RunIfOnlyOne)
     {
@@ -1000,15 +1036,22 @@ LoadFiles(loadRank := true)
     }
 }
 
-DisplayText(text)
+; 用来显示控制界面
+DisplayControlText(text)
 {
+    GuiControl, Hide, %g_DisplayArea%
+    GuiControl, Show, %g_ControlArea%
     textToDisplay := StrReplace(text, "`n", "`r`n")
-    ControlSetText, %g_OutputArea%, %textToDisplay%, %g_WindowName%
+    ControlSetText, %g_ControlArea%, %textToDisplay%, %g_WindowName%
 }
 
+; 用来显示命令结果
 DisplayResult(result)
 {
-    DisplayText(result)
+    GuiControl, Hide, %g_ControlArea%
+    GuiControl, Show, %g_DisplayArea%
+    textToDisplay := StrReplace(result, "`n", "`r`n")
+    ControlSetText, %g_DisplayArea%, %textToDisplay%, %g_WindowName%
     g_UseDisplay := true
 }
 
@@ -1048,7 +1091,7 @@ DisplayHistoryCommands:
     result := StrReplace(result, "function | ", "功能 | ")
     result := StrReplace(result, "cmd | ", "命令 | ")
 
-    DisplayText(result)
+    DisplayControlText(result)
 return
 
 @(label, info, fallback = false, key = "")

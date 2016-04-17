@@ -43,12 +43,18 @@ SwitchToEngIME=1
 ; 图形界面相关参数
 [Gui]
 ShowTrayIcon=1
+; 是否显示托盘图标
 FontName=宋体
+; 字体名称
 FontSize=12
+; 字体大小
 WidgetWidth=600
+; 输入框和输出框宽度
 EditHeight=25
+; 输入框高度
 DisplayAreaHeight=250
-HideDisplayAreaVScroll=0
+; 输出框高度
+HideDisplayAreaVScroll=1
 ; 不显示纵向滚动条
 ShowCurrentCommand=1
 ; 在下方显示当前命令
