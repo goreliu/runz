@@ -1,6 +1,4 @@
 ﻿[Config]
-RunIfOnlyOne=0
-; 如果结果中只有一个则直接运行，注意避免搜到关机、重启等操作
 SearchFileDir=A_ProgramsCommon | A_StartMenu
 ; 搜索的目录，可以使用 全路径 或 ahk 以 A_ 开头的变量，必须以 " | " 分隔
 SearchFileType=*.lnk | *.exe
@@ -19,6 +17,8 @@ TCPath=c:\totalcmd\totalcmd.exe
 ; TotalCommander 路径，如果为空则使用资源管理器打开
 RunInBackground=1
 ; 在后台运行
+RunIfOnlyOne=0
+; 如果结果中只有一个则直接运行，注意避免搜到关机、重启等操作
 LoadControlPanelFunctions=1
 ; 加载控制面板中的功能
 ExitIfInactivate=0
@@ -31,6 +31,8 @@ HistorySize=26
 ; 记录历史的数量
 AutoRank=1
 ; 自动根据使用频率调节顺序，因为效率问题，结果不能实时体现，重启或 ctrl + r 后更新
+ClickToRun=1
+; 是否单击执行鼠标处命令，0 则只定位到该处
 
 
 ; 图形界面相关参数

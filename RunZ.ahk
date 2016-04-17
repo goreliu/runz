@@ -158,6 +158,7 @@ Hotkey, ^j, NextCommand
 Hotkey, ^k, PrevCommand
 Hotkey, down, NextCommand
 Hotkey, up, PrevCommand
+Hotkey, ~lbutton, ClickFunction
 Hotkey, rbutton, OpenContextMenu
 
 ; 剩余按键 e g j m t w
@@ -248,8 +249,38 @@ ActivateWindow:
     Gui, Show, , % g_WindowName
 return
 
+getMouseCurrentLine()
+{
+    MouseGetPos, , mouseY, , classnn,
+    if (classnn != g_OutputArea)
+    {
+        return
+    }
+
+    ControlGetPos, , y, , h, %g_OutputArea%
+    lineHeight := h / g_DisplayRows
+    index := Ceil((mouseY - y) / lineHeight)
+    return index
+}
+
+ClickFunction:
+    index := getMouseCurrentLine()
+    if (g_CurrentCommandList[index] != "")
+    {
+        ChangeCommand(index - 1, true)
+    }
+
+    ControlFocus, %g_InputArea%
+    Send, {end}
+
+    if (g_Conf.Config.ClickToRun)
+    {
+        GoSub, RunCurrentCommand
+    }
+return
+
 OpenContextMenu:
-    currentCommandText := "运行当前命令："
+    currentCommandText := "运行命令："
     if (!g_CurrentLine > 0)
     {
         currentCommandText .= Chr(g_FirstChar)
@@ -259,10 +290,10 @@ OpenContextMenu:
         currentCommandText .= Chr(g_FirstChar + g_CurrentLine - 1)
     }
     Menu, ContextMenu, Add, %currentCommandText%, RunCurrentCommand
-    Menu, ContextMenu, Add, 显示帮助(&A), Help
     Menu, ContextMenu, Add, 编辑配置(&E), EditConfig
     Menu, ContextMenu, Add, 重载文件(&S), ReloadFiles
     Menu, ContextMenu, Add, 显示历史(&H), DisplayHistoryCommands
+    Menu, ContextMenu, Add, 显示帮助(&A), Help
     Menu, ContextMenu, Add, 重新启动(&R), RestartRunZ
     Menu, ContextMenu, Add, 退出程序(&X), ExitRunZ
     Menu, ContextMenu, Show
