@@ -100,6 +100,11 @@ else
 
 Gui, Color, % g_Conf.Gui.BackgroundColor, % g_Conf.Gui.EditColor
 
+if (FileExist(A_ScriptDir "\Conf\" g_Conf.Gui.BackgroundPicture))
+{
+    Gui, Add, Picture, x0 y0, % A_ScriptDir "\Conf\" g_Conf.Gui.BackgroundPicture
+}
+
 border := 10
 if (g_Conf.Gui.BorderSize >= 0)
 {
