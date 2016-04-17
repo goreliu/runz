@@ -47,6 +47,8 @@ global g_CurrentInput
 global g_CurrentCommand
 ; 当前匹配到的所有命令
 global g_CurrentCommandList
+; 每使用 tcmatch.dll 搜索多少次后重载一次，因为 tcmatch.dll 有内存泄漏
+global g_ReloadTCMatchInternal := g_Conf.Config.ReloadTCMatchInternal
 ; 是否启用 TCMatch
 global g_EnableTCMatch = TCMatchOn(g_Conf.Config.TCMatchPath)
 ; 列表第一列的首字母或数字

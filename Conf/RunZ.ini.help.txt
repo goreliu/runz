@@ -9,6 +9,9 @@ SearchFullPath=0
 ; 搜索完整路径，否则只搜文件名
 TCMatchPath=Lib\TCMatch\tcmatch.dll
 ; tcmatch.dll 地址，如果没有则使用 InStr 匹配
+ReloadTCMatchInternal=1000
+; 每使用 tcmatch.dll 搜索多少次后重载一次，因为 tcmatch.dll 有内存泄漏
+; 如果文件较多，可以将此值调大，但会占用更多内存
 SaveInputText=0
 ; 退出时保存编辑框内容
 RunOnce=0

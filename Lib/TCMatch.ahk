@@ -24,6 +24,11 @@ TCMatchOn(dllPath = "")
         }
     }
 
+    if (!g_ReloadTCMatchInternal > 0)
+    {
+        g_ReloadTCMatchInternal := 1000
+    }
+
     g_TCMatchModule := DllCall("LoadLibrary", "Str", g_TCMatchDllPath, "Ptr")
     return g_TCMatchModule
 }
@@ -39,7 +44,7 @@ TCMatch(aHaystack, aNeedle)
     ; 这个函数有内存泄漏...
     static matchTimes := 0
     matchTimes++
-    if (matchTimes > 1000)
+    if (matchTimes > g_ReloadTCMatchInternal)
     {
         TCMatchOff()
         TCMatchOn()
