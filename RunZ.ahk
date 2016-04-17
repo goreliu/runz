@@ -314,7 +314,7 @@ return
 OpenContextMenu:
     if (!g_UseDisplay)
     {
-        currentCommandText := "运行命令："
+        currentCommandText := ""
         if (!g_CurrentLine > 0)
         {
             currentCommandText .= Chr(g_FirstChar)
@@ -323,7 +323,7 @@ OpenContextMenu:
         {
             currentCommandText .= Chr(g_FirstChar + g_CurrentLine - 1)
         }
-        Menu, ContextMenu, Add, %currentCommandText%, RunCurrentCommand
+        Menu, ContextMenu, Add, %currentCommandText%>  运行(&Z), RunCurrentCommand
     }
 
     Menu, ContextMenu, Add, 编辑配置(&E), EditConfig
