@@ -33,6 +33,15 @@ else if (!FileExist(g_AutoConfFile))
 global g_Conf := class_EasyINI(g_ConfFile)
 global g_AutoConf := class_EasyINI(g_AutoConfFile)
 
+if (g_Conf.Gui.Skin != "")
+{
+    global g_SkinConf := class_EasyINI(A_ScriptDir "\Conf\Skins\" g_Conf.Gui.Skin ".ini").Gui
+}
+else
+{
+    global g_SkinConf := g_Conf.Gui
+}
+
 ; 当前输入命令的参数，数组，为了方便没有添加 g_ 前缀
 global Arg
 ; 不能是 RunZ.ahk 的子串，否则按键绑定会有问题
@@ -52,9 +61,9 @@ global g_ReloadTCMatchInternal := g_Conf.Config.ReloadTCMatchInternal
 ; 是否启用 TCMatch
 global g_EnableTCMatch = TCMatchOn(g_Conf.Config.TCMatchPath)
 ; 列表第一列的首字母或数字
-global g_FirstChar := Asc(g_Conf.Gui.FirstChar)
+global g_FirstChar := Asc(g_SkinConf.FirstChar)
 ; 在列表中显示的行数
-global g_DisplayRows := g_Conf.Gui.DisplayRows
+global g_DisplayRows := g_SkinConf.DisplayRows
 ; 命令使用了显示框
 global g_UseDisplay
 ; 历史命令
@@ -70,7 +79,7 @@ global g_ControlArea := "Edit3"
 global g_DisplayArea := "Edit4"
 global g_CommandArea := "Edit5"
 
-if (g_Conf.Gui.ShowTrayIcon)
+if (g_SkinConf.ShowTrayIcon)
 {
     Menu, Tray, Icon
     Menu, Tray, NoStandard
@@ -98,47 +107,47 @@ else
     GoSub, ReloadFiles
 }
 
-Gui, Color, % g_Conf.Gui.BackgroundColor, % g_Conf.Gui.EditColor
+Gui, Color, % g_SkinConf.BackgroundColor, % g_SkinConf.EditColor
 
-if (FileExist(A_ScriptDir "\Conf\" g_Conf.Gui.BackgroundPicture))
+if (FileExist(A_ScriptDir "\Conf\Skins\" g_SkinConf.BackgroundPicture))
 {
-    Gui, Add, Picture, x0 y0, % A_ScriptDir "\Conf\" g_Conf.Gui.BackgroundPicture
+    Gui, Add, Picture, x0 y0, % A_ScriptDir "\Conf\Skins\" g_SkinConf.BackgroundPicture
 }
 
 border := 10
-if (g_Conf.Gui.BorderSize >= 0)
+if (g_SkinConf.BorderSize >= 0)
 {
-    border := g_Conf.Gui.BorderSize
+    border := g_SkinConf.BorderSize
 }
 
-Gui, Font, % "s" g_Conf.Gui.FontSize, % g_Conf.Gui.FontName
+Gui, Font, % "s" g_SkinConf.FontSize, % g_SkinConf.FontName
 Gui, Add, Edit, % "x" border " y" border " gProcessInputCommand "
-        . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
+        . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.EditHeight,
 Gui, Add, Edit, y+0 w0 h0 ReadOnly,
 Gui, Add, Edit, % "y+" border " ReadOnly -Wrap "
-        . (g_Conf.Gui.HideDisplayAreaVScroll ? " -VScroll " : "")
-        . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
+        . (g_SkinConf.HideDisplayAreaVScroll ? " -VScroll " : "")
+        . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.DisplayAreaHeight
         , % SearchCommand("", true)
 
 ; 重叠的编辑框，用来显示换行的文本
-Gui, Add, Edit, % "Hidden ReadOnly x" border " y" border * 2 + g_Conf.Gui.EditHeight
-        . (g_Conf.Gui.HideDisplayAreaVScroll ? " -VScroll " : "")
-        . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
+Gui, Add, Edit, % "Hidden ReadOnly x" border " y" border * 2 + g_SkinConf.EditHeight
+        . (g_SkinConf.HideDisplayAreaVScroll ? " -VScroll " : "")
+        . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.DisplayAreaHeight
         , 暂无结果
 
-if (g_Conf.Gui.ShowCurrentCommand)
+if (g_SkinConf.ShowCurrentCommand)
 {
     Gui, Add, Edit, % "y+" border " ReadOnly"
-        . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
+        . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.EditHeight,
 }
 
-if (g_Conf.Gui.HideTitle)
+if (g_SkinConf.HideTitle)
 {
     Gui -Caption
 }
 
-Gui, Show, % "w" border * 2 + g_Conf.Gui.WidgetWidth
-    . " h" border * 4 + g_Conf.Gui.EditHeight * 2 + g_Conf.Gui.DisplayAreaHeight, % g_WindowName
+Gui, Show, % "w" border * 2 + g_SkinConf.WidgetWidth
+    . " h" border * 4 + g_SkinConf.EditHeight * 2 + g_SkinConf.DisplayAreaHeight, % g_WindowName
 
 if (g_Conf.Config.SwitchToEngIME)
 {
@@ -748,7 +757,7 @@ DisplaySearchResult(result)
         RunCommand(g_CurrentCommand)
     }
 
-    if (g_Conf.Gui.ShowCurrentCommand)
+    if (g_SkinConf.ShowCurrentCommand)
     {
         commandToShow := SubStr(g_CurrentCommand, InStr(g_CurrentCommand, " | ") + 3)
         ControlSetText, %g_CommandArea%, %commandToShow%, %g_WindowName%

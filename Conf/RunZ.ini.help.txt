@@ -42,6 +42,8 @@ SwitchToEngIME=1
 
 ; 图形界面相关参数
 [Gui]
+Skin=Default
+; 如果指定皮肤名，[Gui] 其他部分配置失效
 HideTitle=1
 ; 隐藏标题栏
 ShowTrayIcon=1
@@ -69,7 +71,7 @@ EditColor=f0f0f0
 BackgroundColor=f0f0f0
 ; 背景色，包括边框、输出框和详情框颜色
 BackgroundPicture=Background.jpg
-; 背景图片，需要放在 Conf 目录内，背景图片只能在边框部分显示
+; 背景图片，需要放在 Conf\Skins 目录内，背景图片只能在边框部分显示
 BorderSize=15
 ; 边框宽度
 
