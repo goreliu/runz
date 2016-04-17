@@ -76,15 +76,15 @@ if (g_Conf.Gui.ShowTrayIcon)
     Menu, Tray, NoStandard
     if (!g_Conf.Config.ExitIfInactivate)
     {
-        Menu, Tray, Add, 显示(&S), ActivateWindow
-        Menu, Tray, Default, 显示(&S)
+        Menu, Tray, Add, 显示 &S, ActivateWindow
+        Menu, Tray, Default, 显示 &S
         Menu, Tray, Click, 1
     }
-    Menu, Tray, Add, 配置(&C), EditConfig
-    Menu, Tray, Add, 帮助(&H), KeyHelp
+    Menu, Tray, Add, 配置 &C, EditConfig
+    Menu, Tray, Add, 帮助 &H, KeyHelp
     Menu, Tray, Add,
-    Menu, Tray, Add, 重启(&R), RestartRunZ
-    Menu, Tray, Add, 退出(&X), ExitRunZ
+    Menu, Tray, Add, 重启 &R, RestartRunZ
+    Menu, Tray, Add, 退出 &X, ExitRunZ
 }
 
 Menu, Tray, Icon, %A_ScriptDir%\RunZ.ico
@@ -111,6 +111,7 @@ Gui, Add, Edit, % "y+15 ReadOnly -Wrap "
 Gui, Add, Edit, % "Hidden ReadOnly x15 y" 15 * 2 + g_Conf.Gui.EditHeight
         . (g_Conf.Gui.HideDisplayAreaVScroll ? " -VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
+        , 暂无结果
 
 if (g_Conf.Gui.ShowCurrentCommand)
 {
@@ -274,6 +275,18 @@ PrevPage:
     Send, {pgup}
 return
 
+ViewControlArea:
+    g_UseDisplay := false
+    GuiControl, Hide, %g_DisplayArea%
+    GuiControl, Show, %g_ControlArea%
+return
+
+ViewDisplayArea:
+    g_UseDisplay := true
+    GuiControl, Hide, %g_ControlArea%
+    GuiControl, Show, %g_DisplayArea%
+return
+
 ActivateWindow:
     Gui, Show, , % g_WindowName
     if (g_Conf.Config.SwitchToEngIME)
@@ -345,15 +358,19 @@ OpenContextMenu:
         {
             currentCommandText .= Chr(g_FirstChar + g_CurrentLine - 1)
         }
-        Menu, ContextMenu, Add, %currentCommandText%>  运行(&Z), RunCurrentCommand
+        Menu, ContextMenu, Add, %currentCommandText%>  运行 &Z, RunCurrentCommand
     }
 
-    Menu, ContextMenu, Add, 编辑配置(&E), EditConfig
-    Menu, ContextMenu, Add, 重载文件(&S), ReloadFiles
-    Menu, ContextMenu, Add, 显示历史(&H), DisplayHistoryCommands
-    Menu, ContextMenu, Add, 显示帮助(&A), Help
-    Menu, ContextMenu, Add, 重新启动(&R), RestartRunZ
-    Menu, ContextMenu, Add, 退出程序(&X), ExitRunZ
+    Menu, ContextMenu, Add, 命令视图 &C, ViewControlArea
+    Menu, ContextMenu, Add, 结果视图 &D, ViewDisplayArea
+    Menu, ContextMenu, Add
+    Menu, ContextMenu, Add, 编辑配置 &E, EditConfig
+    Menu, ContextMenu, Add, 重载文件 &S, ReloadFiles
+    Menu, ContextMenu, Add, 显示历史 &H , DisplayHistoryCommands
+    Menu, ContextMenu, Add
+    Menu, ContextMenu, Add, 显示帮助 &A, Help
+    Menu, ContextMenu, Add, 重新启动 &R, RestartRunZ
+    Menu, ContextMenu, Add, 退出程序 &X, ExitRunZ
     Menu, ContextMenu, Show
     Menu, ContextMenu, DeleteAll
 return

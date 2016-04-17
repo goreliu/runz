@@ -97,7 +97,14 @@ Dictionary:
 
     url := "http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&"
             . "type=data&doctype=json&version=1.2&q=" UrlEncode(word)
+
     jsonText := StrReplace(UrlDownloadToString(url), "-phonetic", "_phonetic")
+
+    if (jsonText == "no query")
+    {
+        DisplayResult("未查到结果")
+        return
+    }
 
     parsed := JSON.Load(jsonText)
 	result := parsed.query
