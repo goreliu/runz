@@ -42,8 +42,14 @@ SwitchToEngIME=1
 
 ; 图形界面相关参数
 [Gui]
+HideTitle=1
+; 隐藏标题栏
 ShowTrayIcon=1
 ; 是否显示托盘图标
+ShowCurrentCommand=1
+; 在下方详情框显示当前命令
+DisplayRows=15
+; 在列表中显示的行数
 FontName=宋体
 ; 字体名称
 FontSize=12
@@ -51,19 +57,19 @@ FontSize=12
 WidgetWidth=600
 ; 输入框和输出框宽度
 EditHeight=25
-; 输入框高度
+; 输入框和详情框高度
 DisplayAreaHeight=250
 ; 输出框高度
-HideDisplayAreaVScroll=1
-; 不显示纵向滚动条
-ShowCurrentCommand=1
-; 在下方显示当前命令
+HideDisplayAreaVScroll=0
+; 隐藏纵向滚动条
 FirstChar=a
 ; 列表第一行的首字母或数字
-DisplayRows=15
-; 在列表中显示的行数
-HideTitle=1
-; 隐藏标题栏
+BackgroundColor=f0f0f0
+; 背景色，包括边框、输出框和详情框颜色
+EditColor=f0f0f0
+; 输入框颜色
+; BorderSize=15
+; 边框宽度
 
 
 ; 这里的 command 优先显示，请在下边的 [Command] 后边添加

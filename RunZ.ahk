@@ -98,8 +98,10 @@ else
     GoSub, ReloadFiles
 }
 
+Gui, Color, % g_Conf.Gui.BackgroundColor, % g_Conf.Gui.EditColor
+
 Gui, Font, % "s" g_Conf.Gui.FontSize, % g_Conf.Gui.FontName
-Gui, Add, Edit, % "y+15 gProcessInputCommand "
+Gui, Add, Edit, % "x15 y15 gProcessInputCommand "
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 Gui, Add, Edit, y+0 w0 h0 ReadOnly,
 Gui, Add, Edit, % "y+15 ReadOnly -Wrap "
