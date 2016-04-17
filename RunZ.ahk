@@ -100,36 +100,40 @@ else
 
 Gui, Color, % g_Conf.Gui.BackgroundColor, % g_Conf.Gui.EditColor
 
+border := 10
+if (g_Conf.Gui.BorderSize >= 0)
+{
+    border := g_Conf.Gui.BorderSize
+}
+
 Gui, Font, % "s" g_Conf.Gui.FontSize, % g_Conf.Gui.FontName
-Gui, Add, Edit, % "x15 y15 gProcessInputCommand "
+Gui, Add, Edit, % "x" border " y" border " gProcessInputCommand "
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 Gui, Add, Edit, y+0 w0 h0 ReadOnly,
-Gui, Add, Edit, % "y+15 ReadOnly -Wrap "
+Gui, Add, Edit, % "y+" border " ReadOnly -Wrap "
         . (g_Conf.Gui.HideDisplayAreaVScroll ? " -VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
         , % SearchCommand("", true)
 
 ; 重叠的编辑框，用来显示换行的文本
-Gui, Add, Edit, % "Hidden ReadOnly x15 y" 15 * 2 + g_Conf.Gui.EditHeight
+Gui, Add, Edit, % "Hidden ReadOnly x" border " y" border * 2 + g_Conf.Gui.EditHeight
         . (g_Conf.Gui.HideDisplayAreaVScroll ? " -VScroll " : "")
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.DisplayAreaHeight
         , 暂无结果
 
 if (g_Conf.Gui.ShowCurrentCommand)
 {
-    Gui, Add, Edit, % "y+15 ReadOnly"
+    Gui, Add, Edit, % "y+" border " ReadOnly"
         . " w" g_Conf.Gui.WidgetWidth " h" g_Conf.Gui.EditHeight,
 }
-
-; 用来调整边框
-Gui, Add, Edit, y+5 w0 h0 ReadOnly Hidden,
 
 if (g_Conf.Gui.HideTitle)
 {
     Gui -Caption
 }
 
-Gui, Show, , % g_WindowName
+Gui, Show, % "w" border * 2 + g_Conf.Gui.WidgetWidth
+    . " h" border * 4 + g_Conf.Gui.EditHeight * 2 + g_Conf.Gui.DisplayAreaHeight, % g_WindowName
 
 if (g_Conf.Config.SwitchToEngIME)
 {

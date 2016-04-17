@@ -56,9 +56,9 @@ FontSize=12
 ; 字体大小
 WidgetWidth=600
 ; 输入框和输出框宽度
-EditHeight=25
+EditHeight=24
 ; 输入框和详情框高度
-DisplayAreaHeight=250
+DisplayAreaHeight=246
 ; 输出框高度
 HideDisplayAreaVScroll=0
 ; 隐藏纵向滚动条
@@ -68,7 +68,7 @@ BackgroundColor=f0f0f0
 ; 背景色，包括边框、输出框和详情框颜色
 EditColor=f0f0f0
 ; 输入框颜色
-; BorderSize=15
+BorderSize=10
 ; 边框宽度
 
 
