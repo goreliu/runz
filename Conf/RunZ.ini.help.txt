@@ -30,7 +30,7 @@ WindowAlwaysOnTop=0
 ; 窗口置顶显示
 SaveHistory=1
 ; 记录历史
-HistorySize=26
+HistorySize=15
 ; 记录历史的数量
 AutoRank=1
 ; 自动根据使用频率调节顺序，因为效率问题，结果不能实时体现，重启或 ctrl + r 后更新

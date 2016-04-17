@@ -1085,11 +1085,20 @@ DisplayResult(result)
 
 LoadHistoryCommands()
 {
+    historySize := g_Conf.Config.HistorySize
+
+    index := 0
     for key, value in g_AutoConf.History
     {
         if (StrLen(value) > 0)
         {
             g_HistoryCommands.Push(value)
+            index++
+
+            if (index == historySize)
+            {
+                return
+            }
         }
     }
 }
