@@ -15,7 +15,7 @@ Functions:
     @("SearchOnGoogle", "使用 Google（谷歌）搜索剪切板或输入内容", true)
     @("SearchOnBing", "使用 Bing（必应）搜索剪切板或输入内容", true)
     @("SearchOnTaobao", "使用 Taobao（淘宝）搜索剪切板或输入内容")
-    @("SearchOnJingdong", "使用 JD (京东）搜索剪切板或输入内容")
+    @("SearchOnJingdong", "使用 JD（京东）搜索剪切板或输入内容")
     @("EditConfig", "编辑配置文件")
     @("ClearClipboardFormat", "清除剪切板中文字的格式")
     @("RunClipboard", "使用 ahk 的 Run 运行剪切板内容")
