@@ -1373,18 +1373,18 @@ UpdateSendTo(create = true, overwrite = false)
         return
     }
 
-	fileContent := "var RunZCmdTool = '"
-	fileContent .= StrReplace(A_ScriptDir, "\", "\\") "\\RunZ.exe "
+    fileContent := "var RunZCmdTool = '"
+    fileContent .= StrReplace(A_ScriptDir, "\", "\\") "\\RunZ.exe "
             .  StrReplace(A_ScriptDir, "\", "\\") "\\Core\\RunZCmdTool.ahk'`n"
 
-	jsText =
+    jsText =
 (
 var ws = new ActiveXObject("WScript.Shell")
 
 var arg = ""
 for (var i = 0; i < WScript.Arguments.Count(); i++)
 {
-	arg += " \"" + WScript.Arguments(i) + "\" "
+    arg += " \"" + WScript.Arguments(i) + "\" "
 }
 
 ws.Run(RunZCmdTool + arg)
@@ -1439,7 +1439,6 @@ AlignText(text)
 {
     col3MaxLen := g_SkinConf.DisplayCol3MaxLength
     col4MaxLen := g_SkinConf.DisplayCol4MaxLength
-    hideCol4IfEmpty := g_SkinConf.HideCol4IfEmpty
 
     StrSpace := " "
     Loop, % col3MaxLen + col4MaxLen
@@ -1447,18 +1446,25 @@ AlignText(text)
 
     result =
 
-    /*
-    Loop, Parse, text, `n, `r
+    if (g_SkinConf.HideCol4IfEmpty)
     {
-        splitedLine := StrSplit(A_LoopField, " | ")
-        col3Len := StrLen(splitedLine[3])
-        col3RealLen := StrLen(RegExReplace(splitedLine[3], "[^\x00-\xff]","11"))
-        if (col3RealLen > col3MaxLen)
+        hasCol4 := false
+        Loop, Parse, text, `n, `r
         {
-            col3MaxLen := col3RealLen
+            if (StrSplit(A_LoopField, " | ")[4] != "")
+            {
+                hasCol4 := true
+                break
+            }
+        }
+
+        if (!hasCol4)
+        {
+            ; 加上中间的 " | "
+            col3MaxLen += col4MaxLen + 3
+            col4MaxLen := 0
         }
     }
-    */
 
     Loop, Parse, text, `n, `r
     {
@@ -1472,7 +1478,6 @@ AlignText(text)
 
         splitedLine := StrSplit(SubStr(A_LoopField, 10), " | ")
         col3RealLen := StrLen(RegExReplace(splitedLine[1], "[^\x00-\xff]", "`t`t"))
-        col4RealLen := StrLen(RegExReplace(splitedLine[2], "[^\x00-\xff]", "`t`t"))
 
         if (col3RealLen > col3MaxLen)
         {
@@ -1483,15 +1488,20 @@ AlignText(text)
             result .= splitedLine[1] . SubStr(StrSpace, 1, col3MaxLen - col3RealLen)
         }
 
-        result .= " | "
+        if (col4MaxLen > 0)
+        {
+            result .= " | "
 
-        if (col4RealLen > col4MaxLen)
-        {
-            result .= SubStrByByte(splitedLine[2], col4MaxLen)
-        }
-        else
-        {
-            result .= splitedLine[2]
+            col4RealLen := StrLen(RegExReplace(splitedLine[2], "[^\x00-\xff]", "`t`t"))
+
+            if (col4RealLen > col4MaxLen)
+            {
+                result .= SubStrByByte(splitedLine[2], col4MaxLen)
+            }
+            else
+            {
+                result .= splitedLine[2]
+            }
         }
 
         result .= "`r`n"
