@@ -42,6 +42,8 @@ else
     global g_SkinConf := g_Conf.Gui
 }
 
+UpdateSendTo(g_Conf.Config.CreateSendToLnk, false)
+
 ; 当前输入命令的参数，数组，为了方便没有添加 g_ 前缀
 global Arg
 ; 不能是 RunZ.ahk 的子串，否则按键绑定会有问题
@@ -1062,6 +1064,19 @@ LoadFiles(loadRank := true)
         }
     }
 
+    if (FileExist(A_ScriptDir "\Conf\UserFunctionsAuto.txt"))
+    {
+        userFunctionLabel := "UserFunctionsAuto"
+        if (IsLabel(userFunctionLabel))
+        {
+            GoSub, %userFunctionLabel%
+        }
+        else
+        {
+            MsgBox, 未在 %A_ScriptDir%\Conf\UserFunctionsAuto.txt 中发现 %userFunctionLabel% 标签，请修改！
+        }
+    }
+
     GoSub, Functions
 
     Loop, Read, %g_SearchFileList%
@@ -1355,6 +1370,48 @@ UrlEncode(url, enc = "UTF-8")
     return encoded
 }
 
+UpdateSendTo(create = true, overwrite = false)
+{
+    lnkFilePath := StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk"
+
+    if (!create)
+    {
+        FileDelete, %lnkFilePath%
+        return
+    }
+
+    if (!overwrite && FileExist(lnkFilePath))
+    {
+        return
+    }
+
+	fileContent := "var RunZCmdTool = '"
+	fileContent .= StrReplace(A_ScriptDir, "\", "\\") "\\RunZ.exe "
+            .  StrReplace(A_ScriptDir, "\", "\\") "\\Core\\RunZCmdTool.ahk'`n"
+
+	jsText =
+(
+var ws = new ActiveXObject("WScript.Shell")
+
+var arg = ""
+for (var i = 0; i < WScript.Arguments.Count(); i++)
+{
+	arg += " \"" + WScript.Arguments(i) + "\" "
+}
+
+ws.Run(RunZCmdTool + arg)
+)
+    fileContent .= jsText
+
+    FileDelete, % A_ScriptDir "\Core\SendToRunZ.js"
+    FileAppend, % fileContent, % A_ScriptDir "\Core\SendToRunZ.js", UTF-8-RAW
+    FileCreateShortcut, aaa, bbb.lnk
+    FileCreateShortcut, % A_ScriptDir "\Core\SendToRunZ.js", % A_ScriptDir "\Core\SendToRunZ.lnk"
+        , , , 发送到 RunZ, % A_ScriptDir "\RunZ.ico"
+    FileCopy, % A_ScriptDir "\Core\SendToRunZ.lnk"
+        , % StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk"
+}
+
 ; 0：英文 1：中文
 GetInputState(WinTitle = "A")
 {
@@ -1400,3 +1457,5 @@ SwitchToEngIME()
 #include %A_ScriptDir%\Core\ReservedFunctions.ahk
 ; 用户自定义命令
 #include *i %A_ScriptDir%\Conf\UserFunctions.ahk
+; 发送到菜单自动生成的命令
+#include *i %A_ScriptDir%\Conf\UserFunctionsAuto.txt

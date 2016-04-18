@@ -35,3 +35,8 @@ UserFunctions.ahk
 Doc
 RunZ.auto.ini
 Reserved
+SendToRunZ.js
+SendToRunZ.lnk
+*.jpg
+UserFunctionsAuto.txt
+UserFunctionsAuto.txt.bak

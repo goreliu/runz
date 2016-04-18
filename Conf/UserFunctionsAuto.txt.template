@@ -2,7 +2,7 @@
 
 global Arg
 
-UserFunctions:
+UserFunctionsAuto:
     ; 第一个参数为标签名
     ; 第二个为搜索项（内容随意）
     ; 第三个参数为 true 时，当搜索无结果也会显示，默认为 false
