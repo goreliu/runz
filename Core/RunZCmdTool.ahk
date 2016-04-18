@@ -27,17 +27,22 @@ Loop, %0%
         continue
     }
 
-    labelName := fileNameNoExt
+    labelName := SafeLabel(fileNameNoExt)
+    fileDir := SafeFilename(fileDir)
+    fileExt := SafeFilename(fileExt)
+    fileName := SafeFilename(fileName)
+
+    uniqueLabelName := labelName
 
     ; 如果和已有标签重名，添加时间
-    if (IsLabel(labelName) || allLabels.HasKey(labelName))
+    if (IsLabel(uniqueLabelName) || allLabels.HasKey(uniqueLabelName))
     {
-        labelName .= "_" A_Now "_" index
+        uniqueLabelName .= "_" A_Now "_" index
         index++
     }
 
-    AddFile(labelName, fileNameNoExt, fileDir "\" fileName, fileDir)
-    allLabels[labelName] := true
+    AddFile(uniqueLabelName, labelName, fileDir . "\" . fileName, fileDir)
+    allLabels[uniqueLabelName] := true
 }
 
 FileMove, %g_UserFunctionsAutoFileName%, %g_UserFunctionsAutoFileName%.bak, 1
@@ -59,6 +64,21 @@ AddFile(name, comment, path, dir)
         , "    `; -*-*-*-*-*-", "    `; -*-*-*-*-*-`r`n    " addFunctionsText)
     g_FileContent := StrReplace(g_FileContent
         , "`r`n`; -*-*-*-*-*-", "`r`n`; -*-*-*-*-*-`r`n" addLabelsText)
+}
+
+SafeLabel(label)
+{
+    StringReplace, label, label, ", _, All
+    return RegExReplace(label, "[ `%```t',]", "_")
+}
+
+SafeFilename(label)
+{
+    StringReplace, label, label, ", ``", All
+    StringReplace, label, label, ``, ````, All
+    StringReplace, label, label, `%, ```%, All
+    StringReplace, label, label, `,, ```,, All
+    return label
 }
 
 ; 伪 @ 函数，用于避免运行出错
