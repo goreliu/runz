@@ -164,6 +164,11 @@ if (g_Conf.Config.ExitIfInactivate)
     OnMessage(0x06, "WM_ACTIVATE")
 }
 
+if (g_Conf.Config.ChangeCommandOnMouseMove)
+{
+    OnMessage(0x0200, "WM_MOUSEMOVE")
+}
+
 Hotkey, IfWinActive, % g_WindowName
 ; 如果是 ~enter，有时候会响
 Hotkey, enter, RunCurrentCommand
@@ -1251,6 +1256,25 @@ RemoveToolTip:
     ToolTip
     SetTimer, RemoveToolTip, Off
 return
+
+
+WM_MOUSEMOVE(wParam, lParam)
+{
+    MouseGetPos, , mouseY, , classnn,
+    if (classnn != g_ControlArea)
+    {
+        return -1
+    }
+
+    ControlGetPos, , y, , h, %g_ControlArea%
+    lineHeight := h / g_DisplayRows
+    index := Ceil((mouseY - y) / lineHeight)
+
+    if (g_CurrentCommandList[index] != "")
+    {
+        ChangeCommand(index - 1, true)
+    }
+}
 
 WM_ACTIVATE(wParam, lParam)
 {
