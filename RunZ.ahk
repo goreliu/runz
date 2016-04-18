@@ -877,7 +877,7 @@ RunCommand(originCmd)
 
     if (g_Conf.Config.SaveHistory && cmd != "DisplayHistoryCommands")
     {
-        if (splitedOriginCmd.Length() == 2 && Arg != "")
+        if (splitedOriginCmd.Length() == 3 && Arg != "")
         {
             g_HistoryCommands.InsertAt(1, originCmd " | " Arg)
         }
@@ -909,10 +909,10 @@ IncreaseRank(cmd, show = false, inc := 1)
 {
     splitedCmd := StrSplit(cmd, " | ")
 
-    if (splitedCmd.Length() >= 3 && splitedCmd[1] == "function")
+    if (splitedCmd.Length() >= 4 && splitedCmd[1] == "function")
     {
         ; 去掉参数
-        cmd := splitedCmd[1]  " | " splitedCmd[2]
+        cmd := splitedCmd[1]  " | " splitedCmd[2] " | " splitedCmd[3]
     }
 
     cmdRank := g_AutoConf.GetValue("Rank", cmd)
