@@ -57,6 +57,12 @@ ShowCurrentCommand=1
 ; 在下方详情框显示当前命令
 DisplayRows=15
 ; 在列表中显示的行数，请不要在显示区域下方留空隙，否则鼠标定位会有偏差
+DisplayCol3MaxLength=25
+; 在列表中第三列的宽度
+DisplayCol4MaxLength=35
+; 在列表中第四列的宽度
+HideCol4IfEmpty=1
+; 当第四列内容为空时，隐藏第四列，展开第三列
 FontName=宋体
 ; 字体名称
 FontSize=12
@@ -69,8 +75,6 @@ EditHeight=24
 ; 输入框和详情框高度
 DisplayAreaHeight=246
 ; 输出框高度
-HideDisplayAreaVScroll=1
-; 隐藏纵向滚动条
 FirstChar=a
 ; 列表第一行的首字母或数字
 EditColor=d0d0d0
