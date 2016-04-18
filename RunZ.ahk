@@ -121,6 +121,7 @@ if (g_SkinConf.BorderSize >= 0)
 {
     border := g_SkinConf.BorderSize
 }
+windowHeight := border * 3 + g_SkinConf.EditHeight + g_SkinConf.DisplayAreaHeight
 
 Gui, Font, % "s" g_SkinConf.FontSize, % g_SkinConf.FontName
 Gui, Add, Edit, % "x" border " y" border " gProcessInputCommand "
@@ -141,6 +142,7 @@ if (g_SkinConf.ShowCurrentCommand)
 {
     Gui, Add, Edit, % "y+" border " ReadOnly"
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.EditHeight,
+    windowHeight += border + g_SkinConf.EditHeight
 }
 
 if (g_SkinConf.HideTitle)
@@ -148,8 +150,7 @@ if (g_SkinConf.HideTitle)
     Gui -Caption
 }
 
-Gui, Show, % "w" border * 2 + g_SkinConf.WidgetWidth
-    . " h" border * 4 + g_SkinConf.EditHeight * 2 + g_SkinConf.DisplayAreaHeight, % g_WindowName
+Gui, Show, % "w" border * 2 + g_SkinConf.WidgetWidth " h" windowHeight, % g_WindowName
 
 if (g_Conf.Config.SwitchToEngIME)
 {

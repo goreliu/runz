@@ -1,4 +1,6 @@
 ﻿[Config]
+CreateSendToLnk=0
+; 是否创建“发送到”菜单，1 创建，0 删除
 SearchFileDir=A_ProgramsCommon | A_StartMenu
 ; 搜索的目录，可以使用 全路径 或 ahk 以 A_ 开头的变量，必须以 " | " 分隔
 SearchFileType=*.lnk | *.exe
@@ -38,6 +40,8 @@ ClickToRun=1
 ; 是否单击执行鼠标处命令，0 则只定位到该处
 SwitchToEngIME=1
 ; 每次激活窗口自动切换到英文输入法
+ChangeCommandOnMouseMove=0
+; 当鼠标移动时，定位到鼠标所在命令，会消耗一些 CPU，并且造成文字闪烁
 
 
 ; 图形界面相关参数
