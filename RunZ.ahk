@@ -123,7 +123,7 @@ if (g_SkinConf.BorderSize >= 0)
 }
 windowHeight := border * 3 + g_SkinConf.EditHeight + g_SkinConf.DisplayAreaHeight
 
-Gui, Font, % "s" g_SkinConf.FontSize, % g_SkinConf.FontName
+Gui, Font, % "C" g_SkinConf.FontColor " S" g_SkinConf.FontSize, % g_SkinConf.FontName
 Gui, Add, Edit, % "x" border " y" border " gProcessInputCommand "
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.EditHeight,
 Gui, Add, Edit, y+0 w0 h0 ReadOnly,
