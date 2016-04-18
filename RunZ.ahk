@@ -635,7 +635,8 @@ SearchCommand(command = "", firstRun = false)
 
         g_CurrentCommandList := Object()
         g_CurrentCommandList.Push(g_CurrentCommand)
-        result .= Chr(g_FirstChar) ">| " . g_CurrentCommand
+        splitedCmd := StrSplit(g_CurrentCommand, " | ")
+        result .= Chr(g_FirstChar) ">| " splitedCmd[1] " | " splitedCmd[2] " = " splitedCmd[3]
         DisplaySearchResult(result)
         return result
     }
@@ -669,12 +670,11 @@ SearchCommand(command = "", firstRun = false)
 
             ; 只搜索和展示不带扩展名的文件名
             elementToSearch := fileNameNoExt
-            elementToShow := "file | " . fileNameNoExt
+            elementToShow := "file | " . fileNameNoExt " = " splitedElement[3]
 
             if (splitedElement.Length() >= 3)
             {
                 elementToSearch .= " " . splitedElement[3]
-                elementToShow .= "（" . splitedElement[3] . "）"
             }
 
             if (g_Conf.Config.SearchFullPath)
@@ -685,11 +685,12 @@ SearchCommand(command = "", firstRun = false)
         }
         else
         {
-            elementToShow := element
+            elementToShow := splitedElement[1] " | " splitedElement[2]
             elementToSearch := splitedElement[2]
 
             if (splitedElement.Length() >= 3)
             {
+                elementToShow .= " = " splitedElement[3]
                 elementToSearch .= " " . splitedElement[3]
             }
         }
@@ -732,14 +733,17 @@ SearchCommand(command = "", firstRun = false)
 
         for index, element in g_FallbackCommands
         {
+            splitedCmd := StrSplit(element, " | ")
             if (index == 1)
             {
-                result .= Chr(g_FirstChar - 1 + index++) . ">| " . element
+                result .= Chr(g_FirstChar - 1 + index++) . ">| "
+                    . splitedCmd[1] " | " splitedCmd[2] " = " splitedCmd[3]
             }
             else
             {
                 result .= "`r`n"
-                result .= Chr(g_FirstChar - 1 + index++) . " | " . element
+                result .= Chr(g_FirstChar - 1 + index++) . " | "
+                    . splitedCmd[1] " | " splitedCmd[2] " = " splitedCmd[3]
             }
         }
     }
@@ -834,7 +838,7 @@ RunCommand(originCmd)
 
     splitedOriginCmd := StrSplit(originCmd, " | ")
     ; 去掉括号内的注释
-    cmd := StrSplit(splitedOriginCmd[2], "（")[1]
+    cmd := splitedOriginCmd[2]
 
     if (splitedOriginCmd[1] == "file")
     {
@@ -1044,7 +1048,7 @@ LoadFiles(loadRank := true)
     {
         if (value != "")
         {
-            g_Commands.Push(key . "（" . value "）")
+            g_Commands.Push(key . " | " . value)
         }
         else
         {
@@ -1097,6 +1101,7 @@ LoadFiles(loadRank := true)
 ; 用来显示控制界面
 DisplayControlText(text)
 {
+    text := StrReplace(AlignText(text), "  = ", " | ")
     GuiControl, Show, %g_ControlArea%
     GuiControl, Hide, %g_DisplayArea%
     ControlSetText, %g_ControlArea%, %text%, %g_WindowName%
@@ -1171,10 +1176,10 @@ return
         return
     }
 
-    g_Commands.Push("function | " . label . "（" . info . "）")
+    g_Commands.Push("function | " . label . " | " . info )
     if (fallback)
     {
-        g_FallbackCommands.Push("function | " . label . "（" . info . "）")
+        g_FallbackCommands.Push("function | " . label . " | " . info)
     }
 
     if (key != "")
@@ -1417,43 +1422,44 @@ ws.Run(RunZCmdTool + arg)
 
 ; 修改自 妖(aamii@qq.com) 的 INI 等号对其工具，感谢作者
 ; limitMax:   左侧超过该长度时，该行不参与对齐
-AlignText(text, limitMax = 30)
+AlignText(Sel, limitMax = 100)
 {
-    MaxLen:=0
-    StrSpace:=" "
-    Loop,% LimitMax+1
-        StrSpace .=" "
+    MaxLen := 0
+    StrSpace := " "
+    Loop, % LimitMax + 1
+        StrSpace .= " "
     Aligned:=
     loop, parse, Sel, `n,`r                   ;首先求得左边最长的长度，以便向它看齐
     {
-        IfNotInString,A_loopfield,=              ;本行没有等号，过
+        IfNotInString, A_loopfield, =         ;本行没有等号，过
             Continue
-        ItemLeft :=RegExReplace(A_LoopField,"\s*(.*?)\s*=.*$","$1")        ;本条目的 等号 左侧部分
-        ThisLen:=StrLen(regexreplace(ItemLeft,"[^\x00-\xff]","11"))       ;本条左侧的长度
-        MaxLen:=( ThisLen > MaxLen And ThisLen <= LimitMax) ? ThisLen : MaxLen       ;得到小于LimitMax内的最大的长度，这个是最终长度
+        ItemLeft :=RegExReplace(A_LoopField,"\s*(.*?)\s*=.*$","$1")             ;本条目的 等号 左侧部分
+        ThisLen := StrLen(regexreplace(ItemLeft, "[^\x00-\xff]","11"))          ;本条左侧的长度
+        MaxLen := (ThisLen > MaxLen And ThisLen <= LimitMax) ? ThisLen : MaxLen ;得到小于LimitMax内的最大的长度，这个是最终长度
     }
+
     loop, parse, Sel, `n,`r
     {
-        IfNotInString,A_loopfield,=
+        IfNotInString, A_loopfield, =
         {
             Aligned .= A_loopfield "`r`n"
             Continue
         }
-        ItemLeft:=trim(RegExReplace(A_LoopField,"\s*=.*?$") )        ;本条目的 等号 左侧部分
-        Itemright:=trim(RegExReplace(A_LoopField,"^.*?=")  )          ;本条目的 等号 右侧部分
-        ThisLen:=StrLen(regexreplace(ItemLeft,"[^\x00-\xff]","11"))   ;本条左侧的长度
-        if ( ThisLen> MaxLen )       ;如果本条左侧大于最大长度，注意是最大长度，而不是LimitMax，则不参与对齐
+        ItemLeft := trim(RegExReplace(A_LoopField, "\s*=.*?$"))          ;本条目的 等号 左侧部分
+        Itemright := trim(RegExReplace(A_LoopField,"^.*?="))             ;本条目的 等号 右侧部分
+        ThisLen := StrLen(regexreplace(ItemLeft, "[^\x00-\xff]", "11"))  ;本条左侧的长度
+        if (ThisLen > MaxLen)       ;如果本条左侧大于最大长度，注意是最大长度，而不是LimitMax，则不参与对齐
         {
             Aligned .= ItemLeft  "= " Itemright "`r`n"
             Continue
         }
         Else
         {
-            Aligned .= ItemLeft . SubStr( StrSpace, 1, MaxLen+2-ThisLen ) "= " Itemright "`r`n"        ;该处给右侧等号后添加了一个空格，根据需求可删
+            ;该处给右侧等号后添加了一个空格，根据需求可删
+            Aligned .= ItemLeft . SubStr(StrSpace, 1, MaxLen+2-ThisLen ) "= " Itemright "`r`n"
         }
     }
-    return RegExReplace(Aligned,"\s*$","")   ;顺便删除最后的空白行，可根据需求注释掉
-    clipboard := Aligned
+    return Aligned
 }
 
 ; 0：英文 1：中文
