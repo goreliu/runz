@@ -3,6 +3,8 @@
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
+; 如果该文件报错，说明 UserFunctionsAuto.txt 文件里有重复标签，需要手动修改或删除
+
 global g_UserFunctionsAutoFileName := A_ScriptDir "\..\Conf\UserFunctionsAuto.txt"
 global g_FileContent
 
@@ -58,3 +60,11 @@ AddFile(name, comment, path, dir)
     g_FileContent := StrReplace(g_FileContent
         , "`r`n`; -*-*-*-*-*-", "`r`n`; -*-*-*-*-*-`r`n" addLabelsText)
 }
+
+; 伪 @ 函数，用于避免运行出错
+@(a = "", b = "", c = "", d = "", e = "", f = "")
+{
+}
+
+; 用于判断是否有重复标签
+#include *i %A_ScriptDir%\..\Conf\UserFunctionsAuto.txt
