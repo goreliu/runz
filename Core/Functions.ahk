@@ -40,13 +40,7 @@ return
 
 Help:
     helpText := "帮助：`n`n"
-        . "Shift + F1 显示置顶的按键提示`n`n"
         . KeyHelpText()
-        . "可直接输入网址，如 www.baidu.com`n"
-        . "分号开头则使用 ahk 的 Run 运行命令，如 `;ping www.bidu.com`n"
-        . "冒号开头则在 cmd 运行命令，如 :ping www.baidu.com`n"
-        . "当搜索无结果时，回车 也等同 run 输入内容`n"
-        . "当输入内容包含空格时，列表锁定，逗号作为命令参数的分隔符`n`n`n"
         . "内置功能列表：`n`n"
         . GetAllFunctions()
 

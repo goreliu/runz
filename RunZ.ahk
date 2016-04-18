@@ -126,7 +126,7 @@ Gui, Font, % "C" g_SkinConf.FontColor " S" g_SkinConf.FontSize, % g_SkinConf.Fon
 Gui, Add, Edit, % "x" border " y" border " gProcessInputCommand "
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.EditHeight,
 Gui, Add, Edit, y+0 w0 h0 ReadOnly,
-Gui, Add, Edit, % "y+" border " ReadOnly "
+Gui, Add, Edit, % "y+" border " -VScroll ReadOnly "
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.DisplayAreaHeight
         , % AlignText(SearchCommand("", true))
 
@@ -363,9 +363,9 @@ OpenContextMenu:
             currentCommandText .= Chr(g_FirstChar + g_CurrentLine - 1)
         }
         Menu, ContextMenu, Add, %currentCommandText%>  运行 &Z, RunCurrentCommand
+        Menu, ContextMenu, Add
     }
 
-    Menu, ContextMenu, Add
     Menu, ContextMenu, Add, 编辑配置 &E, EditConfig
     Menu, ContextMenu, Add, 重载文件 &S, ReloadFiles
     Menu, ContextMenu, Add, 显示历史 &H , DisplayHistoryCommands
@@ -1207,13 +1207,13 @@ GetAllFunctions()
     {
         if (InStr(element, "function | ") == 1 and !InStr(result, element "`n"))
         {
-            result .= element "`n"
+            result .= " * | " element "`n"
         }
     }
 
     result := StrReplace(result, "function | ", "功能 | ")
 
-    return result
+    return AlignText(result)
 }
 
 OpenCurrentFileDir:
@@ -1291,28 +1291,37 @@ return
 
 KeyHelpText()
 {
-    return ""
-    . "Win + j 显示窗口`n"
-    . "键入内容 搜索，回车 执行，Alt + 字母 执行，Esc 退出`n"
-    . "按 Tab 后再按 字母或数字 也可执行字母对应功能`n"
-    . "按 Tab 后 Shift + 字母或数字 定位到对应功能`n"
-    . "Ctrl + j 移动到下一条命令`n"
-    . "Ctrl + k 移动到上一条命令`n"
-    . "Ctrl + f 翻到下一页`n"
-    . "Ctrl + b 翻到上一页`n"
-    . "Win  + j 激活窗口`n"
-    . "Ctrl + h 显示历史记录`n"
-    . "Ctrl + n 可增加当前功能的权重`n"
-    . "Ctrl + p 可减少当前功能的权重`n"
-    . "Ctrl + l 清除编辑框内容`n"
-    . "Ctrl + r 重新创建待搜索文件列表`n"
-    . "Ctrl + q 重启`n"
-    . "Ctrl + d 用 TC 打开第一个文件所在目录`n"
-    . "Ctrl + s 显示并复制当前文件的完整路径`n"
-    . "Ctrl + x 删除当前文件`n"
-    . "Ctrl + i 移动光标当行首`n"
-    . "Ctrl + o 移动光标当行尾`n"
-    . "F2       编辑配置文件`n`n"
+    return AlignText(""
+    . "* | 按键 | Shift + F1 | 显示置顶的按键提示`n"
+    . "* | 按键 | Alt + F4   | 退出置顶的按键提示`n"
+    . "* | 按键 | 回车       | 执行当前命令`n"
+    . "* | 按键 | Esc        | 关闭窗口`n"
+    . "* | 按键 | Alt +      | 加每列行首字符执行`n"
+    . "* | 按键 | Tab +      | 再按每列行首字符执行`n"
+    . "* | 按键 | Tab +      | 再按 Shift + 行首字符 定位`n"
+    . "* | 按键 | Win  + j   | 显示或隐藏窗口`n"
+    . "* | 按键 | Ctrl + j   | 移动到下一条命令`n"
+    . "* | 按键 | Ctrl + k   | 移动到上一条命令`n"
+    . "* | 按键 | Ctrl + f   | 在输出结果中翻到下一页`n"
+    . "* | 按键 | Ctrl + b   | 在输出结果中翻到上一页`n"
+    . "* | 按键 | Ctrl + h   | 显示历史记录`n"
+    . "* | 按键 | Ctrl + n   | 可增加当前功能的权重`n"
+    . "* | 按键 | Ctrl + p   | 可减少当前功能的权重`n"
+    . "* | 按键 | Ctrl + l   | 清除编辑框内容`n"
+    . "* | 按键 | Ctrl + r   | 重新创建待搜索文件列表`n"
+    . "* | 按键 | Ctrl + q   | 重启`n"
+    . "* | 按键 | Ctrl + d   | 用 TC 打开第一个文件所在目录`n"
+    . "* | 按键 | Ctrl + s   | 显示并复制当前文件的完整路径`n"
+    . "* | 按键 | Ctrl + x   | 删除当前文件`n"
+    . "* | 按键 | Ctrl + i   | 移动光标当行首`n"
+    . "* | 按键 | Ctrl + o   | 移动光标当行尾`n"
+    . "* | 按键 | F2         | 编辑配置文件`n"
+    . "* | 功能 | 输入网址   | 可直接输入 www 或 http 开头的网址`n"
+    . "* | 功能 | `;         | 以分号开头命令，用 ahk 运行`n"
+    . "* | 功能 | :          | 以冒号开头的命令，用 cmd 运行`n"
+    . "* | 功能 | 无结果     | 搜索无结果，回车用 ahk 运行`n"
+    . "* | 功能 | 空格       | 输入空格后，搜索内容锁定`n"
+    . "")
 }
 
 UrlDownloadToString(url)
@@ -1426,7 +1435,7 @@ AlignText(text)
     hideCol4IfEmpty := g_SkinConf.HideCol4IfEmpty
 
     StrSpace := " "
-    Loop, % col3MaxLen + col4MaxLen + 1
+    Loop, % col3MaxLen + col4MaxLen
         StrSpace .= " "
 
     result =
