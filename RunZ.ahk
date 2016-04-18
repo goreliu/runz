@@ -1100,6 +1100,7 @@ DisplayControlText(text)
     GuiControl, Show, %g_ControlArea%
     GuiControl, Hide, %g_DisplayArea%
     ControlSetText, %g_ControlArea%, %text%, %g_WindowName%
+    text := ""
 }
 
 ; 用来显示命令结果
@@ -1110,6 +1111,8 @@ DisplayResult(result)
     textToDisplay := StrReplace(result, "`n", "`r`n")
     ControlSetText, %g_DisplayArea%, %textToDisplay%, %g_WindowName%
     g_UseDisplay := true
+    result := ""
+    textToDisplay := ""
 }
 
 LoadHistoryCommands()
