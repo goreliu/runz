@@ -126,8 +126,7 @@ Gui, Font, % "C" g_SkinConf.FontColor " S" g_SkinConf.FontSize, % g_SkinConf.Fon
 Gui, Add, Edit, % "x" border " y" border " gProcessInputCommand "
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.EditHeight,
 Gui, Add, Edit, y+0 w0 h0 ReadOnly,
-Gui, Add, Edit, % "y+" border " ReadOnly -Wrap "
-        . (g_SkinConf.HideDisplayAreaVScroll ? " -VScroll " : "")
+Gui, Add, Edit, % "y+" border " ReadOnly "
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.DisplayAreaHeight
         , % AlignText(SearchCommand("", true))
 
@@ -271,12 +270,22 @@ EndKey:
 return
 
 NextPage:
+    if (!g_UseDisplay)
+    {
+        return
+    }
+
     ControlFocus, %g_DisplayArea%
 
     Send, {pgdn}
 return
 
 PrevPage:
+    if (!g_UseDisplay)
+    {
+        return
+    }
+
     ControlFocus, %g_DisplayArea%
 
     Send, {pgup}
