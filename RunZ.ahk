@@ -130,7 +130,7 @@ Gui, Add, Edit, y+0 w0 h0 ReadOnly,
 Gui, Add, Edit, % "y+" border " ReadOnly -Wrap "
         . (g_SkinConf.HideDisplayAreaVScroll ? " -VScroll " : "")
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.DisplayAreaHeight
-        , % SearchCommand("", true)
+        , % AlignText(SearchCommand("", true))
 
 ; 重叠的编辑框，用来显示换行的文本
 Gui, Add, Edit, % "Hidden ReadOnly x" border " y" border * 2 + g_SkinConf.EditHeight
@@ -635,8 +635,7 @@ SearchCommand(command = "", firstRun = false)
 
         g_CurrentCommandList := Object()
         g_CurrentCommandList.Push(g_CurrentCommand)
-        splitedCmd := StrSplit(g_CurrentCommand, " | ")
-        result .= Chr(g_FirstChar) ">| " splitedCmd[1] " | " splitedCmd[2] " = " splitedCmd[3]
+        result .= Chr(g_FirstChar) ">| " g_CurrentCommand
         DisplaySearchResult(result)
         return result
     }
@@ -670,7 +669,7 @@ SearchCommand(command = "", firstRun = false)
 
             ; 只搜索和展示不带扩展名的文件名
             elementToSearch := fileNameNoExt
-            elementToShow := "file | " . fileNameNoExt " = " splitedElement[3]
+            elementToShow := "file | " . fileNameNoExt " | " splitedElement[3]
 
             if (splitedElement.Length() >= 3)
             {
@@ -690,7 +689,7 @@ SearchCommand(command = "", firstRun = false)
 
             if (splitedElement.Length() >= 3)
             {
-                elementToShow .= " = " splitedElement[3]
+                elementToShow .= " | " splitedElement[3]
                 elementToSearch .= " " . splitedElement[3]
             }
         }
@@ -733,17 +732,14 @@ SearchCommand(command = "", firstRun = false)
 
         for index, element in g_FallbackCommands
         {
-            splitedCmd := StrSplit(element, " | ")
             if (index == 1)
             {
-                result .= Chr(g_FirstChar - 1 + index++) . ">| "
-                    . splitedCmd[1] " | " splitedCmd[2] " = " splitedCmd[3]
+                result .= Chr(g_FirstChar - 1 + index++) . ">| " element
             }
             else
             {
                 result .= "`r`n"
-                result .= Chr(g_FirstChar - 1 + index++) . " | "
-                    . splitedCmd[1] " | " splitedCmd[2] " = " splitedCmd[3]
+                result .= Chr(g_FirstChar - 1 + index++) . " | " element
             }
         }
     }
@@ -1101,7 +1097,7 @@ LoadFiles(loadRank := true)
 ; 用来显示控制界面
 DisplayControlText(text)
 {
-    text := StrReplace(AlignText(text), "  = ", " | ")
+    text := AlignText(text)
     GuiControl, Show, %g_ControlArea%
     GuiControl, Hide, %g_DisplayArea%
     ControlSetText, %g_ControlArea%, %text%, %g_WindowName%
@@ -1420,50 +1416,83 @@ ws.Run(RunZCmdTool + arg)
         , % StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk"
 }
 
-; 修改自 妖(aamii@qq.com) 的 INI 等号对其工具，感谢作者
-; commandWidth: 第三列的命令宽度，超过则截断
+; commandWidth: 第三列命令宽度，超过则截断
 ; commentWidth: 第四列注释宽度，超过则截断
-AlignText(Sel, commandWidth = 20, commentWidth = 20)
+AlignText(text, col3MaxLen = 25, col4MaxLen = 20)
 {
-    LimitMax := 11 + commandWidth
-
-    MaxLen := 0
     StrSpace := " "
-    Loop, % LimitMax + 1
+    Loop, % col3MaxLen + 1
         StrSpace .= " "
-    Aligned:=
-    loop, parse, Sel, `n,`r                   ;首先求得左边最长的长度，以便向它看齐
-    {
-        IfNotInString, A_loopfield, =         ;本行没有等号，过
-            Continue
-        ItemLeft :=RegExReplace(A_LoopField,"\s*(.*?)\s*=.*$","$1")             ;本条目的 等号 左侧部分
-        ThisLen := StrLen(regexreplace(ItemLeft, "[^\x00-\xff]","11"))          ;本条左侧的长度
-        MaxLen := (ThisLen > MaxLen And ThisLen <= LimitMax) ? ThisLen : MaxLen ;得到小于LimitMax内的最大的长度，这个是最终长度
-    }
 
-    loop, parse, Sel, `n,`r
+    result =
+
+    /*
+    Loop, Parse, text, `n, `r
     {
-        IfNotInString, A_loopfield, =
+        splitedLine := StrSplit(A_LoopField, " | ")
+        col3Len := StrLen(splitedLine[3])
+        col3RealLen := StrLen(RegExReplace(splitedLine[3], "[^\x00-\xff]","11"))
+        if (col3RealLen > col3MaxLen)
         {
-            Aligned .= A_loopfield "`r`n"
-            Continue
-        }
-        ItemLeft := trim(RegExReplace(A_LoopField, "\s*=.*?$"))          ;本条目的 等号 左侧部分
-        Itemright := trim(RegExReplace(A_LoopField,"^.*?="))             ;本条目的 等号 右侧部分
-        ThisLen := StrLen(regexreplace(ItemLeft, "[^\x00-\xff]", "11"))  ;本条左侧的长度
-        if (ThisLen > MaxLen)       ;如果本条左侧大于最大长度，注意是最大长度，而不是LimitMax，则不参与对齐
-        {
-            Aligned .= SubStr(ItemLeft, 1, MaxLen - 2)  "  = " Itemright "`r`n"
-            Continue
-        }
-        Else
-        {
-            ;该处给右侧等号后添加了一个空格，根据需求可删
-            Aligned .= ItemLeft . SubStr(StrSpace, 1, MaxLen + 2 - ThisLen ) "= " Itemright "`r`n"
+            col3MaxLen := col3RealLen
         }
     }
+    */
 
-    return Aligned
+    Loop, Parse, text, `n, `r
+    {
+        if (!InStr(A_LoopField, " | "))
+        {
+            result .= A_LoopField "`r`n"
+            continue
+        }
+
+        splitedLine := StrSplit(SubStr(A_LoopField, 9), " | ")
+        col3CalcStr := RegExReplace(splitedLine[1], "[^\x00-\xff]", "`t`t")
+        col3RealLen := StrLen(col3CalcStr)
+
+        result .= SubStr(A_LoopField, 1, 9)
+
+        if (col3RealLen > col3MaxLen)
+        {
+            len := 0
+            realLen := 0
+            Loop, Parse, col3CalcStr
+            {
+                if (A_LoopField != "`t")
+                {
+                    len++
+                    realLen++
+                }
+                else
+                {
+                    len += 0.5
+                    realLen++
+                }
+
+                if (realLen == col3MaxLen)
+                {
+                    break
+                }
+            }
+
+            result .= SubStr(splitedLine[1], 1, round(len - 0.5))
+
+            ; 删掉一个汉字，补一个空格
+            if (round(len - 0.5) != round(len))
+                result .= " "
+
+            result .= " | " splitedLine[2] "`r`n"
+        }
+        else
+        {
+            col3Len := StrLen(splitedLine[1])
+            result .= splitedLine[1] . SubStr(StrSpace, 1, col3MaxLen - col3RealLen)
+            result .= " | " splitedLine[2] "`r`n"
+        }
+    }
+
+    return result
 }
 
 ; 0：英文 1：中文
