@@ -77,9 +77,8 @@ global g_CurrentLine
 ; 使用备用的命令
 global g_UseFallbackCommands
 global g_InputArea := "Edit1"
-global g_ControlArea := "Edit3"
-global g_DisplayArea := "Edit4"
-global g_CommandArea := "Edit5"
+global g_DisplayArea := "Edit3"
+global g_CommandArea := "Edit4"
 
 if (g_SkinConf.ShowTrayIcon)
 {
@@ -131,12 +130,6 @@ Gui, Add, Edit, % "y+" border " ReadOnly -Wrap "
         . (g_SkinConf.HideDisplayAreaVScroll ? " -VScroll " : "")
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.DisplayAreaHeight
         , % AlignText(SearchCommand("", true))
-
-; 重叠的编辑框，用来显示换行的文本
-Gui, Add, Edit, % "Hidden ReadOnly x" border " y" border * 2 + g_SkinConf.EditHeight
-        . (g_SkinConf.HideDisplayAreaVScroll ? " -VScroll " : "")
-        . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.DisplayAreaHeight
-        , 暂无结果
 
 if (g_SkinConf.ShowCurrentCommand)
 {
@@ -278,41 +271,15 @@ EndKey:
 return
 
 NextPage:
-    if (g_UseDisplay)
-    {
-        ControlFocus, %g_DisplayArea%
-    }
-    else
-    {
-        ControlFocus, %g_ControlArea%
-    }
+    ControlFocus, %g_DisplayArea%
 
     Send, {pgdn}
 return
 
 PrevPage:
-    if (g_UseDisplay)
-    {
-        ControlFocus, %g_DisplayArea%
-    }
-    else
-    {
-        ControlFocus, %g_ControlArea%
-    }
+    ControlFocus, %g_DisplayArea%
 
     Send, {pgup}
-return
-
-ViewControlArea:
-    g_UseDisplay := false
-    GuiControl, Show, %g_ControlArea%
-    GuiControl, Hide, %g_DisplayArea%
-return
-
-ViewDisplayArea:
-    g_UseDisplay := true
-    GuiControl, Show, %g_DisplayArea%
-    GuiControl, Hide, %g_ControlArea%
 return
 
 ActivateWindow:
@@ -337,12 +304,12 @@ return
 getMouseCurrentLine()
 {
     MouseGetPos, , mouseY, , classnn,
-    if (classnn != g_ControlArea)
+    if (classnn != g_DisplayArea)
     {
         return -1
     }
 
-    ControlGetPos, , y, , h, %g_ControlArea%
+    ControlGetPos, , y, , h, %g_DisplayArea%
     lineHeight := h / g_DisplayRows
     index := Ceil((mouseY - y) / lineHeight)
     return index
@@ -389,8 +356,6 @@ OpenContextMenu:
         Menu, ContextMenu, Add, %currentCommandText%>  运行 &Z, RunCurrentCommand
     }
 
-    Menu, ContextMenu, Add, 命令视图 &C, ViewControlArea
-    Menu, ContextMenu, Add, 结果视图 &D, ViewDisplayArea
     Menu, ContextMenu, Add
     Menu, ContextMenu, Add, 编辑配置 &E, EditConfig
     Menu, ContextMenu, Add, 重载文件 &S, ReloadFiles
@@ -503,7 +468,7 @@ ChangeCommand(step, resetCurrentLine = false)
         }
     }
 
-    ControlGetText, result, %g_ControlArea%
+    ControlGetText, result, %g_DisplayArea%
     result := StrReplace(result, ">| ", " | ")
     if (currentChar == Chr(g_FirstChar))
     {
@@ -1097,18 +1062,12 @@ LoadFiles(loadRank := true)
 ; 用来显示控制界面
 DisplayControlText(text)
 {
-    text := AlignText(text)
-    GuiControl, Show, %g_ControlArea%
-    GuiControl, Hide, %g_DisplayArea%
-    ControlSetText, %g_ControlArea%, %text%, %g_WindowName%
-    text := ""
+    ControlSetText, %g_DisplayArea%, % AlignText(text), %g_WindowName%
 }
 
 ; 用来显示命令结果
 DisplayResult(result)
 {
-    GuiControl, Show, %g_DisplayArea%
-    GuiControl, Hide, %g_ControlArea%
     textToDisplay := StrReplace(result, "`n", "`r`n")
     ControlSetText, %g_DisplayArea%, %textToDisplay%, %g_WindowName%
     g_UseDisplay := true
@@ -1280,12 +1239,12 @@ return
 WM_MOUSEMOVE(wParam, lParam)
 {
     MouseGetPos, , mouseY, , classnn,
-    if (classnn != g_ControlArea)
+    if (classnn != g_DisplayArea)
     {
         return -1
     }
 
-    ControlGetPos, , y, , h, %g_ControlArea%
+    ControlGetPos, , y, , h, %g_DisplayArea%
     lineHeight := h / g_DisplayRows
     index := Ceil((mouseY - y) / lineHeight)
 
