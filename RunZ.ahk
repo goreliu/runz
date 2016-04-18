@@ -837,7 +837,6 @@ RunCommand(originCmd)
     g_DisableAutoExit := true
 
     splitedOriginCmd := StrSplit(originCmd, " | ")
-    ; 去掉括号内的注释
     cmd := splitedOriginCmd[2]
 
     if (splitedOriginCmd[1] == "file")
@@ -860,9 +859,10 @@ RunCommand(originCmd)
     }
     else if (splitedOriginCmd[1] == "function")
     {
-        if (splitedOriginCmd.Length() >= 3)
+        ; 第四个参数是参数
+        if (splitedOriginCmd.Length() >= 4)
         {
-            Arg := splitedOriginCmd[3]
+            Arg := splitedOriginCmd[4]
         }
 
         if (IsLabel(cmd))
@@ -1421,9 +1421,12 @@ ws.Run(RunZCmdTool + arg)
 }
 
 ; 修改自 妖(aamii@qq.com) 的 INI 等号对其工具，感谢作者
-; limitMax:   左侧超过该长度时，该行不参与对齐
-AlignText(Sel, limitMax = 100)
+; commandWidth: 第三列的命令宽度，超过则截断
+; commentWidth: 第四列注释宽度，超过则截断
+AlignText(Sel, commandWidth = 20, commentWidth = 20)
 {
+    LimitMax := 11 + commandWidth
+
     MaxLen := 0
     StrSpace := " "
     Loop, % LimitMax + 1
@@ -1450,15 +1453,16 @@ AlignText(Sel, limitMax = 100)
         ThisLen := StrLen(regexreplace(ItemLeft, "[^\x00-\xff]", "11"))  ;本条左侧的长度
         if (ThisLen > MaxLen)       ;如果本条左侧大于最大长度，注意是最大长度，而不是LimitMax，则不参与对齐
         {
-            Aligned .= ItemLeft  "= " Itemright "`r`n"
+            Aligned .= SubStr(ItemLeft, 1, MaxLen - 2)  "  = " Itemright "`r`n"
             Continue
         }
         Else
         {
             ;该处给右侧等号后添加了一个空格，根据需求可删
-            Aligned .= ItemLeft . SubStr(StrSpace, 1, MaxLen+2-ThisLen ) "= " Itemright "`r`n"
+            Aligned .= ItemLeft . SubStr(StrSpace, 1, MaxLen + 2 - ThisLen ) "= " Itemright "`r`n"
         }
     }
+
     return Aligned
 }
 
