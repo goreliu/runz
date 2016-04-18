@@ -1447,10 +1447,9 @@ AlignText(text)
 
     if (g_SkinConf.HideCol4IfEmpty)
     {
-        hasCol4 := false
         Loop, Parse, text, `n, `r
         {
-            if (StrSplit(A_LoopField, " | ")[4] != "")
+            if (StrSplit(SubStr(A_LoopField, 10), " | ")[2] != "")
             {
                 hasCol4 := true
                 break
