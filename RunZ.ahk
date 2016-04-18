@@ -27,7 +27,8 @@ if (FileExist(g_AutoConfFile ".EasyIni.bak"))
 }
 else if (!FileExist(g_AutoConfFile))
 {
-    FileAppend, % "; 此文件由 RunZ 自动写入，如需手动修改请先关闭 RunZ ！`n`n[Auto]`n[Rank]`n[History]" , % g_AutoConfFile
+    FileAppend, % "; 此文件由 RunZ 自动写入，如需手动修改请先关闭 RunZ ！`n`n"
+        . "[Auto]`n[Rank]`n[History]" , % g_AutoConfFile
 }
 
 global g_Conf := class_EasyINI(g_ConfFile)
@@ -391,6 +392,7 @@ TabFunction:
 return
 
 EscFunction:
+    ToolTip
     ; 如果是后台运行模式，只关闭窗口，不退出程序
     if (g_Conf.Config.RunInBackground)
     {
@@ -1114,13 +1116,18 @@ DisplayHistoryCommands:
     {
         if (index == 1)
         {
-            result .= Chr(g_FirstChar + index - 1) . ">| " . element "`n"
+            result .= Chr(g_FirstChar + index - 1) . ">| "
             g_CurrentCommand := element
         }
         else
         {
-            result .= Chr(g_FirstChar + index - 1) . " | " . element "`n"
+            result .= Chr(g_FirstChar + index - 1) . " | "
         }
+
+        splitedElement := StrSplit(element, " | ")
+
+        result .= splitedElement[1] " | " splitedElement[2]
+            . " | " splitedElement[3] " #参数： " splitedElement[4] "`n"
 
         g_CurrentCommandList.Push(element)
     }
