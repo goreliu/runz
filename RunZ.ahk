@@ -511,7 +511,7 @@ ChangeCommand(step, resetCurrentLine = false)
     }
     else
     {
-        result := StrReplace(result, "`n" currentChar " | ", "`n" currentChar ">| ")
+        result := StrReplace(result, "`r`n" currentChar " | ", "`r`n" currentChar ">| ")
     }
 
     DisplaySearchResult(result)
@@ -706,7 +706,7 @@ SearchCommand(command = "", firstRun = false)
             }
             else
             {
-                result .= "`r`n" Chr(order++) . " | " . elementToShow
+                result .= "`n" Chr(order++) . " | " . elementToShow
             }
 
             if (order - g_FirstChar >= g_DisplayRows)
@@ -716,8 +716,8 @@ SearchCommand(command = "", firstRun = false)
             ; 第一次运行只加载 function 类型
             if (firstRun && (order - g_FirstChar >= g_DisplayRows - 4))
             {
-                result .= "`r`n`r`n现有 " g_Commands.Length() " 条命令。"
-                result .= "`r`n`r`n键入内容 搜索，回车 执行当前命令，Alt + 字母 执行，F1 帮助，Esc 退出。"
+                result .= "`n`n现有 " g_Commands.Length() " 条命令。"
+                result .= "`n`n键入内容 搜索，回车 执行当前命令，Alt + 字母 执行，F1 帮助，Esc 退出。"
 
                 break
             }
@@ -738,7 +738,7 @@ SearchCommand(command = "", firstRun = false)
             }
             else
             {
-                result .= "`r`n"
+                result .= "`n"
                 result .= Chr(g_FirstChar - 1 + index++) . " | " element
             }
         }
@@ -1146,12 +1146,12 @@ DisplayHistoryCommands:
     {
         if (index == 1)
         {
-            result .= Chr(g_FirstChar + index - 1) . ">| " . element "`r`n"
+            result .= Chr(g_FirstChar + index - 1) . ">| " . element "`n"
             g_CurrentCommand := element
         }
         else
         {
-            result .= Chr(g_FirstChar + index - 1) . " | " . element "`r`n"
+            result .= Chr(g_FirstChar + index - 1) . " | " . element "`n"
         }
 
         g_CurrentCommandList.Push(element)
@@ -1416,10 +1416,12 @@ ws.Run(RunZCmdTool + arg)
         , % StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk"
 }
 
-; commandWidth: 第三列命令宽度，超过则截断
-; commentWidth: 第四列注释宽度，超过则截断
-AlignText(text, col3MaxLen = 25, col4MaxLen = 20)
+AlignText(text)
 {
+    col3MaxLen := g_SkinConf.DisplayCol3MaxLength
+    col4MaxLen := g_SkinConf.DisplayCol4MaxLength
+    hideCol4IfEmpty := g_SkinConf.HideCol4IfEmpty
+
     StrSpace := " "
     Loop, % col3MaxLen + 1
         StrSpace .= " "
@@ -1447,7 +1449,7 @@ AlignText(text, col3MaxLen = 25, col4MaxLen = 20)
             continue
         }
 
-        splitedLine := StrSplit(SubStr(A_LoopField, 9), " | ")
+        splitedLine := StrSplit(SubStr(A_LoopField, 10), " | ")
         col3CalcStr := RegExReplace(splitedLine[1], "[^\x00-\xff]", "`t`t")
         col3RealLen := StrLen(col3CalcStr)
 
