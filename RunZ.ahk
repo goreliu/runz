@@ -706,7 +706,7 @@ SearchCommand(command = "", firstRun = false)
             }
             else
             {
-                result .= "`n" Chr(order++) . " | " . elementToShow
+                result .= "`r`n" Chr(order++) . " | " . elementToShow
             }
 
             if (order - g_FirstChar >= g_DisplayRows)
@@ -716,8 +716,8 @@ SearchCommand(command = "", firstRun = false)
             ; 第一次运行只加载 function 类型
             if (firstRun && (order - g_FirstChar >= g_DisplayRows - 4))
             {
-                result .= "`n`n现有 " g_Commands.Length() " 条命令。"
-                result .= "`n`n键入内容 搜索，回车 执行当前命令，Alt + 字母 执行，F1 帮助，Esc 退出。"
+                result .= "`r`n`r`n现有 " g_Commands.Length() " 条命令。"
+                result .= "`r`n`r`n键入内容 搜索，回车 执行当前命令，Alt + 字母 执行，F1 帮助，Esc 退出。"
 
                 break
             }
@@ -738,7 +738,7 @@ SearchCommand(command = "", firstRun = false)
             }
             else
             {
-                result .= "`n"
+                result .= "`r`n"
                 result .= Chr(g_FirstChar - 1 + index++) . " | " . element
             }
         }
@@ -1099,8 +1099,7 @@ DisplayControlText(text)
 {
     GuiControl, Show, %g_ControlArea%
     GuiControl, Hide, %g_DisplayArea%
-    textToDisplay := StrReplace(text, "`n", "`r`n")
-    ControlSetText, %g_ControlArea%, %textToDisplay%, %g_WindowName%
+    ControlSetText, %g_ControlArea%, %text%, %g_WindowName%
 }
 
 ; 用来显示命令结果
@@ -1143,12 +1142,12 @@ DisplayHistoryCommands:
     {
         if (index == 1)
         {
-            result .= Chr(g_FirstChar + index - 1) . ">| " . element "`n"
+            result .= Chr(g_FirstChar + index - 1) . ">| " . element "`r`n"
             g_CurrentCommand := element
         }
         else
         {
-            result .= Chr(g_FirstChar + index - 1) . " | " . element "`n"
+            result .= Chr(g_FirstChar + index - 1) . " | " . element "`r`n"
         }
 
         g_CurrentCommandList.Push(element)
