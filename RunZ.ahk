@@ -1368,7 +1368,7 @@ UrlEncode(url, enc = "UTF-8")
     Loop % StrPut(url, &buff, enc) - 1
     {
         byte := NumGet(buff, A_Index-1, "UChar")
-        encoded .= byte > 127 or byte < 33 ? "%" Substr(byte, 3) : Chr(byte)
+        encoded .= byte > 127 or byte < 33 ? "%" SubStr(byte, 3) : Chr(byte)
     }
     SetFormat, IntegerFast, %formatInteger%
     return encoded
@@ -1416,6 +1416,41 @@ ws.Run(RunZCmdTool + arg)
         , % StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk"
 }
 
+; 根据字节取子字符串，如果多删了一个字节，补一个空格
+SubStrByByte(text, length)
+{
+    textForCalc := RegExReplace(text, "[^\x00-\xff]", "`t`t")
+    textLength := 0
+    realRealLength := 0
+
+    Loop, Parse, textForCalc
+    {
+        if (A_LoopField != "`t")
+        {
+            textLength++
+            textRealLength++
+        }
+        else
+        {
+            textLength += 0.5
+            textRealLength++
+        }
+
+        if (textRealLength >= length)
+        {
+            break
+        }
+    }
+
+    result := SubStr(text, 1, round(textLength - 0.5))
+
+    ; 删掉一个汉字，补一个空格
+    if (round(textLength - 0.5) != round(textLength))
+        result .= " "
+
+    return result
+}
+
 AlignText(text)
 {
     col3MaxLen := g_SkinConf.DisplayCol3MaxLength
@@ -1423,7 +1458,7 @@ AlignText(text)
     hideCol4IfEmpty := g_SkinConf.HideCol4IfEmpty
 
     StrSpace := " "
-    Loop, % col3MaxLen + 1
+    Loop, % col3MaxLen + col4MaxLen + 1
         StrSpace .= " "
 
     result =
@@ -1449,49 +1484,33 @@ AlignText(text)
             continue
         }
 
-        splitedLine := StrSplit(SubStr(A_LoopField, 10), " | ")
-        col3CalcStr := RegExReplace(splitedLine[1], "[^\x00-\xff]", "`t`t")
-        col3RealLen := StrLen(col3CalcStr)
-
         result .= SubStr(A_LoopField, 1, 9)
+
+        splitedLine := StrSplit(SubStr(A_LoopField, 10), " | ")
+        col3RealLen := StrLen(RegExReplace(splitedLine[1], "[^\x00-\xff]", "`t`t"))
+        col4RealLen := StrLen(RegExReplace(splitedLine[2], "[^\x00-\xff]", "`t`t"))
 
         if (col3RealLen > col3MaxLen)
         {
-            len := 0
-            realLen := 0
-            Loop, Parse, col3CalcStr
-            {
-                if (A_LoopField != "`t")
-                {
-                    len++
-                    realLen++
-                }
-                else
-                {
-                    len += 0.5
-                    realLen++
-                }
-
-                if (realLen == col3MaxLen)
-                {
-                    break
-                }
-            }
-
-            result .= SubStr(splitedLine[1], 1, round(len - 0.5))
-
-            ; 删掉一个汉字，补一个空格
-            if (round(len - 0.5) != round(len))
-                result .= " "
-
-            result .= " | " splitedLine[2] "`r`n"
+            result .= SubStrByByte(splitedLine[1], col3MaxLen)
         }
         else
         {
-            col3Len := StrLen(splitedLine[1])
             result .= splitedLine[1] . SubStr(StrSpace, 1, col3MaxLen - col3RealLen)
-            result .= " | " splitedLine[2] "`r`n"
         }
+
+        result .= " | "
+
+        if (col4RealLen > col4MaxLen)
+        {
+            result .= SubStrByByte(splitedLine[2], col4MaxLen)
+        }
+        else
+        {
+            result .= splitedLine[2]
+        }
+
+        result .= "`r`n"
     }
 
     return result
