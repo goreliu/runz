@@ -302,14 +302,14 @@ return
 
 ViewControlArea:
     g_UseDisplay := false
-    GuiControl, Hide, %g_DisplayArea%
     GuiControl, Show, %g_ControlArea%
+    GuiControl, Hide, %g_DisplayArea%
 return
 
 ViewDisplayArea:
     g_UseDisplay := true
-    GuiControl, Hide, %g_ControlArea%
     GuiControl, Show, %g_DisplayArea%
+    GuiControl, Hide, %g_ControlArea%
 return
 
 ActivateWindow:
@@ -1081,8 +1081,8 @@ LoadFiles(loadRank := true)
 ; 用来显示控制界面
 DisplayControlText(text)
 {
-    GuiControl, Hide, %g_DisplayArea%
     GuiControl, Show, %g_ControlArea%
+    GuiControl, Hide, %g_DisplayArea%
     textToDisplay := StrReplace(text, "`n", "`r`n")
     ControlSetText, %g_ControlArea%, %textToDisplay%, %g_WindowName%
 }
@@ -1090,8 +1090,8 @@ DisplayControlText(text)
 ; 用来显示命令结果
 DisplayResult(result)
 {
-    GuiControl, Hide, %g_ControlArea%
     GuiControl, Show, %g_DisplayArea%
+    GuiControl, Hide, %g_ControlArea%
     textToDisplay := StrReplace(result, "`n", "`r`n")
     ControlSetText, %g_DisplayArea%, %textToDisplay%, %g_WindowName%
     g_UseDisplay := true
