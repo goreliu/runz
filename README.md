@@ -1,1 +1,5 @@
-﻿类似 ALTRun 的快速启动工具，详细信息请查看 [Wiki 页面](https://github.com/goreliu/runz/wiki) 。
+类似 ALTRun 的快速启动工具，详细信息请查看 [Wiki 页面](https://github.com/goreliu/runz/wiki) 。
+
+
+
+![主界面](https://cloud.githubusercontent.com/assets/169704/14623171/41e4fe54-0602-11e6-8a9e-986d5f178b29.png)
