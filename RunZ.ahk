@@ -1214,7 +1214,7 @@ GetAllFunctions()
     {
         if (InStr(element, "function | ") == 1 and !InStr(result, element "`n"))
         {
-            result .= " * | " element "`n"
+            result .= "* | " element "`n"
         }
     }
 
@@ -1327,8 +1327,7 @@ KeyHelpText()
     . "* | 功能 | `;         | 以分号开头命令，用 ahk 运行`n"
     . "* | 功能 | :          | 以冒号开头的命令，用 cmd 运行`n"
     . "* | 功能 | 无结果     | 搜索无结果，回车用 ahk 运行`n"
-    . "* | 功能 | 空格       | 输入空格后，搜索内容锁定`n"
-    . "")
+    . "* | 功能 | 空格       | 输入空格后，搜索内容锁定")
 }
 
 UrlDownloadToString(url)

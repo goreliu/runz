@@ -39,12 +39,7 @@ Functions:
 return
 
 Help:
-    helpText := "帮助：`n`n"
-        . KeyHelpText()
-        . "内置功能列表：`n`n"
-        . GetAllFunctions()
-
-    DisplayResult(helpText)
+    DisplayResult(KeyHelpText() . GetAllFunctions())
 return
 
 KeyHelp:
