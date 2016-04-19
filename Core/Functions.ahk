@@ -6,7 +6,7 @@ Functions:
     @("AhkRun", "使用 Ahk 的 Run 运行 `; cmd", true)
     @("CmdRun", "使用 cmd 运行 : cmd", true)
     @("WinRRun", "使用 win + r 运行", true)
-    @("Dictionary", "有道在线词典翻译", true)
+    @("Dictionary", "有道词典在线翻译", true)
     @("RunAndDisplay", "使用 cmd 运行，并显示结果", true)
     @("ReloadFiles", "重新加载需要搜索的文件")
     @("Clip", "显示剪切板内容")
