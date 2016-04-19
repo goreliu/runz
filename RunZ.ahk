@@ -104,7 +104,7 @@ if (FileExist(g_SearchFileList))
 }
 else
 {
-    GoSub, ReloadFiles
+    GoSub, ReindexFiles
 }
 
 Gui, Color, % g_SkinConf.BackgroundColor, % g_SkinConf.EditColor
@@ -179,7 +179,7 @@ Hotkey, ^l, ClearInput
 Hotkey, ^d, OpenCurrentFileDir
 Hotkey, ^x, DeleteCurrentFile
 Hotkey, ^s, ShowCurrentFile
-Hotkey, ^r, ReloadFiles
+Hotkey, ^r, ReindexFiles
 Hotkey, ^h, DisplayHistoryCommands
 Hotkey, ^n, IncreaseRank
 Hotkey, ^p, DecreaseRank
@@ -370,7 +370,7 @@ OpenContextMenu:
     }
 
     Menu, ContextMenu, Add, 编辑配置 &E, EditConfig
-    Menu, ContextMenu, Add, 重载文件 &S, ReloadFiles
+    Menu, ContextMenu, Add, 重建索引 &S, ReindexFiles
     Menu, ContextMenu, Add, 显示历史 &H, DisplayHistoryCommands
     Menu, ContextMenu, Add, 更新路径 &C, ChangePath
     Menu, ContextMenu, Add
@@ -581,7 +581,7 @@ GenerateSearchFileList()
     }
 }
 
-ReloadFiles:
+ReindexFiles:
     GenerateSearchFileList()
 
     LoadFiles()
@@ -1254,7 +1254,7 @@ DeleteCurrentFile:
     }
 
     FileRecycle, % filePath
-    GoSub, ReloadFiles
+    GoSub, ReindexFiles
 return
 
 ShowCurrentFile:
