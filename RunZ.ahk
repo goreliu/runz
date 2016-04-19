@@ -1181,9 +1181,9 @@ RunAndGetOutput(command)
     return result
 }
 
-RunWithCmd(command)
+RunWithCmd(command, onlyCmd = false)
 {
-    if (FileExist("c:\msys64\usr\bin\mintty.exe"))
+    if (!onlyCmd && FileExist("c:\msys64\usr\bin\mintty.exe"))
     {
         Run, % "mintty -e sh -c '" command "; read'"
     }
