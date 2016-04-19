@@ -154,7 +154,6 @@ return
 
 T2S:
     text := Arg == "" ? clipboard : Arg
-    msgbox % text
     clipboard := ""
     clipboard := Kanji_t2s(text)
     ClipWait
