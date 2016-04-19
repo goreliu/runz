@@ -2,4 +2,4 @@
 
 
 
-![主界面](https://cloud.githubusercontent.com/assets/169704/14623171/41e4fe54-0602-11e6-8a9e-986d5f178b29.png)
+![主界面](https://cloud.githubusercontent.com/assets/169704/14623749/7e94913e-0607-11e6-9e4e-3e8303e5b6ba.png)
