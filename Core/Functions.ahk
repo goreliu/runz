@@ -103,52 +103,52 @@ Dictionary:
     }
 
     parsed := JSON.Load(jsonText)
-	result := parsed.query
+    result := parsed.query
 
-	if (parsed.basic.uk_phonetic != "" && parsed.basic.us_phonetic != "")
-	{
-		result .= " UK: [" parsed.basic.uk_phonetic "], US: [" parsed.basic.us_phonetic "]`n"
-	}
-	else if (parsed.basic.phonetic != "")
-	{
-		result .= " [" parsed.basic.phonetic "]`n"
-	}
+    if (parsed.basic.uk_phonetic != "" && parsed.basic.us_phonetic != "")
+    {
+        result .= " UK: [" parsed.basic.uk_phonetic "], US: [" parsed.basic.us_phonetic "]`n"
+    }
+    else if (parsed.basic.phonetic != "")
+    {
+        result .= " [" parsed.basic.phonetic "]`n"
+    }
     else
     {
         result .= "`n"
     }
 
-	if (parsed.basic.explains.Length() > 0)
-	{
-		result .= "`n"
-		for index, explain in parsed.basic.explains
-		{
-			result .= "    * " explain "`n"
-		}
-	}
+    if (parsed.basic.explains.Length() > 0)
+    {
+        result .= "`n"
+        for index, explain in parsed.basic.explains
+        {
+            result .= "    * " explain "`n"
+        }
+    }
 
-	if (parsed.web.Length() > 0)
-	{
-		result .= "`n----`n"
+    if (parsed.web.Length() > 0)
+    {
+        result .= "`n----`n"
 
-		for i, element in parsed.web
-		{
-			result .= "`n    * " element.key
-			for j, value in element.value
-			{
-				if (j == 1)
-				{
-					result .= "`n       "
-				}
-				else
-				{
-					result .= "`; "
-				}
+        for i, element in parsed.web
+        {
+            result .= "`n    * " element.key
+            for j, value in element.value
+            {
+                if (j == 1)
+                {
+                    result .= "`n       "
+                }
+                else
+                {
+                    result .= "`; "
+                }
 
-				result .= value
-			}
-		}
-	}
+                result .= value
+            }
+        }
+    }
 
     DisplayResult(result)
     clipboard := result
@@ -230,36 +230,59 @@ WinRRun:
 return
 
 Logoff:
-    Shutdown, 0
+    MsgBox, 4, , 将要注销，是否执行？
+    {
+        Shutdown, 0
+    }
 return
 
 ShutdownMachine:
-    Shutdown, 1
+    MsgBox, 4, , 将要关机，是否执行？
+    IfMsgBox Yes
+    {
+        Shutdown, 1
+    }
 return
 
 RestartMachine:
-    Shutdown, 2
+    MsgBox, 4, , 将要重启机器，是否执行？
+    IfMsgBox Yes
+    {
+        Shutdown, 2
+    }
 return
 
 HibernateMachine:
-    ; 参数 #1: 使用 1 代替 0 来进行休眠而不是挂起。
-	; 参数 #2: 使用 1 代替 0 来立即挂起而不询问每个应用程序以获得许可。
-	; 参数 #3: 使用 1 而不是 0 来禁止所有的唤醒事件。
-    DllCall("PowrProf\SetSuspendState", "int", 1, "int", 0, "int", 0)
+    MsgBox, 4, , 将要休眠，是否执行？
+    IfMsgBox Yes
+    {
+        ; 参数 #1: 使用 1 代替 0 来进行休眠而不是挂起。
+        ; 参数 #2: 使用 1 代替 0 来立即挂起而不询问每个应用程序以获得许可。
+        ; 参数 #3: 使用 1 而不是 0 来禁止所有的唤醒事件。
+        DllCall("PowrProf\SetSuspendState", "int", 1, "int", 0, "int", 0)
+    }
 return
 
 SuspendMachine:
-    DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+    MsgBox, 4, , 将要待机，是否执行？
+    IfMsgBox Yes
+    {
+        DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+    }
 return
 
 TurnMonitorOff:
-	; 关闭显示器:
-	SendMessage, 0x112, 0xF170, 2,, Program Manager
-	; 0x112 is WM_SYSCOMMAND, 0xF170 is SC_MONITORPOWER.
-	; 对上面命令的注释: 使用 -1 代替 2 来打开显示器.
-	; 使用 1 代替 2 来激活显示器的节能模式.
+    ; 关闭显示器:
+    SendMessage, 0x112, 0xF170, 2,, Program Manager
+    ; 0x112 is WM_SYSCOMMAND, 0xF170 is SC_MONITORPOWER.
+    ; 对上面命令的注释: 使用 -1 代替 2 来打开显示器.
+    ; 使用 1 代替 2 来激活显示器的节能模式.
 return
 
 EmptyRecycle:
-    FileRecycleEmpty,
+    MsgBox, 4, , 将要清空回收站，是否执行？
+    IfMsgBox Yes
+    {
+        FileRecycleEmpty,
+    }
 return
