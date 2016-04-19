@@ -43,8 +43,6 @@ else
     global g_SkinConf := g_Conf.Gui
 }
 
-UpdateSendTo(g_Conf.Config.CreateSendToLnk, false)
-
 ; 当前输入命令的参数，数组，为了方便没有添加 g_ 前缀
 global Arg
 ; 不能是 RunZ.ahk 的子串，否则按键绑定会有问题
@@ -247,6 +245,9 @@ if (g_Conf.Config.SaveHistory)
     g_HistoryCommands := Object()
     LoadHistoryCommands()
 }
+
+UpdateSendTo(g_Conf.Config.CreateSendToLnk, false)
+UpdateStartupLnk(g_Conf.Config.CreateStartupLnk, false)
 
 return
 
@@ -1398,11 +1399,27 @@ ws.Run(RunZCmdTool + arg)
 
     FileDelete, % A_ScriptDir "\Core\SendToRunZ.js"
     FileAppend, % fileContent, % A_ScriptDir "\Core\SendToRunZ.js", UTF-8-RAW
-    FileCreateShortcut, aaa, bbb.lnk
     FileCreateShortcut, % A_ScriptDir "\Core\SendToRunZ.js", % A_ScriptDir "\Core\SendToRunZ.lnk"
         , , , 发送到 RunZ, % A_ScriptDir "\RunZ.ico"
     FileCopy, % A_ScriptDir "\Core\SendToRunZ.lnk"
         , % StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk"
+}
+
+UpdateStartupLnk(create = true, overwrite = false)
+{
+    lnkFilePath := A_Startup "\RunZ.lnk"
+
+    if (!create)
+    {
+        FileDelete, %lnkFilePath%
+        return
+    }
+
+    if (!FileExist(lnkFilePath) || overwrite)
+    {
+        FileCreateShortcut, % A_ScriptDir "\RunZ.exe", %lnkFilePath%
+            , , , RunZ, % A_ScriptDir "\RunZ.ico"
+    }
 }
 
 ; 根据字节取子字符串，如果多删了一个字节，补一个空格

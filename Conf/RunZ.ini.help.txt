@@ -1,7 +1,9 @@
 ﻿[Config]
-CreateSendToLnk=0
+CreateSendToLnk=1
 ; 是否创建“发送到”菜单，1 创建，0 删除
-SearchFileDir=A_ProgramsCommon | A_StartMenu
+CreateStartupLnk=0
+; 是否开机自启动
+SearchFileDir=A_ProgramsCommon | A_StartMenu | c:\mine\app\0link
 ; 搜索的目录，可以使用 全路径 或 ahk 以 A_ 开头的变量，必须以 " | " 分隔
 SearchFileType=*.lnk | *.exe
 ; 搜索的文件类型，必须以 " | " 分隔
@@ -47,7 +49,7 @@ ChangeCommandOnMouseMove=0
 ; 图形界面相关参数
 ; 如果指定皮肤名，[Gui] 其他部分配置失效
 [Gui]
-; Skin=New
+;Skin=New
 ; 指定皮肤名，如果为空则使用此 [Gui] 中的配置
 HideTitle=1
 ; 隐藏标题栏
@@ -81,7 +83,7 @@ EditColor=f0f0f0
 ; 输入框颜色
 BackgroundColor=f0f0f0
 ; 背景色，包括边框、输出框和详情框颜色
-BackgroundPicture=Background3.jpg
+BackgroundPicture=Background1.jpg
 ; 背景图片，需要放在 Conf\Skins 目录内，背景图片只能在边框部分显示
 ; 如果使用图片后有闪屏现象， 先将图片大小调整为解决窗口大小，提高加载速度
 ; 如果闪屏依然明显，请将图片上文本框的位置挖空填充为和文本背景相似的颜色，或者修改成 png 的透明色
