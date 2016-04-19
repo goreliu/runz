@@ -20,13 +20,14 @@ Functions:
     @("ClearClipboardFormat", "清除剪切板中文字的格式")
     @("RunClipboard", "使用 ahk 的 Run 运行剪切板内容")
     @("EmptyRecycle", "清空回收站")
-    @("LogOff", "注销 登出")
+    @("Logoff", "注销 登出")
     @("RestartMachine", "重启")
     @("ShutdownMachine", "关机")
     @("SuspendMachine", "挂起 睡眠 待机")
     @("HibernateMachine", "休眠")
     @("TurnMonitorOff", "关闭显示器")
     @("T2S", "将剪切板中的内容繁体转简体")
+    @("S2T", "将剪切板中的内容简体转繁体")
     @("ShowIp", "显示 IP")
     @("Calendar", "用浏览器打开万年历")
     @("CleanupRank", "清理命令权重中的无效命令")
@@ -157,6 +158,12 @@ T2S:
     Send, ^v
 return
 
+S2T:
+    Run, notepad
+    clipboard := Kanji_s2t(clipboard)
+    Send, ^v
+return
+
 ClearClipboardFormat:
     clipboard := clipboard
 return
@@ -212,7 +219,7 @@ WinRRun:
     Send, {enter}
 return
 
-LogOff:
+Logoff:
     Shutdown, 0
 return
 
