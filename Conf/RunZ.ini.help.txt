@@ -27,7 +27,7 @@ TCPath=c:\totalcmd\totalcmd.exe
 RunInBackground=1
 ; 在后台运行
 RunIfOnlyOne=0
-; 如果结果中只有一个则直接运行，注意避免搜到关机、重启等操作
+; 如果结果中只有一个则直接运行
 LoadControlPanelFunctions=1
 ; 加载控制面板中的功能
 ExitIfInactivate=0
