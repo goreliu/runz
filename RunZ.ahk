@@ -371,7 +371,8 @@ OpenContextMenu:
 
     Menu, ContextMenu, Add, 编辑配置 &E, EditConfig
     Menu, ContextMenu, Add, 重载文件 &S, ReloadFiles
-    Menu, ContextMenu, Add, 显示历史 &H , DisplayHistoryCommands
+    Menu, ContextMenu, Add, 显示历史 &H, DisplayHistoryCommands
+    Menu, ContextMenu, Add, 更新路径 &C, ChangePath
     Menu, ContextMenu, Add
     Menu, ContextMenu, Add, 显示帮助 &A, Help
     Menu, ContextMenu, Add, 重新启动 &R, RestartRunZ
@@ -1403,7 +1404,7 @@ ws.Run(RunZCmdTool + arg)
     FileCreateShortcut, % A_ScriptDir "\Core\SendToRunZ.js", % A_ScriptDir "\Core\SendToRunZ.lnk"
         , , , 发送到 RunZ, % A_ScriptDir "\RunZ.ico"
     FileCopy, % A_ScriptDir "\Core\SendToRunZ.lnk"
-        , % StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk"
+        , % StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk", 1
 }
 
 UpdateStartupLnk(create = true, overwrite = false)
@@ -1422,6 +1423,11 @@ UpdateStartupLnk(create = true, overwrite = false)
             , , , RunZ, % A_ScriptDir "\RunZ.ico"
     }
 }
+
+ChangePath:
+    UpdateSendTo(g_Conf.Config.CreateSendToLnk, true)
+    UpdateStartupLnk(g_Conf.Config.CreateStartupLnk, true)
+return
 
 ; 根据字节取子字符串，如果多删了一个字节，补一个空格
 SubStrByByte(text, length)
