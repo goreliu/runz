@@ -16,4 +16,4 @@
 
 #### 截图
 
-![主界面](https://cloud.githubusercontent.com/assets/169704/14623749/7e94913e-0607-11e6-9e4e-3e8303e5b6ba.png)
+![主界面](https://raw.githubusercontent.com/wiki/goreliu/runz/Images/main.png)
