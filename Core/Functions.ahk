@@ -26,8 +26,8 @@ Functions:
     @("SuspendMachine", "挂起 睡眠 待机")
     @("HibernateMachine", "休眠")
     @("TurnMonitorOff", "关闭显示器")
-    @("T2S", "将剪切板中的内容繁体转简体")
-    @("S2T", "将剪切板中的内容简体转繁体")
+    @("T2S", "将剪切板或输入内容中的繁体转成简体")
+    @("S2T", "将剪切板或输入内容中的简体转成繁体")
     @("ShowIp", "显示 IP")
     @("Calendar", "用浏览器打开万年历")
     @("CleanupRank", "清理命令权重中的无效命令")
@@ -153,15 +153,20 @@ Calendar:
 return
 
 T2S:
-    Run, notepad
-    clipboard := Kanji_t2s(clipboard)
-    Send, ^v
+    text := Arg == "" ? clipboard : Arg
+    msgbox % text
+    clipboard := ""
+    clipboard := Kanji_t2s(text)
+    ClipWait
+    DisplayResult(clipboard)
 return
 
 S2T:
-    Run, notepad
-    clipboard := Kanji_s2t(clipboard)
-    Send, ^v
+    text := Arg == "" ? clipboard : Arg
+    clipboard := ""
+    clipboard := Kanji_s2t(text)
+    ClipWait
+    DisplayResult(clipboard)
 return
 
 ClearClipboardFormat:
