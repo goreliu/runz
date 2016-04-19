@@ -42,7 +42,7 @@ AutoRank=1
 ; 自动根据使用频率调节顺序，因为效率问题，结果不能实时体现，重启或 ctrl + r 后更新
 ClickToRun=1
 ; 是否单击执行鼠标处命令，0 则只定位到该处
-SwitchToEngIME=1
+SwitchToEngIME=0
 ; 每次激活窗口自动切换到英文输入法
 ChangeCommandOnMouseMove=0
 ; 当鼠标移动时，定位到鼠标所在命令，会消耗一些 CPU，并且造成文字闪烁
