@@ -768,6 +768,7 @@ return
 ParseArg:
     commandPrefix := SubStr(g_CurrentInput, 1, 1)
 
+    ; 分号或者冒号的情况，直接取命令为参数
     if (commandPrefix == ";" || commandPrefix == ":")
     {
         Arg := SubStr(g_CurrentInput, 2)
@@ -785,9 +786,13 @@ ParseArg:
     {
         Arg := SubStr(g_CurrentInput, InStr(g_CurrentInput, " ") + 1)
     }
-    else
+    else if (g_UseFallbackCommands)
     {
         Arg := g_CurrentInput
+    }
+    else
+    {
+        Arg := ""
     }
 return
 
