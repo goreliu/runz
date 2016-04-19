@@ -611,7 +611,8 @@ SearchCommand(command = "", firstRun = false)
 
         g_CurrentCommandList := Object()
         g_CurrentCommandList.Push(g_CurrentCommand)
-        result .= Chr(g_FirstChar) ">| " g_CurrentCommand
+        result .= Chr(g_FirstChar) ">| "
+            . StrReplace(g_CurrentCommand, "function | ", "功能 | ")
         DisplaySearchResult(result)
         return result
     }
