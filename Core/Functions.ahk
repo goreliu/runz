@@ -3,8 +3,8 @@
 Functions:
     @("Help", "帮助信息")
     @("KeyHelp", "置顶的按键帮助信息")
-    @("AhkRun", "使用 Ahk 的 Run 运行 `; command", true)
-    @("CmdRun", "使用 cmd 运行 : command", true)
+    @("AhkRun", "使用 Ahk 的 Run() 运行 `; command", true)
+    @("CmdRun", "使用 cmd.exe 运行 : command", true)
     @("WinRRun", "使用 win + r 运行", true)
     @("Dictionary", "有道词典在线翻译", true)
     @("RunAndDisplay", "使用 cmd 运行，并显示结果", true)
