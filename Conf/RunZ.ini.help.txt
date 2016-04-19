@@ -47,12 +47,9 @@ SwitchToEngIME=0
 ChangeCommandOnMouseMove=0
 ; 当鼠标移动时，定位到鼠标所在命令，会消耗一些 CPU，并且造成文字闪烁
 
-
-; 图形界面相关参数
-; 如果指定皮肤名，[Gui] 其他部分配置失效
 [Gui]
-;Skin=New
-; 指定皮肤名，如果为空则使用此 [Gui] 中的配置
+; Skin=New
+; 指定皮肤名，如果为空则使用此 [Gui] 中的配置，否则 [Gui] 其他字段失效
 HideTitle=1
 ; 隐藏标题栏
 ShowTrayIcon=1
@@ -92,8 +89,11 @@ BackgroundPicture=Background1.jpg
 BorderSize=15
 ; 边框宽度
 
+[Command]
 
-; 这里的 command 优先显示，请在下边的 [Command] 后边添加
+
+
+; 这里的 command 优先显示
 ;
 ; 文件类型（直接使用 AHK 的 Run() 运行）：
 ; file | 文件路径 | 注释
@@ -108,7 +108,10 @@ BorderSize=15
 ; cmd 类型，在 cmd.exe 运行命令，运行后会自动暂停：
 ; 如：
 ; cmd | ipconfig | 查看 IP 地址
-[Command]
+
+[Hotkey]
+
+
 
 ; 映射 RunZ 自身使用的按键：
 ; key=label
@@ -119,9 +122,11 @@ BorderSize=15
 ; 具体功能请直接在代码里搜 Hotkey 对应的标签
 ; key=Default 可取消代码中的按键映射
 ; 注意优先级比默认的 Alt + 字母数字 系列按键高，如无特殊原因不要修改 Alt 的映射
-[Hotkey]
 
-; 语法和 [Hotkey] 一样，但作用范围是全局的
 [GlobalHotkey]
 #j=ToggleWindow
 !space=ToggleWindow
+
+
+
+; 语法和 [Hotkey] 一样，但作用范围是全局的
