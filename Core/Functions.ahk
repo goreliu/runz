@@ -46,6 +46,7 @@ return
 
 KeyHelp:
     ToolTip, % KeyHelpText()
+    SetTimer, RemoveToolTip, 5000
 return
 
 CmdRun:
