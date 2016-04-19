@@ -170,7 +170,7 @@ Hotkey, enter, RunCurrentCommand
 Hotkey, esc, EscFunction
 Hotkey, !f4, ExitRunZ
 
-Hotkey, tab, TabFunction
+Hotkey, Tab, TabFunction
 Hotkey, f1, Help
 Hotkey, +f1, KeyHelp
 Hotkey, f2, EditConfig
@@ -189,10 +189,11 @@ Hotkey, ^i, HomeKey
 Hotkey, ^o, EndKey
 Hotkey, ^j, NextCommand
 Hotkey, ^k, PrevCommand
-Hotkey, down, NextCommand
-Hotkey, up, PrevCommand
-Hotkey, ~lbutton, ClickFunction
-Hotkey, rbutton, OpenContextMenu
+Hotkey, Down, NextCommand
+Hotkey, Up, PrevCommand
+Hotkey, ~LButton, ClickFunction
+Hotkey, RButton, OpenContextMenu
+Hotkey, AppsKey, OpenContextMenu
 
 ; 剩余按键 e g j m t w
 
