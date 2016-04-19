@@ -1381,9 +1381,10 @@ UpdateSendTo(create = true, overwrite = false)
         return
     }
 
-    fileContent := "var RunZCmdTool = '"
-    fileContent .= StrReplace(A_ScriptDir, "\", "\\") "\\RunZ.exe "
-            .  StrReplace(A_ScriptDir, "\", "\\") "\\Core\\RunZCmdTool.ahk'`n"
+    ; 注意引号和空格！
+    fileContent := "var RunZCmdTool = ""\"""
+    fileContent .= StrReplace(A_ScriptDir, "\", "\\") "\\RunZ.exe\"" "
+    fileContent .= " \""" . StrReplace(A_ScriptDir, "\", "\\") . "\\Core\\RunZCmdTool.ahk\"" ""`n"
 
     jsText =
 (
