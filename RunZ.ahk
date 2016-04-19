@@ -1347,10 +1347,19 @@ KeyHelpText()
     . "* | 功能 | 空格       | 输入空格后，搜索内容锁定")
 }
 
-UrlDownloadToString(url)
+UrlDownloadToString(url, headers := "")
 {
     static whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
     whr.Open("GET", url, true)
+
+    if (headers != "")
+    {
+        for key, value in headers
+        {
+            whr.SetRequestHeader(key, value)
+        }
+    }
+
     whr.Send()
     whr.WaitForResponse()
     return whr.ResponseText

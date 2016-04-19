@@ -5,7 +5,7 @@ Functions:
     @("KeyHelp", "置顶的按键帮助信息")
     @("AhkRun", "使用 Ahk 的 Run() 运行 `; command", true)
     @("CmdRun", "使用 cmd 运行 : command", true)
-    @("CmdRunOnly", "只使用 cmd 运行，忽略 mintty")
+    @("CmdRunOnly", "只使用 cmd 运行")
     @("WinRRun", "使用 win + r 运行", true)
     @("Dictionary", "有道词典在线翻译", true)
     @("RunAndDisplay", "使用 cmd 运行，并显示结果", true)
@@ -32,6 +32,9 @@ Functions:
     @("ShowIp", "显示 IP")
     @("Calendar", "用浏览器打开万年历")
     @("CleanupRank", "清理命令权重中的无效命令")
+    @("CurrencyRate", "汇率 使用示例： hl JPY EUR 2")
+    @("CNY2USD", "汇率 人民币兑换美元")
+    @("USD2CNY", "汇率 美元兑换人民币")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
 
     if (IsLabel("ReservedFunctions"))
@@ -69,11 +72,53 @@ EditConfig:
     Run, % g_ConfFile
 return
 
-ArgTest:
-    Args := StrSplit(Arg, ",")
-    result := "共有 " . Args.Length() . " 个参数。`n`n"
+CNY2USD:
+    DisplayResult("查询中，可能会比较慢或者查询失败，请稍后...")
+    DisplayResult(QueryCurrencyRate("CNY", "USD", Arg))
+return
 
-    for index, argument in Args
+USD2CNY:
+    DisplayResult("查询中，可能会比较慢或者查询失败，请稍后...")
+    DisplayResult(QueryCurrencyRate("USD", "CNY", Arg))
+return
+
+CurrencyRate:
+    args := StrSplit(Arg, " ")
+    if (args.Length() != 3)
+    {
+        DisplayResult("使用示例：`n    CurrencyRate USD CNY 2")
+        return
+    }
+
+    DisplayResult("查询中，可能会比较慢或者查询失败，请稍后...")
+    DisplayResult(QueryCurrencyRate(args[1], args[2], args[3]))
+return
+
+QueryCurrencyRate(fromCurrency, toCurrency, amount)
+{
+    headers := Object()
+    headers["apikey"] := "c9098c96599be340bbd9551e2b061f63"
+
+    jsonText := UrlDownloadToString("http://apis.baidu.com/apistore/currencyservice/currency?"
+        . "fromCurrency=" fromCurrency "&toCurrency=" toCurrency "&amount=" amount, headers)
+    parsed := JSON.Load(jsonText)
+
+    if (parsed.errNum != 0 && parsed.errMsg != "success")
+    {
+        return "查询失败，错误信息：`n`n" jsonText
+    }
+
+    result := fromCurrency " 兑换 " toCurrency " 当前汇率：`n`n" parsed.retData.currency "`n`n`n"
+    result .= amount " " fromCurrency " = " parsed.retData.convertedamount " " toCurrency "`n"
+
+    return result
+}
+
+ArgTest:
+    args := StrSplit(Arg, ",")
+    result := "共有 " . args.Length() . " 个参数。`n`n"
+
+    for index, argument in args
     {
         result .= "第 " . index . " 个参数：" . argument . "`n"
     }
