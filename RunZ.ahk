@@ -645,11 +645,19 @@ SearchCommand(command = "", firstRun = false)
 
         if (splitedElement[1] == "file")
         {
-            SplitPath, % splitedElement[2], , fileDir, , fileNameNoExt
+            SplitPath, % splitedElement[2], fileName, fileDir, , fileNameNoExt
 
             ; 只搜索和展示不带扩展名的文件名
             elementToSearch := fileNameNoExt
-            elementToShow := "file | " . fileNameNoExt " | " splitedElement[3]
+            if (g_Conf.Config.ShowFileExt)
+            {
+                elementToShow := "file | " . fileName " | " splitedElement[3]
+            }
+            else
+            {
+                elementToShow := "file | " . fileNameNoExt " | " splitedElement[3]
+            }
+
 
             if (splitedElement.Length() >= 3)
             {
