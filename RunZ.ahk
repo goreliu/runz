@@ -1715,6 +1715,12 @@ SwitchToEngIME()
 #include %A_ScriptDir%\Lib\JSON.ahk
 #include %A_ScriptDir%\Lib\Kanji\Kanji.ahk
 #include %A_ScriptDir%\Lib\Gdip.ahk
+/*
+需要多消耗将近 500K 内存，以后再考虑要不要支持。
+#include %A_ScriptDir%\Lib\HotKeyIt\_Struct\sizeof.ahk
+#include %A_ScriptDir%\Lib\HotKeyIt\_Struct\_Struct.ahk
+#include %A_ScriptDir%\Lib\HotKeyIt\WatchDirectory\WatchDirectory.ahk
+*/
 #include %A_ScriptDir%\Core\Common.ahk
 #include %A_ScriptDir%\Core\Functions.ahk
 #include %A_ScriptDir%\Core\ReservedFunctions.ahk

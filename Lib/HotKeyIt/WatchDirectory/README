@@ -1,0 +1,45 @@
+WatchDirectory will inform you about file changes in specified directories.
+
+You can get informed about certain files only using a filter and also filter on types of changes (e.g. new files, renamed files, changed files...)
+
+All you need in your script is to call WatchDirectory with required parameters and additional report function which is the second parameter to WatchDirectory.
+The report function must accepts 2 parameters:
+  - When a file is changed, both parameters will contain same filename/path
+  - When a file is deleted, first parameter contains the file/path and second parameter will be empty
+  - When a new file is created, first parameter is empty and second parameter contains filename/path
+  - When a file is renamed, first parameter contains old filename/path and second new filename/path
+
+WatchDirectory syntax:
+  WatchDirectory(dir[\*|...],ReportFunction,ActionFilter) accepts up to 3 parameters
+  - dir, can be a folder/directory (last backslash is optional)
+  - include * in the end of your directory to watch in sub folders
+  - after that you can include file name filters separated by pipe '|', here you have following options:
+    - use * and ? wildcard
+    - include Back Slash in front = match beginning of filename
+    - include Back Slash at the end = match end of filename
+    - include Back Slash anywhere in the middle to search in complete file path
+    - E.g. following will search for files that start with a and end with .txt or .ini
+	WatchDirectory("C:\temp\*|.txt\|.ini\|\a","ReportChanges")
+	- func, a function to be launched when changes in corresponding folder occur
+	- when you omit func, last used function will be used
+	- Your function must accept 2 parameters
+	  - When new file is created:
+	    - first parameter will be empty
+	    - second parameter will contain the filepath
+	      - When file is deleted
+	      - second parameter will be empty
+	      - first parameter will contain the filepath
+	      - When file is modified both parameters contain same filepath
+		- When file is renamed
+		  - first parameter will contain old filename
+		  - second parameter will contain new filename
+	    - ActionFilter can be used to report only specific changes
+		- therefore include one or several of following values i
+		- FILE_NOTIFY_CHANGE_FILE_NAME=0x1
+		- FILE_NOTIFY_CHANGE_DIR_NAME=0x2
+		- FILE_NOTIFY_CHANGE_ATTRIBUTES=0x4
+		- FILE_NOTIFY_CHANGE_SIZE=0x8
+		- FILE_NOTIFY_CHANGE_LAST_WRITE=0x10
+		- FILE_NOTIFY_CHANGE_CREATION=0x40
+		- FILE_NOTIFY_CHANGE_SECURITY=0x100
+		- these values must be separated by |, by default all changes are reported.
