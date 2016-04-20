@@ -50,6 +50,8 @@ ChangeCommandOnMouseMove=0
 ; 当鼠标移动时，定位到鼠标所在命令，会消耗一些 CPU，并且造成文字闪烁
 ClearInputWithEsc=0
 ; 输入 Esc 时，如果输入框有内容则清空，无内容才关闭窗口
+Editor=
+; 用来打开配置文件的编辑器，默认为资源管理器关联的编辑器，可以右键->属性->打开方式修改
 
 [Gui]
 ; Skin=New
