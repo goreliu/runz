@@ -48,6 +48,8 @@ SwitchToEngIME=0
 ; 每次激活窗口自动切换到英文输入法
 ChangeCommandOnMouseMove=0
 ; 当鼠标移动时，定位到鼠标所在命令，会消耗一些 CPU，并且造成文字闪烁
+ClearInputWithEsc=0
+; 输入 Esc 时，如果输入框有内容则清空，无内容才关闭窗口
 
 [Gui]
 ; Skin=New

@@ -406,6 +406,12 @@ return
 
 EscFunction:
     ToolTip
+    if (g_Conf.Config.ClearInputWithEsc && g_CurrentInput != "")
+    {
+        GoSub, ClearInput
+        return
+    }
+
     ; 如果是后台运行模式，只关闭窗口，不退出程序
     if (g_Conf.Config.RunInBackground)
     {
