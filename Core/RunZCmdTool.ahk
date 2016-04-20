@@ -3,19 +3,15 @@
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
+FileEncoding, utf-8
+
 ; 如果该文件报错，说明 UserFunctionsAuto.txt 文件里有重复标签，需要手动修改或删除
 
 global g_ConfFile := A_ScriptDir . "\..\Conf\RunZ.ini"
 global g_Conf := class_EasyINI(g_ConfFile)
 global g_UserFunctionsAutoFileName := A_ScriptDir "\..\Conf\UserFunctionsAuto.txt"
+global g_UserFileList := A_ScriptDir "\..\Conf\UserFileList.txt"
 global g_FileContent
-
-if (!FileExist(g_UserFunctionsAutoFileName))
-{
-    FileCopy, %g_UserFunctionsAutoFileName%.template, %g_UserFunctionsAutoFileName%
-}
-
-FileRead, g_FileContent, %g_UserFunctionsAutoFileName%
 
 allLabels := Object()
 index := 1
@@ -37,6 +33,20 @@ Loop, %0%
         ; TODO
     }
 
+    if (g_Conf.Config.SendToLnkSimpleMode)
+    {
+        FileAppend, file | %fileDir%\%fileName%`r`n, %g_UserFileList%
+
+        continue
+    }
+
+    if (!FileExist(g_UserFunctionsAutoFileName))
+    {
+        FileCopy, %g_UserFunctionsAutoFileName%.template, %g_UserFunctionsAutoFileName%
+    }
+
+    FileRead, g_FileContent, %g_UserFunctionsAutoFileName%
+
     fileDir := SafeFilename(fileDir)
     fileName := SafeFilename(fileName)
 
@@ -49,8 +59,15 @@ Loop, %0%
         index++
     }
 
-    AddFile(uniqueLabelName, labelName, fileDir . "\" . fileName, fileDir)
+    AddFile(uniqueLabelName, labelName, fileDir "\" fileName, fileDir)
     allLabels[uniqueLabelName] := true
+}
+
+if (g_Conf.Config.SendToLnkSimpleMode)
+{
+    ToolTip, 文件添加完毕，右键菜单->重建索引后生效
+    sleep 1500
+    ExitApp
 }
 
 FileMove, %g_UserFunctionsAutoFileName%, %g_UserFunctionsAutoFileName%.bak, 1

@@ -1183,6 +1183,14 @@ LoadFiles(loadRank := true)
 
     GoSub, Functions
 
+    if (FileExist(A_ScriptDir "\Conf\UserFileList.txt"))
+    {
+        Loop, Read, %A_ScriptDir%\Conf\UserFileList.txt
+        {
+            g_Commands.Push(A_LoopReadLine)
+        }
+    }
+
     Loop, Read, %g_SearchFileList%
     {
         g_Commands.Push(A_LoopReadLine)
