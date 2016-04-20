@@ -37,7 +37,7 @@ Functions:
     @("USD2CNY", "汇率 美元兑换人民币")
     @("ProcessList", "进程列表")
     @("UrlEncode", "URL 编码")
-    @("DiskSpace", "查看磁盘空间")
+    @("DiskSpace", "查看磁盘空间 df")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
     @("AhkTest", "运行参数或者剪切板中的 AHK 代码")
     @("IncreaseVolume", "提高音量")
