@@ -1510,7 +1510,7 @@ ws.Run(RunZCmdTool + arg)
     fileContent .= jsText
 
     FileDelete, % A_ScriptDir "\Core\SendToRunZ.js"
-    FileAppend, % fileContent, % A_ScriptDir "\Core\SendToRunZ.js", UTF-8-RAW
+    FileAppend, % fileContent, % A_ScriptDir "\Core\SendToRunZ.js", CP936
     FileCreateShortcut, % A_ScriptDir "\Core\SendToRunZ.js", % A_ScriptDir "\Core\SendToRunZ.lnk"
         , , , 发送到 RunZ, % A_ScriptDir "\RunZ.ico"
     FileCopy, % A_ScriptDir "\Core\SendToRunZ.lnk"
