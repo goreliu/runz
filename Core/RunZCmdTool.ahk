@@ -28,8 +28,14 @@ Loop, %0%
     }
 
     labelName := SafeLabel(fileNameNoExt)
-    fileDir := SafeFilename(fileDir)
     fileExt := SafeFilename(fileExt)
+
+    if (FileExist == "lnk")
+    {
+        ; TODO
+    }
+
+    fileDir := SafeFilename(fileDir)
     fileName := SafeFilename(fileName)
 
     uniqueLabelName := labelName
