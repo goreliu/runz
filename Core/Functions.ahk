@@ -35,6 +35,7 @@ Functions:
     @("CurrencyRate", "汇率 使用示例： hl JPY EUR 2")
     @("CNY2USD", "汇率 人民币兑换美元")
     @("USD2CNY", "汇率 美元兑换人民币")
+    @("ProcessList", "进程列表")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
 
     if (IsLabel("ReservedFunctions"))
@@ -330,4 +331,8 @@ EmptyRecycle:
     {
         FileRecycleEmpty,
     }
+return
+
+ProcessList:
+    DisplayResult(GetProcessList())
 return

@@ -1597,6 +1597,7 @@ SwitchToEngIME()
 #include %A_ScriptDir%\Lib\JSON.ahk
 #include %A_ScriptDir%\Lib\Kanji\Kanji.ahk
 #include %A_ScriptDir%\Lib\Gdip.ahk
+#include %A_ScriptDir%\Core\Common.ahk
 #include %A_ScriptDir%\Core\Functions.ahk
 #include %A_ScriptDir%\Core\ReservedFunctions.ahk
 ; 用户自定义命令
