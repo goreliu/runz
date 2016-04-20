@@ -310,6 +310,11 @@ return
 ToggleWindow:
     if (WinActive(g_WindowName))
     {
+        if (!g_Conf.Config.KeepInputText)
+        {
+            ControlSetText, %g_InputArea%, , %g_WindowName%
+        }
+
         Gui, Hide
     }
     else
