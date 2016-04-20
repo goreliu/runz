@@ -5,6 +5,8 @@ SetWorkingDir %A_ScriptDir%
 
 ; 如果该文件报错，说明 UserFunctionsAuto.txt 文件里有重复标签，需要手动修改或删除
 
+global g_ConfFile := A_ScriptDir . "\..\Conf\RunZ.ini"
+global g_Conf := class_EasyINI(g_ConfFile)
 global g_UserFunctionsAutoFileName := A_ScriptDir "\..\Conf\UserFunctionsAuto.txt"
 global g_FileContent
 
@@ -55,7 +57,15 @@ FileMove, %g_UserFunctionsAutoFileName%, %g_UserFunctionsAutoFileName%.bak, 1
 FileAppend, %g_FileContent%, %g_UserFunctionsAutoFileName%, utf-8
 
 ; 打开文件来编辑
-Run, %g_UserFunctionsAutoFileName%
+if (g_Conf.Config.Editor != "")
+{
+    Run, % g_Conf.Config.Editor " """ g_UserFunctionsAutoFileName """"
+}
+else
+{
+    Run, %g_UserFunctionsAutoFileName%
+}
+
 
 return
 
@@ -92,5 +102,6 @@ SafeFilename(label)
 {
 }
 
+#include %A_ScriptDir%\..\Lib\EasyIni.ahk
 ; 用于判断是否有重复标签
 #include *i %A_ScriptDir%\..\Conf\UserFunctionsAuto.txt

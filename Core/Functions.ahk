@@ -75,7 +75,14 @@ Clip:
 return
 
 EditConfig:
-    Run, % g_ConfFile
+    if (g_Conf.Config.Editor != "")
+    {
+        Run, % g_Conf.Config.Editor " """ g_ConfFile """"
+    }
+    else
+    {
+        Run, % g_ConfFile
+    }
 return
 
 CNY2USD:
