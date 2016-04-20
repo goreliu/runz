@@ -36,6 +36,7 @@ Functions:
     @("CNY2USD", "汇率 人民币兑换美元")
     @("USD2CNY", "汇率 美元兑换人民币")
     @("ProcessList", "进程列表")
+    @("UrlEncode", "URL 编码")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
 
     if (IsLabel("ReservedFunctions"))
@@ -337,4 +338,10 @@ return
 ProcessList:
     DisplayResult(FilterResult(GetProcessList(), Arg))
     TurnOnResultFilter()
+return
+
+UrlEncode:
+    text := Arg == "" ? clipboard : Arg
+    clipboard := UrlEncode(text)
+    DisplayResult(clipboard)
 return
