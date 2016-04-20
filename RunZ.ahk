@@ -589,7 +589,7 @@ GenerateSearchFileList()
 ReindexFiles:
     GenerateSearchFileList()
 
-    LoadFiles()
+    GoSub, CleanupRank
 return
 
 ProcessInputCommand:
