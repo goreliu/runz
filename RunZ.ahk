@@ -79,6 +79,8 @@ global g_UseFallbackCommands
 global g_UseResultFilter
 ; 当参数改变后实时重新执行命令
 global g_UseRealtimeExec
+; 排除的命令
+global g_ExcludedCommands
 
 global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
@@ -679,7 +681,7 @@ SearchCommand(command = "", firstRun = false)
 
     for index, element in g_Commands
     {
-        if (InStr(fullResult, element "`n"))
+        if (InStr(fullResult, element "`n") || inStr(g_ExcludedCommands, element "`n"))
         {
             continue
         }
@@ -975,7 +977,7 @@ RunCommand(originCmd)
 
     if (g_Conf.Config.AutoRank)
     {
-        IncreaseRank(originCmd)
+        ChangeRank(originCmd)
     }
 
     g_DisableAutoExit := false
@@ -986,7 +988,7 @@ RunCommand(originCmd)
     }
 }
 
-IncreaseRank(cmd, show = false, inc := 1)
+ChangeRank(cmd, show = false, inc := 1)
 {
     splitedCmd := StrSplit(cmd, " | ")
 
@@ -1007,8 +1009,15 @@ IncreaseRank(cmd, show = false, inc := 1)
         cmdRank := inc
     }
 
-    if (cmdRank > 0 && cmd != "")
+    if (cmdRank != 0 && cmd != "")
     {
+        ; 如果将到负数，都设置成 -1，然后屏蔽
+        if (cmdRank < 0)
+        {
+            cmdRank := -1
+            g_ExcludedCommands .= cmd "`n"
+        }
+
         g_AutoConf.AddKey("Rank", cmd, cmdRank)
     }
     else
@@ -1080,7 +1089,7 @@ return
 IncreaseRank:
     if (g_CurrentCommand != "")
     {
-        IncreaseRank(g_CurrentCommand, true)
+        ChangeRank(g_CurrentCommand, true)
         LoadFiles()
     }
 return
@@ -1088,7 +1097,7 @@ return
 DecreaseRank:
     if (g_CurrentCommand != "")
     {
-        IncreaseRank(g_CurrentCommand, true, -1)
+        ChangeRank(g_CurrentCommand, true, -1)
         LoadFiles()
     }
 return
@@ -1105,7 +1114,14 @@ LoadFiles(loadRank := true)
         {
             if (StrLen(command) > 0)
             {
-                rankString .= rank "`t" command "`n"
+                if (rank >= 1)
+                {
+                    rankString .= rank "`t" command "`n"
+                }
+                else
+                {
+                    g_ExcludedCommands .= command "`n"
+                }
             }
         }
 
