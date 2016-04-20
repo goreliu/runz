@@ -365,7 +365,7 @@ DiskSpace:
         DrivespaceFree, free, %drive%
         SetFormat, float, 5.2
         percent := 100 * (cap - free) / cap
-        SetFormat, float, 7.2
+        SetFormat, float, 6.2
         cap /= 1000.0
         free /= 1000.0
         result = %result%* | %drive% | 总共: %cap% G  可用: %free% G | 已使用：%percent%`%  卷标: %label%`n
