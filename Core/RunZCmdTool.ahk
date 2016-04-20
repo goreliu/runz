@@ -65,7 +65,7 @@ Loop, %0%
 
 if (g_Conf.Config.SendToLnkSimpleMode)
 {
-    ToolTip, 文件添加完毕，右键菜单->重建索引后生效
+    ToolTip, 文件添加完毕，3 秒内生效
     sleep 1500
     ExitApp
 }

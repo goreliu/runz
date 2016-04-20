@@ -6,8 +6,10 @@ FileEncoding, utf-8
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-; 自动生成的命令文件
+; 自动生成的待搜索文件列表
 global g_SearchFileList := A_ScriptDir . "\Conf\SearchFileList.txt"
+; 用户配置的待搜索文件列表
+global g_UserFileList := A_ScriptDir . "\Conf\UserFileList.txt"
 ; 配置文件
 global g_ConfFile := A_ScriptDir . "\Conf\RunZ.ini"
 ; 自动写入的配置文件
@@ -259,6 +261,7 @@ if (g_Conf.Config.SaveHistory)
 UpdateSendTo(g_Conf.Config.CreateSendToLnk, false)
 UpdateStartupLnk(g_Conf.Config.CreateStartupLnk, false)
 
+SetTimer, WatchUserFileList, 3000
 return
 
 Default:
@@ -1183,9 +1186,9 @@ LoadFiles(loadRank := true)
 
     GoSub, Functions
 
-    if (FileExist(A_ScriptDir "\Conf\UserFileList.txt"))
+    if (FileExist(g_UserFileList))
     {
-        Loop, Read, %A_ScriptDir%\Conf\UserFileList.txt
+        Loop, Read, %g_UserFileList%
         {
             g_Commands.Push(A_LoopReadLine)
         }
@@ -1673,6 +1676,15 @@ AlignText(text)
 
     return result
 }
+
+WatchUserFileList:
+    FileGetTime, newModifyTime, %g_UserFileList%
+    if (lastModifyTime != newModifyTime)
+    {
+        LoadFiles()
+        lastModifyTime := newModifyTime
+    }
+return
 
 ; 0：英文 1：中文
 GetInputState(WinTitle = "A")
