@@ -189,7 +189,9 @@ Hotkey, ^s, ShowCurrentFile
 Hotkey, ^r, ReindexFiles
 Hotkey, ^h, DisplayHistoryCommands
 Hotkey, ^n, IncreaseRank
+Hotkey, ^=, IncreaseRank
 Hotkey, ^p, DecreaseRank
+Hotkey, ^-, DecreaseRank
 Hotkey, ^f, NextPage
 Hotkey, ^b, PrevPage
 Hotkey, ^i, HomeKey
