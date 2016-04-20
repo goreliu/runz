@@ -39,6 +39,7 @@ Functions:
     @("UrlEncode", "URL 编码")
     @("DiskSpace", "查看磁盘空间")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
+    @("AhkTest", "运行参数或者剪切板中的 AHK 代码")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -372,4 +373,11 @@ DiskSpace:
     }
 
 	DisplayResult(AlignText(result))
+return
+
+AhkTest:
+    text := Arg == "" ? clipboard : Arg
+    FileDelete, %A_Temp%\RunZ.AhkTest.ahk
+    FileAppend, %text%, %A_Temp%\RunZ.AhkTest.ahk
+    Run, %A_Temp%\RunZ.AhkTest.ahk
 return
