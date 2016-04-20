@@ -918,7 +918,14 @@ RunCommand(originCmd)
             }
         }
 
-        Run, %cmd%
+        if (Arg == "")
+        {
+            Run, %cmd%
+        }
+        else
+        {
+            Run, %cmd% "%Arg%"
+        }
     }
     else if (splitedOriginCmd[1] == "function")
     {
