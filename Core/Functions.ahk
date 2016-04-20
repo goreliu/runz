@@ -334,5 +334,6 @@ EmptyRecycle:
 return
 
 ProcessList:
-    DisplayResult(GetProcessList())
+    DisplayResult(FilterResult(GetProcessList(), Arg))
+    TurnOnResultFilter()
 return

@@ -75,6 +75,9 @@ global g_DisableAutoExit
 global g_CurrentLine
 ; 使用备用的命令
 global g_UseFallbackCommands
+; 对命令结果进行实时搜索
+global g_UseResultFilter
+
 global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
 global g_CommandArea := "Edit4"
@@ -603,6 +606,8 @@ SearchCommand(command = "", firstRun = false)
 
     if (commandPrefix == ";" || commandPrefix == ":")
     {
+        g_UseResultFilter := false
+
         if (commandPrefix == ";")
         {
             g_CurrentCommand := g_FallbackCommands[1]
@@ -621,14 +626,31 @@ SearchCommand(command = "", firstRun = false)
     }
     else if (commandPrefix == "@")
     {
+        g_UseResultFilter := false
+
         ; 搜索结果被锁定，直接退出
         return
     }
     else if (InStr(command, " ") && g_CurrentCommand != "")
     {
         ; 输入包含空格时锁定搜索结果
+
+        if (g_UseResultFilter)
+        {
+            static text := ""
+            if (text == "")
+            {
+                ControlGetText, text, %g_DisplayArea%
+            }
+
+            ; 取出空格后边的参数
+            needle := SubStr(g_CurrentInput, InStr(g_CurrentInput, " ") + 1)
+            DisplayResult(FilterResult(text, needle))
+        }
         return
     }
+
+    g_UseResultFilter := false
 
     g_CurrentCommandList := Object()
 
@@ -757,6 +779,30 @@ DisplaySearchResult(result)
     {
         commandToShow := SubStr(g_CurrentCommand, InStr(g_CurrentCommand, " | ") + 3)
         ControlSetText, %g_CommandArea%, %commandToShow%, %g_WindowName%
+    }
+}
+
+FilterResult(text, needle)
+{
+    result := ""
+    Loop, Parse, text, `n, `r
+    {
+        if (MatchCommand(StrReplace(SubStr(A_LoopField, 10), "\", " "), needle))
+        {
+            result .= A_LoopField "`n"
+        }
+    }
+
+    return result
+}
+
+TurnOnResultFilter()
+{
+    if (!g_UseResultFilter)
+    {
+        g_UseResultFilter := true
+        ControlFocus, %g_InputArea%
+        Send, {space}
     }
 }
 
@@ -1028,7 +1074,7 @@ LoadFiles(loadRank := true)
                     continue
                 }
 
-                g_Commands.Push(StrSplit(A_loopField, "`t")[2])
+                g_Commands.Push(StrSplit(A_LoopField, "`t")[2])
             }
         }
     }
