@@ -37,6 +37,7 @@ Functions:
     @("USD2CNY", "汇率 美元兑换人民币")
     @("ProcessList", "进程列表")
     @("UrlEncode", "URL 编码")
+    @("DiskSpace", "查看磁盘空间")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
 
     if (IsLabel("ReservedFunctions"))
@@ -336,7 +337,13 @@ EmptyRecycle:
 return
 
 ProcessList:
-    DisplayResult(FilterResult(GetProcessList(), Arg))
+    result := ""
+
+    for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process")
+        result .= "* | 进程 | " process.Name " | " process.CommandLine "`n"
+    Sort, result
+
+    DisplayResult(FilterResult(AlignText(result), Arg))
     TurnOnResultFilter()
 return
 
@@ -344,4 +351,24 @@ UrlEncode:
     text := Arg == "" ? clipboard : Arg
     clipboard := UrlEncode(text)
     DisplayResult(clipboard)
+return
+
+DiskSpace:
+    result := ""
+
+    DriveGet, list, list
+    Loop, Parse, list
+    {
+        drive := A_LoopField ":"
+        DriveGet, label, label, %drive%
+        DriveGet, cap, capacity, %drive%
+        DrivespaceFree, free, %drive%
+        SetFormat, float, 6.2
+        cap /= 1000.0
+        SetFormat, float, 6.2
+        free /= 1000.0
+        result = %result%* | %drive% | 总共: %cap% G  可用: %free% G | 卷标: %label%`n
+    }
+
+	DisplayResult(AlignText(result))
 return
