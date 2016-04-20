@@ -77,6 +77,8 @@ global g_CurrentLine
 global g_UseFallbackCommands
 ; 对命令结果进行实时搜索
 global g_UseResultFilter
+; 当参数改变后实时重新执行命令
+global g_UseRealtimeExec
 
 global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
@@ -607,6 +609,7 @@ SearchCommand(command = "", firstRun = false)
     if (commandPrefix == ";" || commandPrefix == ":")
     {
         g_UseResultFilter := false
+        g_UseRealtimeExec := false
 
         if (commandPrefix == ";")
         {
@@ -627,6 +630,7 @@ SearchCommand(command = "", firstRun = false)
     else if (commandPrefix == "@")
     {
         g_UseResultFilter := false
+        g_UseRealtimeExec := false
 
         ; 搜索结果被锁定，直接退出
         return
@@ -647,10 +651,16 @@ SearchCommand(command = "", firstRun = false)
             needle := SubStr(g_CurrentInput, InStr(g_CurrentInput, " ") + 1)
             DisplayResult(FilterResult(text, needle))
         }
+        else if (g_UseRealtimeExec)
+        {
+            RunCommand(g_CurrentCommand)
+        }
+
         return
     }
 
     g_UseResultFilter := false
+    g_UseRealtimeExec := false
 
     g_CurrentCommandList := Object()
 
@@ -801,8 +811,26 @@ TurnOnResultFilter()
     if (!g_UseResultFilter)
     {
         g_UseResultFilter := true
-        ControlFocus, %g_InputArea%
-        Send, {space}
+
+        if (!InStr(g_CurrentInput, " "))
+        {
+            ControlFocus, %g_InputArea%
+            Send, {space}
+        }
+    }
+}
+
+TurnOnRealtimeExec()
+{
+    if (!g_UseRealtimeExec)
+    {
+        g_UseRealtimeExec := true
+
+        if (!InStr(g_CurrentInput, " "))
+        {
+            ControlFocus, %g_InputArea%
+            Send, {space}
+        }
     }
 }
 

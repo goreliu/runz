@@ -262,6 +262,7 @@ Calc:
     result := Eval(Arg)
     DisplayResult(result)
     clipboard := result
+    TurnOnRealtimeExec()
 return
 
 RunAndDisplay:
