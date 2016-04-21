@@ -75,17 +75,6 @@ Clip:
     DisplayResult("剪切板内容长度 " . StrLen(clipboard) . " ：`n`n" . clipboard)
 return
 
-EditConfig:
-    if (g_Conf.Config.Editor != "")
-    {
-        Run, % g_Conf.Config.Editor " """ g_ConfFile """"
-    }
-    else
-    {
-        Run, % g_ConfFile
-    }
-return
-
 CNY2USD:
     DisplayResult("查询中，可能会比较慢或者查询失败，请稍后...")
     DisplayResult(QueryCurrencyRate("CNY", "USD", Arg))

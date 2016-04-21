@@ -187,6 +187,7 @@ Hotkey, Tab, TabFunction
 Hotkey, f1, Help
 Hotkey, +f1, KeyHelp
 Hotkey, f2, EditConfig
+Hotkey, f3, EditAutoConfig
 Hotkey, ^q, RestartRunZ
 Hotkey, ^l, ClearInput
 Hotkey, ^d, OpenCurrentFileDir
@@ -613,6 +614,29 @@ ReindexFiles:
 
     GoSub, CleanupRank
 return
+
+EditConfig:
+    if (g_Conf.Config.Editor != "")
+    {
+        Run, % g_Conf.Config.Editor " """ g_ConfFile """"
+    }
+    else
+    {
+        Run, % g_ConfFile
+    }
+return
+
+EditAutoConfig:
+    if (g_Conf.Config.Editor != "")
+    {
+        Run, % g_Conf.Config.Editor " """ g_AutoConfFile """"
+    }
+    else
+    {
+        Run, % g_AutoConfFile
+    }
+return
+
 
 ProcessInputCommand:
     ControlGetText, g_CurrentInput, %g_InputArea%
