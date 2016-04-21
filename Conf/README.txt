@@ -27,3 +27,6 @@ Skins
 
 SearchFileList.txt
 搜索到的文件列表，不要手动修改此文件，会被覆盖。
+
+UserFileList.txt
+用户自己添加的待搜索文件列表，也是简单模式“发送到”菜单使用的文件列表。
