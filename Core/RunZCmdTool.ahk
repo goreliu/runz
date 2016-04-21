@@ -27,15 +27,29 @@ Loop, %0%
 
     labelName := SafeLabel(fileNameNoExt)
     fileExt := SafeFilename(fileExt)
+    fileDir := SafeFilename(fileDir)
+    fileName := SafeFilename(fileName)
+    filePath := fileDir "\" fileName
+    fileDesc := ""
 
-    if (FileExist == "lnk")
+    if (fileExt == "lnk" && g_Conf.Config.SendToMenuReadLnkFile)
     {
-        ; TODO
+        FileGetShortcut, %filePath%, filePath, fileDir, targetArg, fileDesc
+
+        if (fileDesc = filePath)
+        {
+            fileDesc := ""
+        }
+
+        if (g_Conf.Config.SendToMenuReadLnkFile)
+        {
+            filePath .= " " targetArg
+        }
     }
 
     if (g_Conf.Config.SendToMenuSimpleMode)
     {
-        FileAppend, file | %fileDir%\%fileName%`r`n, %g_UserFileList%
+        FileAppend, file | %filePath% | %fileDesc%`r`n, %g_UserFileList%
 
         continue
     }
@@ -47,8 +61,6 @@ Loop, %0%
 
     FileRead, g_FileContent, %g_UserFunctionsAutoFileName%
 
-    fileDir := SafeFilename(fileDir)
-    fileName := SafeFilename(fileName)
 
     uniqueLabelName := labelName
 
@@ -59,7 +71,7 @@ Loop, %0%
         index++
     }
 
-    AddFile(uniqueLabelName, labelName, fileDir "\" fileName, fileDir)
+    AddFile(uniqueLabelName, labelName, filePath, fileDir)
     allLabels[uniqueLabelName] := true
 }
 
