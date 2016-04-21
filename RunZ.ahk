@@ -654,12 +654,14 @@ SearchCommand(command = "", firstRun = false)
     result := ""
     ; 供去重使用
     fullResult := ""
+    static resultToFilter := ""
     commandPrefix := SubStr(command, 1, 1)
 
     if (commandPrefix == ";" || commandPrefix == ":")
     {
         g_UseResultFilter := false
         g_UseRealtimeExec := false
+        resultToFilter := ""
 
         if (commandPrefix == ";")
         {
@@ -693,19 +695,23 @@ SearchCommand(command = "", firstRun = false)
 
         if (g_UseResultFilter)
         {
-            static text := ""
-            if (text == "")
+            if (resultToFilter == "")
             {
-                ControlGetText, text, %g_DisplayArea%
+                ControlGetText, resultToFilter, %g_DisplayArea%
             }
 
             ; 取出空格后边的参数
             needle := SubStr(g_CurrentInput, InStr(g_CurrentInput, " ") + 1)
-            DisplayResult(FilterResult(text, needle))
+            DisplayResult(FilterResult(resultToFilter, needle))
         }
         else if (g_UseRealtimeExec)
         {
             RunCommand(g_CurrentCommand)
+            resultToFilter := ""
+        }
+        else
+        {
+            resultToFilter := ""
         }
 
         return
@@ -714,6 +720,7 @@ SearchCommand(command = "", firstRun = false)
     {
         g_UseResultFilter := false
         g_UseRealtimeExec := false
+        resultToFilter := ""
 
         ; 搜索结果被锁定，直接退出
         return
@@ -721,6 +728,7 @@ SearchCommand(command = "", firstRun = false)
 
     g_UseResultFilter := false
     g_UseRealtimeExec := false
+    resultToFilter := ""
 
     g_CurrentCommandList := Object()
 
