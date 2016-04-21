@@ -43,6 +43,7 @@ Functions:
     @("IncreaseVolume", "提高音量")
     @("DecreaseVolume", "降低音量")
     @("SystemState", "系统状态 top")
+    @("KillProcess", "杀死进程")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -403,4 +404,12 @@ SystemState:
     result .= "* | 状态 | 内存总量 | " Round(GMSEx[2] / 1024**2, 2) "MB `n"
     result .= "* | 状态 | 可用内存 | " Round(GMSEx[3] / 1024**2, 2) "MB `n"
     DisplayResult(AlignText(result))
+return
+
+KillProcess:
+    args := StrSplit(Arg, " ")
+    for index, argument in args
+    {
+        Process, Close, %argument%
+    }
 return

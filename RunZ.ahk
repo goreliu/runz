@@ -87,6 +87,8 @@ global g_ExcludedCommands
 global g_ExecInterval
 ; 上次间隔运行的功能标签
 global g_LastExecLabel
+; 用来调用管道的参数
+global g_PipeArg
 
 global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
@@ -177,17 +179,17 @@ if (g_Conf.Config.ChangeCommandOnMouseMove)
 }
 
 Hotkey, IfWinActive, % g_WindowName
-; 如果是 ~enter，有时候会响
-Hotkey, enter, RunCurrentCommand
+; 如果是 ~Enter，有时候会响
+Hotkey, Enter, RunCurrentCommand
 
-Hotkey, esc, EscFunction
-Hotkey, !f4, ExitRunZ
+Hotkey, Esc, EscFunction
+Hotkey, !F4, ExitRunZ
 
 Hotkey, Tab, TabFunction
-Hotkey, f1, Help
-Hotkey, +f1, KeyHelp
-Hotkey, f2, EditConfig
-Hotkey, f3, EditAutoConfig
+Hotkey, F1, Help
+Hotkey, +F1, KeyHelp
+Hotkey, F2, EditConfig
+Hotkey, F3, EditAutoConfig
 Hotkey, ^q, RestartRunZ
 Hotkey, ^l, ClearInput
 Hotkey, ^d, OpenCurrentFileDir
@@ -210,6 +212,7 @@ Hotkey, Up, PrevCommand
 Hotkey, ~LButton, ClickFunction
 Hotkey, RButton, OpenContextMenu
 Hotkey, AppsKey, OpenContextMenu
+Hotkey, ^Enter, SaveResultAsArg
 
 ; 剩余按键 e g j m t w
 
@@ -674,6 +677,16 @@ SearchCommand(command = "", firstRun = false)
         DisplaySearchResult(result)
         return result
     }
+    else if (commandPrefix == "|" && Arg != "")
+    {
+        ; 记录管道参数
+        if (g_PipeArg == "")
+        {
+            g_PipeArg := Arg
+        }
+        ; 去掉 |，然后按常规搜索处理
+        command := SubStr(command, 2)
+    }
     else if (InStr(command, " ") && g_CurrentCommand != "")
     {
         ; 输入包含空格时锁定搜索结果
@@ -912,6 +925,12 @@ RunCurrentCommand:
 return
 
 ParseArg:
+    if (g_PipeArg != "")
+    {
+        Arg := g_PipeArg
+        return
+    }
+
     commandPrefix := SubStr(g_CurrentInput, 1, 1)
 
     ; 分号或者冒号的情况，直接取命令为参数
@@ -1040,6 +1059,8 @@ RunCommand(originCmd)
         SetTimer, %cmd%, %g_ExecInterval%
         g_LastExecLabel := cmd
     }
+
+    g_PipeArg := ""
 }
 
 ChangeRank(cmd, show = false, inc := 1)
@@ -1539,7 +1560,7 @@ UrlDownloadToString(url, headers := "")
 ; 修改自万年书妖的 Candy 里的 SksSub_UrlEncode 函数，用于转换编码。感谢！
 UrlEncode(url, enc = "UTF-8")
 {
-    enc := trim(enc)
+    enc := Trim(enc)
     If enc=
         return url
     formatInteger := A_FormatInteger
@@ -1741,6 +1762,19 @@ WatchUserFileList:
         GoSub, RestartRunZ
     }
     lastConfFileModifyTime := newConfFileModifyTime
+return
+
+SaveResultAsArg:
+    Arg := ""
+    ControlGetText, result, %g_DisplayArea%
+    Loop, Parse, result, `n, `r
+    {
+        Arg .= Trim(StrSplit(A_LoopField, " | ")[3])" "
+    }
+
+    ControlFocus, %g_InputArea%
+    ControlSetText, %g_InputArea%, |
+    Send, {End}
 return
 
 ; 0：英文 1：中文
