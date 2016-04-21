@@ -83,6 +83,10 @@ global g_UseResultFilter
 global g_UseRealtimeExec
 ; 排除的命令
 global g_ExcludedCommands
+; 间隔运行命令的间隔时间
+global g_ExecInterval
+; 上次间隔运行的功能标签
+global g_LastExecLabel
 
 global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
@@ -619,6 +623,7 @@ return
 SearchCommand(command = "", firstRun = false)
 {
     g_UseDisplay := false
+    g_ExecInterval := -1
     result := ""
     ; 供去重使用
     fullResult := ""
@@ -852,6 +857,22 @@ TurnOnRealtimeExec()
     }
 }
 
+SetExecInterval(second)
+{
+    ; g_ExecInterval 为 0 时，表示可以进入间隔运行状态
+    ; g_ExecInterval 为 -1 时，表示状态以被打破，需要退出
+    if (g_ExecInterval >= 0)
+    {
+        g_ExecInterval := second * 1000
+        return true
+    }
+    else
+    {
+        SetTimer, %g_LastExecLabel%, Off
+        return false
+    }
+}
+
 ClearInput:
     ControlSetText, %g_InputArea%, , %g_WindowName%
     ControlFocus, %g_InputArea%
@@ -913,6 +934,7 @@ RunCommand(originCmd)
 
     g_UseDisplay := false
     g_DisableAutoExit := true
+    g_ExecInterval := 0
 
     splitedOriginCmd := StrSplit(originCmd, " | ")
     cmd := splitedOriginCmd[2]
@@ -987,6 +1009,12 @@ RunCommand(originCmd)
     if (g_Conf.Config.RunOnce && !g_UseDisplay)
     {
         GoSub, EscFunction
+    }
+
+    if (g_ExecInterval > 0 && splitedOriginCmd[1] == "function")
+    {
+        SetTimer, %cmd%, %g_ExecInterval%
+        g_LastExecLabel := cmd
     }
 }
 

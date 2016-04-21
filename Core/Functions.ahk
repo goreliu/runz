@@ -42,6 +42,7 @@ Functions:
     @("AhkTest", "运行参数或者剪切板中的 AHK 代码")
     @("IncreaseVolume", "提高音量")
     @("DecreaseVolume", "降低音量")
+    @("SystemState", "系统状态 top")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -397,4 +398,20 @@ return
 
 DecreaseVolume:
     SoundSet, -5
+return
+
+SystemState:
+    if (!SetExecInterval(1))
+    {
+        return
+    }
+
+    GMSEx := GlobalMemoryStatusEx()
+    result := "* | 状态 | 运行时间 | " Round(A_TickCount / 1000 / 3600, 3) " 小时`n"
+    result .= "* | 状态 | CPU 占用 | " CPULoad() "% `n"
+    result .= "* | 状态 | 内存占用 | " Round(100 * (GMSEx[2] - GMSEx[3]) / GMSEx[2], 2) "% `n"
+    result .= "* | 状态 | 进程总数 | " GetProcessCount() "`n"
+    result .= "* | 状态 | 内存总量 | " Round(GMSEx[2] / 1024**2, 2) "MB `n"
+    result .= "* | 状态 | 可用内存 | " Round(GMSEx[3] / 1024**2, 2) "MB `n"
+    DisplayResult(AlignText(result))
 return
