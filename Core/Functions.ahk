@@ -35,7 +35,7 @@ Functions:
     @("CurrencyRate", "汇率 使用示例： hl JPY EUR 2")
     @("CNY2USD", "汇率 人民币兑换美元")
     @("USD2CNY", "汇率 美元兑换人民币")
-    @("ProcessList", "进程列表")
+    @("ProcessList", "进程列表 ps")
     @("UrlEncode", "URL 编码")
     @("DiskSpace", "查看磁盘空间 df")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
@@ -45,6 +45,7 @@ Functions:
     @("SystemState", "系统状态 top")
     @("KillProcess", "杀死进程")
     @("SendToClip", "发送到剪切板")
+    @("WindowList", "窗口列表")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -373,7 +374,7 @@ DiskSpace:
         result = %result%* | %drive% | 总共: %cap% G  可用: %free% G | 已使用：%percent%`%  卷标: %label%`n
     }
 
-	DisplayResult(AlignText(result))
+    DisplayResult(AlignText(result))
 return
 
 AhkTest:
@@ -418,4 +419,24 @@ return
 SendToClip:
     clipboard := Arg
     GoSub, Clip
+return
+
+WindowList:
+    result := ""
+
+    WinGet, id, list, , , Program Manager
+    Loop, %id%
+    {
+        thisId := id%A_Index%
+        WinGetTitle, title, ahk_id %thisId%
+        WinGet, name, ProcessName, ahk_id %thisId%
+        if (title == "")
+        {
+            continue
+        }
+        result .= "* | 窗口 | " name " | " title "`n"
+    }
+
+    DisplayResult(AlignText(result))
+    TurnOnResultFilter()
 return
