@@ -863,10 +863,7 @@ RunCurrentCommand:
         Send, {enter}
     }
 
-    if (g_CurrentInput != "")
-    {
-        RunCommand(g_CurrentCommand)
-    }
+    RunCommand(g_CurrentCommand)
 return
 
 ParseArg:
