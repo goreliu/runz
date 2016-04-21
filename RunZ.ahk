@@ -645,14 +645,6 @@ SearchCommand(command = "", firstRun = false)
         DisplaySearchResult(result)
         return result
     }
-    else if (commandPrefix == "@")
-    {
-        g_UseResultFilter := false
-        g_UseRealtimeExec := false
-
-        ; 搜索结果被锁定，直接退出
-        return
-    }
     else if (InStr(command, " ") && g_CurrentCommand != "")
     {
         ; 输入包含空格时锁定搜索结果
@@ -674,6 +666,14 @@ SearchCommand(command = "", firstRun = false)
             RunCommand(g_CurrentCommand)
         }
 
+        return
+    }
+    else if (commandPrefix == "@")
+    {
+        g_UseResultFilter := false
+        g_UseRealtimeExec := false
+
+        ; 搜索结果被锁定，直接退出
         return
     }
 
