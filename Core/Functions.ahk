@@ -44,6 +44,7 @@ Functions:
     @("DecreaseVolume", "降低音量")
     @("SystemState", "系统状态 top")
     @("KillProcess", "杀死进程")
+    @("SendToClip", "发送到剪切板")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -412,4 +413,9 @@ KillProcess:
     {
         Process, Close, %argument%
     }
+return
+
+SendToClip:
+    clipboard := Arg
+    GoSub, Clip
 return
