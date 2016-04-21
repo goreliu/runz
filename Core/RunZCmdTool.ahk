@@ -41,9 +41,11 @@ Loop, %0%
             fileDesc := ""
         }
 
-        if (g_Conf.Config.SendToMenuReadLnkFile)
+        filePath .= " " targetArg
+
+        if (!g_Conf.Config.SendToMenuSimpleMode)
         {
-            filePath .= " " targetArg
+            filePath := SafeFilename(filePath)
         }
     }
 
@@ -119,7 +121,7 @@ SafeLabel(label)
 
 SafeFilename(label)
 {
-    StringReplace, label, label, ", ``", All
+    StringReplace, label, label, ", `"`", All
     StringReplace, label, label, ``, ````, All
     StringReplace, label, label, `%, ```%, All
     StringReplace, label, label, `,, ```,, All
