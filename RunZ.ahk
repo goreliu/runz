@@ -424,9 +424,14 @@ EscFunction:
     if (g_Conf.Config.ClearInputWithEsc && g_CurrentInput != "")
     {
         GoSub, ClearInput
-        return
     }
+    else
+    {
+        GoSub, HideOrExit
+    }
+return
 
+HideOrExit:
     ; 如果是后台运行模式，只关闭窗口，不退出程序
     if (g_Conf.Config.RunInBackground)
     {
@@ -1059,7 +1064,7 @@ RunCommand(originCmd)
 
     if (g_Conf.Config.RunOnce && !g_UseDisplay)
     {
-        GoSub, EscFunction
+        GoSub, HideOrExit
     }
 
     if (g_ExecInterval > 0 && splitedOriginCmd[1] == "function")
@@ -1506,7 +1511,7 @@ WM_ACTIVATE(wParam, lParam)
 ToExit:
     if (!WinExist("RunZ.ahk"))
     {
-        GoSub, EscFunction
+        GoSub, HideOrExit
     }
 
     SetTimer, ToExit, Off
