@@ -754,7 +754,7 @@ SearchCommand(command = "", firstRun = false)
             ; 第一次运行只加载 function 类型
             if (firstRun && (order - g_FirstChar >= g_DisplayRows - 4))
             {
-                result .= "`n`n现有 " g_Commands.Length() " 条命令。"
+                result .= "`n`n现有 " g_Commands.Length() " 条搜索项。"
                 result .= "`n`n键入内容 搜索，回车 执行当前命令，Alt + 字母 执行，F1 帮助，Esc 关闭。"
 
                 break
