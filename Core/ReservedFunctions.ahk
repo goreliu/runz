@@ -14,7 +14,7 @@ return
 
 GenerateQR:
     word := Arg == "" ? clipboard : Arg
-    QRfile := GenerateQR(SubStr(word, 10))
+    QRfile := GenerateQR(SubStr(word, 1, 1000))
 
     GdipToken := Gdip_Startup()
 
@@ -23,9 +23,16 @@ GenerateQR:
     Gdip_DisposeImage(bitmap)
     Gdip_Shutdown(GdipToken)
 
+    windowWidth := imageWidth
+
+    if (windowWidth >= 300)
+    {
+        windowWidth := 300
+    }
+
     Gui, QR:Destroy
-    Gui, QR:Add, Picture, x50 y50 w%imageWidth% h-1 gQRSaveAs, % file := QRfile
-    Gui, QR:Show, % "w" imageWidth + 100 " h" imageWidth + 100
+    Gui, QR:Add, Picture, x0 y0 w%windowWidth% h-1 gQRSaveAs, % file := QRfile
+    Gui, QR:Show, % "w" windowWidth " h" windowWidth
 return
 
 QRSaveAs:
@@ -58,7 +65,7 @@ GenerateQR(string, file = "")
     }
 
     DllCall(A_ScriptDir "\Lib\Reserved\quricol32.dll\GeneratePNG"
-        , "str", file, "str", string, "int", 4, "int", 2, "int", 0)
+        , "str", file, "str", string, "int", 4, "int", 6, "int", 0)
     return file
 }
 
