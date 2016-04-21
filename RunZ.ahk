@@ -1675,12 +1675,19 @@ AlignText(text)
 }
 
 WatchUserFileList:
-    FileGetTime, newModifyTime, %g_UserFileList%
-    if (lastModifyTime != newModifyTime)
+    FileGetTime, newUserFileListModifyTime, %g_UserFileList%
+    if (lastUserFileListModifyTime != "" && lastUserFileListModifyTime != newUserFileListModifyTime)
     {
         LoadFiles()
-        lastModifyTime := newModifyTime
     }
+    lastUserFileListModifyTime := newUserFileListModifyTime
+
+    FileGetTime, newConfFileModifyTime, %g_ConfFile%
+    if (lastConfFileModifyTime != "" && lastConfFileModifyTime != newConfFileModifyTime)
+    {
+        GoSub, RestartRunZ
+    }
+    lastConfFileModifyTime := newConfFileModifyTime
 return
 
 ; 0：英文 1：中文
