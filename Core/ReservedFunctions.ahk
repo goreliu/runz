@@ -14,7 +14,7 @@ return
 
 GenerateQR:
     word := Arg == "" ? clipboard : Arg
-    QRfile := GenerateQR(word)
+    QRfile := GenerateQR(SubStr(word, 10))
 
     GdipToken := Gdip_Startup()
 
