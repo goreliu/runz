@@ -33,7 +33,7 @@ Loop, %0%
         ; TODO
     }
 
-    if (g_Conf.Config.SendToLnkSimpleMode)
+    if (g_Conf.Config.SendToMenuSimpleMode)
     {
         FileAppend, file | %fileDir%\%fileName%`r`n, %g_UserFileList%
 
@@ -63,7 +63,7 @@ Loop, %0%
     allLabels[uniqueLabelName] := true
 }
 
-if (g_Conf.Config.SendToLnkSimpleMode)
+if (g_Conf.Config.SendToMenuSimpleMode)
 {
     ToolTip, 文件添加完毕，3 秒内生效
     sleep 1500
