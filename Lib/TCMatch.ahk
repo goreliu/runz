@@ -1,14 +1,14 @@
-﻿global g_TCMatchDllPath
-global g_TCMatchModule
+﻿global g_TCMatchModule
 
 TCMatchOn(dllPath = "")
 {
+    static TCMatchDllPath
     if (g_TCMatchModule != "")
     {
         return g_TCMatchModule
     }
 
-    if (dllPath == "" && g_TCMatchDllPath == "")
+    if (dllPath == "" && TCMatchDllPath == "")
     {
         return 0
     }
@@ -20,7 +20,7 @@ TCMatchOn(dllPath = "")
         }
         else
         {
-            g_TCMatchDllPath := dllPath
+            TCMatchDllPath := dllPath
         }
     }
 
@@ -29,7 +29,7 @@ TCMatchOn(dllPath = "")
         g_ReloadTCMatchInternal := 1000
     }
 
-    g_TCMatchModule := DllCall("LoadLibrary", "Str", g_TCMatchDllPath, "Ptr")
+    g_TCMatchModule := DllCall("LoadLibrary", "Str", TCMatchDllPath, "Ptr")
     return g_TCMatchModule
 }
 
