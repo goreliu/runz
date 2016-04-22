@@ -35,7 +35,7 @@ Functions:
     @("CurrencyRate", "汇率 使用示例： hl JPY EUR 2")
     @("CNY2USD", "汇率 人民币兑换美元")
     @("USD2CNY", "汇率 美元兑换人民币")
-    @("ProcessList", "进程列表 ps")
+    @("ListProcess", "进程列表 ps")
     @("UrlEncode", "URL 编码")
     @("DiskSpace", "查看磁盘空间 df")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
@@ -45,7 +45,7 @@ Functions:
     @("SystemState", "系统状态 top")
     @("KillProcess", "杀死进程")
     @("SendToClip", "发送到剪切板")
-    @("WindowList", "窗口列表")
+    @("ListWindow", "窗口列表")
     @("ActivateWindow", "激活窗口")
     @("InstallPlugin", "安装插件")
     @("RemovePlugin", "卸载插件")
@@ -344,7 +344,7 @@ EmptyRecycle:
     }
 return
 
-ProcessList:
+ListProcess:
     result := ""
 
     for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process")
@@ -427,7 +427,7 @@ SendToClip:
     GoSub, Clip
 return
 
-WindowList:
+ListWindow:
     result := ""
 
     WinGet, id, list, , , Program Manager
