@@ -144,6 +144,9 @@ BorderSize=15
 ; 语法和 [Hotkey] 一样，但作用范围是全局的
 
 [Plugins]
+Core=1
+; 核心功能，禁用需谨慎
+QRCode=1
 DemoPlugin=0
 
 
