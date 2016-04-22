@@ -1926,10 +1926,7 @@ return
 #include %A_ScriptDir%\Lib\HotKeyIt\WatchDirectory\WatchDirectory.ahk
 */
 #include %A_ScriptDir%\Core\Common.ahk
-#include %A_ScriptDir%\Core\ReservedFunctions.ahk
 #include %A_ScriptDir%\Core\GlobalMenu.ahk
 #include %A_ScriptDir%\Core\Plugins.ahk
-; 用户自定义命令
-#include *i %A_ScriptDir%\Conf\UserFunctions.ahk
 ; 发送到菜单自动生成的命令
 #include *i %A_ScriptDir%\Conf\UserFunctionsAuto.txt

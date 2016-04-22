@@ -1,7 +1,7 @@
-﻿global Arg
+﻿; RunZ:QRCode
+; 生成二维码
 
-; 这里可能会调用一些不包含在源码包里的第三方库
-ReservedFunctions:
+QRCode:
     if (!FileExist(A_ScriptDir "\Lib\Reserved"))
     {
         return
@@ -10,10 +10,17 @@ ReservedFunctions:
     @("GenerateQR", "生成二维码")
 return
 
-; GenerateQR begin
-
 GenerateQR:
     word := Arg == "" ? clipboard : Arg
+    if (word == "")
+    {
+        DisplayResult(AlignText("* | 错误 | 剪切板内无文本数据"))
+        return
+    }
+
+    DisplayResult(AlignText("* | 内容 | 二维码内容长度 | " StrLen(word) "`n"
+        . "* | 内容 | 二维码内容 | 见下方`n`n" word))
+
     QRfile := GenerateQR(SubStr(word, 1, 1000))
 
     GdipToken := Gdip_Startup()
@@ -68,5 +75,3 @@ GenerateQR(string, file = "")
         , "str", file, "str", string, "int", 4, "int", 6, "int", 0)
     return file
 }
-
-; GenerateQR end

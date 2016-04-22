@@ -51,11 +51,6 @@ Core:
     @("InstallPlugin", "安装插件")
     @("RemovePlugin", "卸载插件")
     @("ListPlugin", "列出插件")
-
-    if (IsLabel("ReservedFunctions"))
-    {
-        GoSub, ReservedFunctions
-    }
 return
 
 CmdRun:
