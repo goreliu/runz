@@ -23,6 +23,8 @@ GenerateQR:
 
     QRfile := GenerateQR(SubStr(word, 1, 1000))
 
+    /*
+    少占用 300 - 400 K 内存，先不引入 Gdip.ahk
     GdipToken := Gdip_Startup()
 
     bitmap := Gdip_CreateBitmapFromFile(QRfile)
@@ -36,6 +38,9 @@ GenerateQR:
     {
         windowWidth := 300
     }
+    */
+
+    windowWidth := 300
 
     Gui, QR:Destroy
     Gui, QR:Add, Picture, x0 y0 w%windowWidth% h-1 gQRSaveAs, % file := QRfile
@@ -71,9 +76,10 @@ GenerateQR(string, file = "")
         file := A_Temp "\RunZ.QR.png"
     }
 
-    DllCall(A_ScriptDir "\Lib\Reserved\quricol32.dll\GeneratePNG"
-        , "str", file, "str", string, "int", 4, "int", 6, "int", 0)
+    hModule := DllCall(A_ScriptDir "\Lib\Reserved\quricol32.dll\GeneratePNG"
+        , "str", file, "str", string, "int", 4, "int", 12, "int", 0)
+    DllCall("FreeLibrary", "Ptr", hModule)
     return file
 }
 
-#include %A_ScriptDir%\Lib\Gdip.ahk
+;#include %A_ScriptDir%\Lib\Gdip.ahk
