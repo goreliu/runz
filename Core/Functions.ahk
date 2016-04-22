@@ -46,6 +46,7 @@ Functions:
     @("KillProcess", "杀死进程")
     @("SendToClip", "发送到剪切板")
     @("WindowList", "窗口列表")
+    @("ActiveWindow", "激活窗口")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -439,4 +440,29 @@ WindowList:
 
     DisplayResult(AlignText(result))
     TurnOnResultFilter()
+return
+
+ActiveWindow:
+    DisplayResult()
+    ClearInput()
+
+    if (FullPipeArg != "")
+    {
+        Loop, Parse, FullPipeArg, `n, `r
+        {
+            if (A_LoopField == "")
+            {
+                return
+            }
+            splitedLine := StrSplit(A_LoopField, " | ")
+            WinActivate, % Trim(splitedLine[4])
+        }
+    }
+    else
+    {
+        for index, argument in StrSplit(Arg, " ")
+        {
+            WinActivate, ahk_exe %argument%
+        }
+    }
 return

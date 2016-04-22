@@ -87,8 +87,10 @@ global g_ExcludedCommands
 global g_ExecInterval
 ; 上次间隔运行的功能标签
 global g_LastExecLabel
-; 用来调用管道的参数
+; 用来调用管道的参数（结果第三列）
 global g_PipeArg
+; 用来调用管道的完整参数（所有列），供有必要的插件使用
+global FullPipeArg
 
 global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
@@ -924,9 +926,15 @@ SetExecInterval(second)
 }
 
 ClearInput:
+    ClearInput()
+return
+
+; 给插件用的函数
+ClearInput()
+{
     ControlSetText, %g_InputArea%, , %g_WindowName%
     ControlFocus, %g_InputArea%
-return
+}
 
 RunCurrentCommand:
     if (GetInputState() == 1)
@@ -1074,6 +1082,7 @@ RunCommand(originCmd)
     }
 
     g_PipeArg := ""
+    FullPipeArg := ""
 }
 
 ChangeRank(cmd, show = false, inc := 1)
@@ -1298,7 +1307,7 @@ DisplayControlText(text)
 }
 
 ; 用来显示命令结果
-DisplayResult(result)
+DisplayResult(result := "")
 {
     textToDisplay := StrReplace(result, "`n", "`r`n")
     ControlSetText, %g_DisplayArea%, %textToDisplay%, %g_WindowName%
@@ -1780,6 +1789,7 @@ return
 SaveResultAsArg:
     Arg := ""
     ControlGetText, result, %g_DisplayArea%
+    FullPipeArg := result
     Loop, Parse, result, `n, `r
     {
         Arg .= Trim(StrSplit(A_LoopField, " | ")[3])" "
