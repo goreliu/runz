@@ -47,6 +47,8 @@ else
 
 ; 当前输入命令的参数，数组，为了方便没有添加 g_ 前缀
 global Arg
+; 用来调用管道的完整参数（所有列），供有必要的插件使用
+global FullPipeArg
 ; 不能是 RunZ.ahk 的子串，否则按键绑定会有问题
 global g_WindowName := "RunZ    "
 ; 所有命令
@@ -89,8 +91,6 @@ global g_ExecInterval
 global g_LastExecLabel
 ; 用来调用管道的参数（结果第三列）
 global g_PipeArg
-; 用来调用管道的完整参数（所有列），供有必要的插件使用
-global FullPipeArg
 ; 用来补全命令用的
 global g_CommandFilter
 ; 插件列表
@@ -212,7 +212,6 @@ if (g_Conf.Config.ChangeCommandOnMouseMove)
 }
 
 Hotkey, IfWinActive, % g_WindowName
-; 如果是 ~Enter，有时候会响
 Hotkey, Enter, RunCurrentCommand
 
 Hotkey, Esc, EscFunction
@@ -247,7 +246,7 @@ Hotkey, RButton, OpenContextMenu
 Hotkey, AppsKey, OpenContextMenu
 Hotkey, ^Enter, SaveResultAsArg
 
-; 剩余按键 e g j m t w
+; 剩余按键 Ctrl + e g m t w
 
 Loop, % g_DisplayRows
 {
@@ -259,8 +258,6 @@ Loop, % g_DisplayRows
     ; shift +
     Hotkey, ~+%key%, GotoCommand
 }
-
-; 用户映射的按键
 
 for key, label in g_Conf.Hotkey
 {
