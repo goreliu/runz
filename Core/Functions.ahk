@@ -46,7 +46,7 @@ Functions:
     @("KillProcess", "杀死进程")
     @("SendToClip", "发送到剪切板")
     @("WindowList", "窗口列表")
-    @("ActiveWindow", "激活窗口")
+    @("ActivateWindow", "激活窗口")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -76,6 +76,7 @@ AhkRun:
 return
 
 Clip:
+    GoSub, ActivateRunZ
     DisplayResult("剪切板内容长度 " . StrLen(clipboard) . " ：`n`n" . clipboard)
 return
 
@@ -439,12 +440,12 @@ WindowList:
         result .= "* | 窗口 | " name " | " title "`n"
     }
 
-    SetCommandFilter("ActiveWindow|KillProcess")
+    SetCommandFilter("ActivateWindow|KillProcess")
     DisplayResult(AlignText(result))
     TurnOnResultFilter()
 return
 
-ActiveWindow:
+ActivateWindow:
     DisplayResult()
     ClearInput()
 

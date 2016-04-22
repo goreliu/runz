@@ -104,7 +104,7 @@ if (g_SkinConf.ShowTrayIcon)
     Menu, Tray, NoStandard
     if (!g_Conf.Config.ExitIfInactivate)
     {
-        Menu, Tray, Add, 显示 &S, ActivateWindow
+        Menu, Tray, Add, 显示 &S, ActivateRunZ
         Menu, Tray, Default, 显示 &S
         Menu, Tray, Click, 1
     }
@@ -247,6 +247,11 @@ for key, label in g_Conf.Hotkey
 
 Hotkey, IfWinActive
 
+if (g_Conf.Config.EnableGlobalMenu)
+{
+    HotKey, #RButton, GlobalMenu
+}
+
 for key, label in g_Conf.GlobalHotkey
 {
     if (label != "Default")
@@ -318,7 +323,7 @@ PrevPage:
     Send, {pgup}
 return
 
-ActivateWindow:
+ActivateRunZ:
     Gui, Show, , % g_WindowName
     if (g_Conf.Config.SwitchToEngIME)
     {
@@ -338,7 +343,7 @@ ToggleWindow:
     }
     else
     {
-        GoSub, ActivateWindow
+        GoSub, ActivateRunZ
     }
 return
 
@@ -1881,6 +1886,7 @@ SwitchToEngIME()
 #include %A_ScriptDir%\Core\Common.ahk
 #include %A_ScriptDir%\Core\Functions.ahk
 #include %A_ScriptDir%\Core\ReservedFunctions.ahk
+#include %A_ScriptDir%\Core\GlobalMenu.ahk
 ; 用户自定义命令
 #include *i %A_ScriptDir%\Conf\UserFunctions.ahk
 ; 发送到菜单自动生成的命令

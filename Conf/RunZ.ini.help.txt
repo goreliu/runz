@@ -56,6 +56,8 @@ SendToMenuSimpleMode=0
 ; 使用简单模式的发送到菜单
 SendToMenuReadLnkFile=1
 ; 如果使用发送到菜单发送的文件是 .lnk 的快捷方式，从文件读取路径后添加目标文件
+EnableGlobalMenu=0
+; 是否启用 WIn + 右键 的全局右键菜单
 
 [Gui]
 ; Skin=New
