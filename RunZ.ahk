@@ -735,6 +735,8 @@ SearchCommand(command = "", firstRun = false)
     }
     else if (InStr(command, " ") && g_CurrentCommand != "")
     {
+        g_PipeArg := ""
+
         ; 输入包含空格时锁定搜索结果
 
         if (g_UseResultFilter)
@@ -1853,7 +1855,8 @@ SaveResultAsArg:
     Send, {End}
     if (g_CommandFilter != "")
     {
-        SearchCommand(g_CommandFilter)
+        ; 第一个 | 代表要用管道执行，不然 g_PipeArg 会被清空
+        SearchCommand("|" g_CommandFilter)
         g_CommandFilter := ""
     }
 return
