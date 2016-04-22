@@ -28,8 +28,6 @@ Core:
     @("SuspendMachine", "挂起 睡眠 待机")
     @("HibernateMachine", "休眠")
     @("TurnMonitorOff", "关闭显示器")
-    @("T2S", "将剪切板或输入内容中的繁体转成简体")
-    @("S2T", "将剪切板或输入内容中的简体转成繁体")
     @("ShowIp", "显示 IP")
     @("Calendar", "用浏览器打开万年历")
     @("CleanupRank", "清理命令权重中的无效命令")
@@ -199,22 +197,6 @@ return
 
 Calendar:
     Run % "http://www.baidu.com/baidu?wd=%CD%F2%C4%EA%C0%FA"
-return
-
-T2S:
-    text := Arg == "" ? clipboard : Arg
-    clipboard := ""
-    clipboard := Kanji_t2s(text)
-    ClipWait
-    DisplayResult(clipboard)
-return
-
-S2T:
-    text := Arg == "" ? clipboard : Arg
-    clipboard := ""
-    clipboard := Kanji_s2t(text)
-    ClipWait
-    DisplayResult(clipboard)
 return
 
 ClearClipboardFormat:
@@ -532,6 +514,5 @@ ListPlugin:
     SetCommandFilter("RemovePlugin")
 return
 
-#include %A_ScriptDir%\Lib\Kanji\Kanji.ahk
 #include %A_ScriptDir%\Lib\Eval.ahk
 #include %A_ScriptDir%\Lib\JSON.ahk
