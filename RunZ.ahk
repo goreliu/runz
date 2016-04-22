@@ -1808,6 +1808,6 @@ return
 #include %A_ScriptDir%\Lib\TCMatch.ahk
 #include %A_ScriptDir%\Core\Common.ahk
 #include %A_ScriptDir%\Core\GlobalMenu.ahk
-#include %A_ScriptDir%\Core\Plugins.ahk
+#include *i %A_ScriptDir%\Core\Plugins.ahk
 ; 发送到菜单自动生成的命令
 #include *i %A_ScriptDir%\Conf\UserFunctionsAuto.txt

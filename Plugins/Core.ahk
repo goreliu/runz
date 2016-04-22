@@ -49,6 +49,7 @@ Core:
     @("InstallPlugin", "安装插件")
     @("RemovePlugin", "卸载插件")
     @("ListPlugin", "列出插件")
+    @("CleanupPlugin", "清理插件")
 return
 
 CmdRun:
@@ -512,6 +513,32 @@ ListPlugin:
     DisplayResult(AlignText(result))
     TurnOnResultFilter()
     SetCommandFilter("RemovePlugin")
+return
+
+CleanupPlugin:
+    result := ""
+    FileRead, currentPlugins, %A_ScriptDir%\Core\Plugins.ahk
+    Loop, Parse, currentPlugins, `n, `r
+    {
+        SplitPath, A_LoopField , , , , pluginName,
+        if (g_Conf.GetValue("Plugins", pluginName) == 0)
+        {
+            result .= pluginName " 插件已被清理，下次运行 RunZ 将不再引入`n"
+            StringReplace, currentPlugins, currentPlugins
+                , #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk`r`n
+        }
+    }
+
+    if (result != "")
+    {
+        DisplayResult(result)
+        FileDelete, %A_ScriptDir%\Core\Plugins.ahk
+        FileAppend, %currentPlugins%, %A_ScriptDir%\Core\Plugins.ahk
+    }
+    else
+    {
+        DisplayResult("无可清理插件")
+    }
 return
 
 #include %A_ScriptDir%\Lib\Eval.ahk
