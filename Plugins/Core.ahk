@@ -22,7 +22,7 @@ Core:
     @("HibernateMachine", "休眠")
     @("TurnMonitorOff", "关闭显示器")
     @("CleanupRank", "清理命令权重中的无效命令")
-    @("ListProcess", "进程列表 ps")
+    @("ListProcess", "列出进程 ps")
     @("DiskSpace", "查看磁盘空间 df")
     @("ArgTest", "参数测试：ArgTest arg1,arg2,...")
     @("AhkTest", "运行参数或者剪切板中的 AHK 代码")
