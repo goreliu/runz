@@ -47,6 +47,8 @@ Functions:
     @("SendToClip", "发送到剪切板")
     @("WindowList", "窗口列表")
     @("ActivateWindow", "激活窗口")
+    ;@("InstallPlugin", "安装插件")
+    @("UninstallPlugin", "卸载插件")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -468,4 +470,22 @@ ActivateWindow:
             WinActivate, ahk_exe %argument%
         }
     }
+return
+
+UninstallPlugin:
+    pluginName := Arg
+    if (!FileExist(A_ScriptDir "\Plugins\" pluginName ".ahk"))
+    {
+        DisplayResult("未安装该插件")
+        return
+    }
+
+    FileRead, currentPlugins, %A_ScriptDir%\Core\Plugins.ahk
+    StringReplace, currentPlugins, currentPlugins
+        , #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk`r`n
+    FileDelete, %A_ScriptDir%\Core\Plugins.ahk
+    FileAppend, %currentPlugins%, %A_ScriptDir%\Core\Plugins.ahk
+    FileDelete, %A_ScriptDir%\Plugins\%pluginName%.ahk
+
+    DisplayResult(pluginName " 插件删除成功")
 return

@@ -115,7 +115,7 @@ Loop, Files, %A_ScriptDir%\Plugins\*.ahk
         }
         else
         {
-            FileAppend, #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk
+            FileAppend, #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk`n
                 , %A_ScriptDir%\Core\Plugins.ahk
             needRestart := true
         }
@@ -124,7 +124,7 @@ Loop, Files, %A_ScriptDir%\Plugins\*.ahk
 
 if (needRestart)
 {
-    GoSub, RestartRunZ
+    Reload
 }
 
 if (g_SkinConf.ShowTrayIcon)
