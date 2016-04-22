@@ -147,7 +147,7 @@ BorderSize=15
 Core=1
 ; 核心功能，禁用需谨慎
 QRCode=1
-DemoPlugin=0
+Demo=0
 
 
 
