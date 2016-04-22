@@ -752,12 +752,10 @@ SearchCommand(command = "", firstRun = false)
         {
             RunCommand(g_CurrentCommand)
             resultToFilter := ""
-            g_PipeArg := ""
         }
         else
         {
             resultToFilter := ""
-            g_PipeArg := ""
         }
 
         return
@@ -767,7 +765,6 @@ SearchCommand(command = "", firstRun = false)
         g_UseResultFilter := false
         g_UseRealtimeExec := false
         resultToFilter := ""
-        g_PipeArg := ""
 
         ; 搜索结果被锁定，直接退出
         return
@@ -776,8 +773,11 @@ SearchCommand(command = "", firstRun = false)
     g_UseResultFilter := false
     g_UseRealtimeExec := false
     resultToFilter := ""
-; TODO
-;    g_PipeArg := ""
+
+    if (commandPrefix != "|")
+    {
+        g_PipeArg := ""
+    }
 
     g_CurrentCommandList := Object()
 
