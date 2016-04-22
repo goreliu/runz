@@ -93,10 +93,39 @@ global g_PipeArg
 global FullPipeArg
 ; 用来补全命令用的
 global g_CommandFilter
+; 插件列表
+global g_Plugins := Object()
 
 global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
 global g_CommandArea := "Edit4"
+
+FileRead, currentPlugins, %A_ScriptDir%\Core\Plugins.ahk
+needRestart := false
+
+Loop, Files, %A_ScriptDir%\Plugins\*.ahk
+{
+    FileReadLine, firstLine, %A_LoopFileLongPath%, 1
+    pluginName := StrSplit(firstLine, ":")[2]
+    if (!(g_Conf.GetValue("Plugins", pluginName) == 0))
+    {
+        if (RegExMatch(currentPlugins, "m)" pluginName ".ahk$"))
+        {
+            g_Plugins.Push(pluginName)
+        }
+        else
+        {
+            FileAppend, #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk
+                , %A_ScriptDir%\Core\Plugins.ahk
+            needRestart := true
+        }
+    }
+}
+
+if (needRestart)
+{
+    GoSub, RestartRunZ
+}
 
 if (g_SkinConf.ShowTrayIcon)
 {
@@ -616,7 +645,7 @@ GenerateSearchFileList()
             Loop, Files, %searchPath%\%ext%, R
             {
                 if (g_Conf.Config.SearchFileExclude != ""
-                        && RegexMatch(A_LoopFileLongPath, g_Conf.Config.SearchFileExclude))
+                        && RegExMatch(A_LoopFileLongPath, g_Conf.Config.SearchFileExclude))
                 {
                     continue
                 }
@@ -1272,16 +1301,15 @@ LoadFiles(loadRank := true)
         }
     }
 
-    if (FileExist(A_ScriptDir "\Conf\UserFunctions.ahk"))
+    for index, element in g_Plugins
     {
-        userFunctionLabel := "UserFunctions"
-        if (IsLabel(userFunctionLabel))
+        if (IsLabel(element))
         {
-            GoSub, %userFunctionLabel%
+            GoSub, %element%
         }
         else
         {
-            MsgBox, 未在 %A_ScriptDir%\Conf\UserFunctions.ahk 中发现 %userFunctionLabel% 标签，请修改！
+            MsgBox, 未在 %A_ScriptDir%\Plugins\%element%.ahk 中发现 %element% 标签，请修改！
         }
     }
 
@@ -1887,6 +1915,7 @@ SwitchToEngIME()
 #include %A_ScriptDir%\Core\Functions.ahk
 #include %A_ScriptDir%\Core\ReservedFunctions.ahk
 #include %A_ScriptDir%\Core\GlobalMenu.ahk
+#include %A_ScriptDir%\Core\Plugins.ahk
 ; 用户自定义命令
 #include *i %A_ScriptDir%\Conf\UserFunctions.ahk
 ; 发送到菜单自动生成的命令
