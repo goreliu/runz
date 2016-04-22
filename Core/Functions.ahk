@@ -477,14 +477,14 @@ InstallPlugin:
     if (FileExist(pluginPath))
     {
         FileReadLine, firstLine, %pluginPath%, 1
-        if (!InStr(firstLine, "RunZ:"))
+        if (!InStr(firstLine, "; RunZ:"))
         {
             DisplayResult(pluginPath " 并不是有效的 RunZ 插件")
             return
         }
 
-        pluginName := StrSplit(firstLine, "RunZ:")[2]
-        if (IsLabel(pluginName))
+        pluginName := StrSplit(firstLine, "; RunZ:")[2]
+        if (FileExist(A_ScriptDir "\Plugins\" pluginName ".ahk"))
         {
             DisplayResult("该插件已存在")
             return

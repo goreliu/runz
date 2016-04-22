@@ -18,11 +18,33 @@ index := 1
 
 Loop, %0%
 {
-    SplitPath, %A_Index%, fileName, fileDir, fileExt, fileNameNoExt
+    inputFileName := %A_Index%
+    SplitPath, inputFileName, fileName, fileDir, fileExt, fileNameNoExt
 
     if (fileNameNoExt == "")
     {
         continue
+    }
+
+    if (fileExt == "ahk")
+    {
+        FileReadLine, firstLine, %inputFileName%, 1
+        if (InStr(firstLine, " RunZ:"))
+        {
+            pluginName := StrSplit(firstLine, "; RunZ:")[2]
+            if (FileExist(A_ScriptDir "\..\Plugins\" pluginName ".ahk"))
+            {
+                ToolTip, %pluginName% 插件已存在
+                sleep 1500
+                ExitApp
+            }
+            FileMove, %inputFileName%, %A_ScriptDir%\..\Plugins\%pluginName%.ahk
+            FileAppend, #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk`n
+                , %A_ScriptDir%\..\Core\Plugins.ahk
+            ToolTip, %pluginName% 插件安装成功，请手动重启 RunZ 以生效
+            sleep 1500
+            ExitApp
+        }
     }
 
     labelName := SafeLabel(fileNameNoExt)
