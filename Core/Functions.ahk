@@ -49,6 +49,7 @@ Functions:
     @("ActivateWindow", "激活窗口")
     @("InstallPlugin", "安装插件")
     @("RemovePlugin", "卸载插件")
+    @("ListPlugin", "列出插件")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -522,4 +523,21 @@ RemovePlugin:
     DisplayResult(pluginName " 插件删除成功，RunZ 将重启以生效")
     Sleep, 1000
     GoSub, RestartRunZ
+return
+
+ListPlugin:
+    result := ""
+    Loop, Files, %A_ScriptDir%\Plugins\*.ahk
+    {
+        pluginName := StrReplace(A_LoopFileName, ".ahk")
+        if (IsLabel(pluginName))
+        {
+            result := "* | 插件 | " pluginName " | 已启用`n"
+        }
+        else
+        {
+            result := "* | 插件 | " pluginName " | 已禁用`n"
+        }
+    }
+    DisplayResult(AlignText(result))
 return
