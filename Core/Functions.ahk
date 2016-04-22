@@ -438,6 +438,7 @@ WindowList:
         result .= "* | 窗口 | " name " | " title "`n"
     }
 
+    SetCommandFilter("ActiveWindow|KillProcess")
     DisplayResult(AlignText(result))
     TurnOnResultFilter()
 return

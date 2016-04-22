@@ -91,6 +91,8 @@ global g_LastExecLabel
 global g_PipeArg
 ; 用来调用管道的完整参数（所有列），供有必要的插件使用
 global FullPipeArg
+; 用来补全命令用的
+global g_CommandFilter
 
 global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
@@ -872,7 +874,7 @@ FilterResult(text, needle)
     result := ""
     Loop, Parse, text, `n, `r
     {
-        if (MatchCommand(StrReplace(SubStr(A_LoopField, 10), "\", " "), needle))
+        if (MatchResult(StrReplace(SubStr(A_LoopField, 10), "\", " "), needle))
         {
             result .= A_LoopField "`n"
         }
@@ -983,6 +985,16 @@ ParseArg:
 return
 
 MatchCommand(Haystack, Needle)
+{
+    if (g_EnableTCMatch)
+    {
+        return TCMatch(Haystack, Needle)
+    }
+
+    return InStr(Haystack, Needle)
+}
+
+MatchResult(Haystack, Needle)
 {
     if (g_EnableTCMatch)
     {
@@ -1798,7 +1810,21 @@ SaveResultAsArg:
     ControlFocus, %g_InputArea%
     ControlSetText, %g_InputArea%, |
     Send, {End}
+    if (g_CommandFilter != "")
+    {
+        SearchCommand(g_CommandFilter)
+        g_CommandFilter := ""
+    }
 return
+
+; 格式：
+; 与 command1&command2
+; 或 command1|command2
+; 非 !command1
+SetCommandFilter(command)
+{
+    g_CommandFilter := command
+}
 
 ; 0：英文 1：中文
 GetInputState(WinTitle = "A")
