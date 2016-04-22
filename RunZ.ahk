@@ -776,7 +776,8 @@ SearchCommand(command = "", firstRun = false)
     g_UseResultFilter := false
     g_UseRealtimeExec := false
     resultToFilter := ""
-    g_PipeArg := ""
+; TODO
+;    g_PipeArg := ""
 
     g_CurrentCommandList := Object()
 
@@ -1844,6 +1845,8 @@ SaveResultAsArg:
     {
         Arg .= Trim(StrSplit(A_LoopField, " | ")[3])" "
     }
+
+    Arg := Trim(Arg)
 
     ControlFocus, %g_InputArea%
     ControlSetText, %g_InputArea%, |
