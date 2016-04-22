@@ -539,7 +539,14 @@ ChangeCommand(step, resetCurrentLine = false)
 
     ; 修改输入框内容
     currentChar := Chr(g_FirstChar + g_CurrentLine - 1)
-    newInput := "@" currentChar " "
+    if (SubStr(g_CurrentInput, 1, 1) == "|")
+    {
+        newInput := "|@" currentChar " "
+    }
+    else
+    {
+        newInput := "@" currentChar " "
+    }
 
     if (g_UseFallbackCommands)
     {
@@ -729,6 +736,11 @@ SearchCommand(command = "", firstRun = false)
         }
         ; 去掉 |，然后按常规搜索处理
         command := SubStr(command, 2)
+        if (SubStr(command, 1, 1) == "@")
+        {
+            command := SubStr(command, 1, 4)
+            return
+        }
     }
     else if (InStr(command, " ") && g_CurrentCommand != "")
     {

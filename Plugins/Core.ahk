@@ -50,6 +50,7 @@ Core:
     @("RemovePlugin", "卸载插件")
     @("ListPlugin", "列出插件")
     @("CleanupPlugin", "清理插件")
+    @("CountNumber", "计算数量")
 return
 
 CmdRun:
@@ -321,7 +322,7 @@ ListProcess:
         result .= "* | 进程 | " process.Name " | " process.CommandLine "`n"
     Sort, result
 
-    SetCommandFilter("KillProcess")
+    SetCommandFilter("KillProcess|CountNumber")
     DisplayResult(FilterResult(AlignText(result), Arg))
     TurnOnResultFilter()
 return
@@ -548,6 +549,11 @@ CleanupPlugin:
         DisplayResult("无可清理插件")
     }
 return
+
+CountNumber:
+    DisplayResult(AlignText("* | 数量 | " StrSplit(Arg, " ").Length() " | 以空格为分隔符"))
+return
+
 
 #include %A_ScriptDir%\Lib\Eval.ahk
 #include %A_ScriptDir%\Lib\JSON.ahk
