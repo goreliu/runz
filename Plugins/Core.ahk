@@ -445,6 +445,14 @@ return
 
 InstallPlugin:
     pluginPath := Arg
+
+    if (InStr(pluginPath, "http") == 1)
+    {
+        DisplayResult("下载中，请稍后...")
+        UrlDownloadToFile, %pluginPath%, %A_Temp%\RunZ.Plugin.txt
+        pluginPath := A_Temp "\RunZ.Plugin.txt"
+    }
+
     if (FileExist(pluginPath))
     {
         FileReadLine, firstLine, %pluginPath%, 1
