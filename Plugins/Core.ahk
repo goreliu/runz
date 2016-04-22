@@ -531,3 +531,7 @@ ListPlugin:
     TurnOnResultFilter()
     SetCommandFilter("RemovePlugin")
 return
+
+#include %A_ScriptDir%\Lib\Kanji\Kanji.ahk
+#include %A_ScriptDir%\Lib\Eval.ahk
+#include %A_ScriptDir%\Lib\JSON.ahk

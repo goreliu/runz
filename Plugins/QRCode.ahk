@@ -75,3 +75,5 @@ GenerateQR(string, file = "")
         , "str", file, "str", string, "int", 4, "int", 6, "int", 0)
     return file
 }
+
+#include %A_ScriptDir%\Lib\Gdip.ahk
