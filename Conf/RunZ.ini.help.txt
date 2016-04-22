@@ -147,6 +147,9 @@ BorderSize=15
 Core=1
 ; 核心功能，禁用需谨慎
 QRCode=1
+; 生成二维码
+Kanji=0
+; 简体繁体转换
 Demo=0
 
 
