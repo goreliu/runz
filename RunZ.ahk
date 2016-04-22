@@ -517,7 +517,8 @@ ChangeCommand(step, resetCurrentLine = false)
 {
     ControlGetText, g_CurrentInput, %g_InputArea%
 
-    if (resetCurrentLine || SubStr(g_CurrentInput, 1, 1) != "@")
+    if (resetCurrentLine
+        || (SubStr(g_CurrentInput, 1, 1) != "@" && SubStr(g_CurrentInput, 1, 2) != "|@"))
     {
         g_CurrentLine := 1
     }
