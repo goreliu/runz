@@ -530,13 +530,13 @@ ListPlugin:
     Loop, Files, %A_ScriptDir%\Plugins\*.ahk
     {
         pluginName := StrReplace(A_LoopFileName, ".ahk")
-        if (IsLabel(pluginName))
+        if (g_Conf.GetValue("Plugins", pluginName) == 0)
         {
-            result .= "* | 插件 | " pluginName " | 已启用`n"
+            result .= "* | 插件 | " pluginName " | 已禁用`n"
         }
         else
         {
-            result .= "* | 插件 | " pluginName " | 已禁用`n"
+            result .= "* | 插件 | " pluginName " | 已启用`n"
         }
     }
 
