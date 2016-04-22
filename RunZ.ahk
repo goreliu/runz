@@ -1329,8 +1329,6 @@ LoadFiles(loadRank := true)
         }
     }
 
-    GoSub, Functions
-
     if (FileExist(g_UserFileList))
     {
         Loop, Read, %g_UserFileList%
@@ -1905,6 +1903,16 @@ SwitchToEngIME()
     SwitchIME(0x08040804) ; 中文(中国) 简体中文-美式键盘
 }
 
+Help:
+    DisplayResult(KeyHelpText() . GetAllFunctions())
+return
+
+KeyHelp:
+    ToolTip, % KeyHelpText()
+    SetTimer, RemoveToolTip, 5000
+return
+
+
 #include %A_ScriptDir%\Lib\EasyIni.ahk
 #include %A_ScriptDir%\Lib\TCMatch.ahk
 #include %A_ScriptDir%\Lib\Eval.ahk
@@ -1918,7 +1926,6 @@ SwitchToEngIME()
 #include %A_ScriptDir%\Lib\HotKeyIt\WatchDirectory\WatchDirectory.ahk
 */
 #include %A_ScriptDir%\Core\Common.ahk
-#include %A_ScriptDir%\Core\Functions.ahk
 #include %A_ScriptDir%\Core\ReservedFunctions.ahk
 #include %A_ScriptDir%\Core\GlobalMenu.ahk
 #include %A_ScriptDir%\Core\Plugins.ahk

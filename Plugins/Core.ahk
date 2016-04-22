@@ -1,6 +1,7 @@
-﻿global Arg
+﻿; RunZ:Core
+; 核心功能
 
-Functions:
+Core:
     @("Help", "帮助信息")
     @("KeyHelp", "置顶的按键帮助信息")
     @("AhkRun", "使用 Ahk 的 Run() 运行 `; command", true)
@@ -55,15 +56,6 @@ Functions:
     {
         GoSub, ReservedFunctions
     }
-return
-
-Help:
-    DisplayResult(KeyHelpText() . GetAllFunctions())
-return
-
-KeyHelp:
-    ToolTip, % KeyHelpText()
-    SetTimer, RemoveToolTip, 5000
 return
 
 CmdRun:
