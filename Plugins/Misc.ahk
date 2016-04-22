@@ -1,5 +1,5 @@
 ﻿; RunZ:Misc
-; 实用工具
+; 实用工具集合
 
 Misc:
     @("Dictionary", "有道词典在线翻译", true)

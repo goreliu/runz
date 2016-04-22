@@ -37,7 +37,7 @@ Core:
     @("RemovePlugin", "卸载插件")
     @("ListPlugin", "列出插件")
     @("CleanupPlugin", "清理插件")
-    @("CountNumber", "计算数量")
+    @("CountNumber", "计算数量 wc")
 return
 
 CmdRun:
