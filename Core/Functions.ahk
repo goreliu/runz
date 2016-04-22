@@ -347,6 +347,7 @@ ProcessList:
         result .= "* | 进程 | " process.Name " | " process.CommandLine "`n"
     Sort, result
 
+    SetCommandFilter("KillProcess")
     DisplayResult(FilterResult(AlignText(result), Arg))
     TurnOnResultFilter()
 return
