@@ -47,8 +47,8 @@ Functions:
     @("SendToClip", "发送到剪切板")
     @("WindowList", "窗口列表")
     @("ActivateWindow", "激活窗口")
-    ;@("InstallPlugin", "安装插件")
-    @("UninstallPlugin", "卸载插件")
+    @("InstallPlugin", "安装插件")
+    @("RemovePlugin", "卸载插件")
 
     if (IsLabel("ReservedFunctions"))
     {
@@ -472,7 +472,39 @@ ActivateWindow:
     }
 return
 
-UninstallPlugin:
+InstallPlugin:
+    pluginPath := Arg
+    if (FileExist(pluginPath))
+    {
+        FileReadLine, firstLine, %pluginPath%, 1
+        if (!InStr(firstLine, "RunZ:"))
+        {
+            DisplayResult(pluginPath " 并不是有效的 RunZ 插件")
+            return
+        }
+
+        pluginName := StrSplit(firstLine, "RunZ:")[2]
+        if (IsLabel(pluginName))
+        {
+            DisplayResult("该插件已存在")
+            return
+        }
+
+        FileMove, %pluginPath%, %A_ScriptDir%\Plugins\%pluginName%.ahk
+		FileAppend, #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk`n
+			, %A_ScriptDir%\Core\Plugins.ahk
+
+		DisplayResult(pluginName " 插件安装成功，RunZ 将重启并启用该插件")
+        Sleep, 1000
+        GoSub, RestartRunZ
+    }
+    else
+    {
+        DisplayResult(pluginPath " 文件不存在")
+    }
+return
+
+RemovePlugin:
     pluginName := Arg
     if (!FileExist(A_ScriptDir "\Plugins\" pluginName ".ahk"))
     {
@@ -487,5 +519,7 @@ UninstallPlugin:
     FileAppend, %currentPlugins%, %A_ScriptDir%\Core\Plugins.ahk
     FileDelete, %A_ScriptDir%\Plugins\%pluginName%.ahk
 
-    DisplayResult(pluginName " 插件删除成功")
+    DisplayResult(pluginName " 插件删除成功，RunZ 将重启以生效")
+    Sleep, 1000
+    GoSub, RestartRunZ
 return
