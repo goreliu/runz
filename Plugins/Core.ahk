@@ -40,6 +40,7 @@ Core:
     @("CountNumber", "计算数量 wc")
     @("ListRunningService", "列出运行的服务")
     @("ListAllService", "列出运行的服务")
+    @("ShowService", "显示服务详情")
 return
 
 CmdRun:
@@ -151,7 +152,7 @@ return
 ListProcess:
     result := ""
 
-    for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process")
+    for process in ComObjGet("winmgmts:").ExecQuery("select * from Win32_Process")
     {
         result .= "* | 进程 | " process.Name " | " process.CommandLine "`n"
     }
@@ -396,20 +397,20 @@ return
 
 ListAllService:
     result :=
-    for service in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Service")
+    for service in ComObjGet("winmgmts:").ExecQuery("select * from Win32_Service")
     {
         result .= "* | 服务 | " service.Name " | " service.DisplayName "`n"
     }
     Sort, result
 
-    SetCommandFilter("CountNumber")
+    SetCommandFilter("CountNumber|ShowService")
     DisplayResult(FilterResult(AlignText(result), Arg))
     TurnOnResultFilter()
 return
 
 ListRunningService:
     result :=
-    for service in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Service")
+    for service in ComObjGet("winmgmts:").ExecQuery("select * from Win32_Service")
     {
         if (service.Started != 0)
         {
@@ -418,7 +419,26 @@ ListRunningService:
     }
     Sort, result
 
-    SetCommandFilter("CountNumber")
+    SetCommandFilter("CountNumber|ShowService")
     DisplayResult(FilterResult(AlignText(result), Arg))
     TurnOnResultFilter()
+return
+
+ShowService:
+    result :=
+    ; 暂时只支持一个，选得多了查起来太慢
+    for service in ComObjGet("winmgmts:")
+        .ExecQuery("select * from Win32_Service where Name = '" StrSplit(Arg, " ")[1] "'")
+    {
+        ; https://msdn.microsoft.com/en-us/library/windows/desktop/aa394418%28v=vs.85%29.aspx
+        result .= "* | 服务 | 服务名 | " service.Name "`n"
+        result .= "* | 服务 | 服务描述 | " service.Description "`n"
+        result .= "* | 服务 | 是否在运行 | " service.Started "`n"
+        result .= "* | 服务 | 路径 | " service.PathName "`n"
+        result .= "* | 服务 | 进程 ID | " service.ProcessId "`n"
+        result .= "* | 服务 | 服务类型 | " service.ServiceType "`n"
+        break
+    }
+
+    DisplayResult(AlignText(result))
 return
