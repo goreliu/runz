@@ -223,6 +223,8 @@ KillProcess:
     {
         Process, Close, %argument%
     }
+
+    DisplayResult("已尝试杀死 " Arg " 进程")
 return
 
 SendToClip:
