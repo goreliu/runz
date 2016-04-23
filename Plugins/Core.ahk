@@ -41,6 +41,7 @@ Core:
     @("ListRunningService", "列出运行的服务")
     @("ListAllService", "列出运行的服务")
     @("ShowService", "显示服务详情")
+    @("ShowProcess", "显示进程详情")
 return
 
 CmdRun:
@@ -158,7 +159,7 @@ ListProcess:
     }
     Sort, result
 
-    SetCommandFilter("KillProcess|CountNumber")
+    SetCommandFilter("KillProcess|ShowProcess|CountNumber")
     DisplayResult(FilterResult(AlignText(result), Arg))
     TurnOnResultFilter()
 return
@@ -431,12 +432,30 @@ ShowService:
         .ExecQuery("select * from Win32_Service where Name = '" StrSplit(Arg, " ")[1] "'")
     {
         ; https://msdn.microsoft.com/en-us/library/windows/desktop/aa394418%28v=vs.85%29.aspx
-        result .= "* | 服务 | 服务名 | " service.Name "`n"
-        result .= "* | 服务 | 服务描述 | " service.Description "`n"
+        result .= "* | 服务 | 名称 | " service.Name "`n"
+        result .= "* | 服务 | 描述 | " service.Description "`n"
         result .= "* | 服务 | 是否在运行 | " service.Started "`n"
         result .= "* | 服务 | 路径 | " service.PathName "`n"
         result .= "* | 服务 | 进程 ID | " service.ProcessId "`n"
-        result .= "* | 服务 | 服务类型 | " service.ServiceType "`n"
+        result .= "* | 服务 | 类型 | " service.ServiceType "`n"
+        break
+    }
+
+    DisplayResult(AlignText(result))
+return
+
+ShowProcess:
+    result :=
+    ; 暂时只支持一个，选得多了查起来太慢
+    for process in ComObjGet("winmgmts:")
+        .ExecQuery("select * from Win32_Process where Name = '" StrSplit(Arg, " ")[1] "'")
+    {
+        ; https://msdn.microsoft.com/en-us/library/windows/desktop/aa394372%28v=vs.85%29.aspx
+        result .= "* | 服务 | 名称 | " process.Name "`n"
+        result .= "* | 服务 | 描述 | " process.Description "`n"
+        result .= "* | 服务 | 命令行 | " process.CommandLine "`n"
+        result .= "* | 服务 | 启动时间 | " process.CreationDate "`n"
+        result .= "* | 服务 | ID | " process.ProcessId "`n"
         break
     }
 
