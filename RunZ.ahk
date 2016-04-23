@@ -1784,12 +1784,16 @@ SaveResultAsArg:
     Arg := ""
     ControlGetText, result, %g_DisplayArea%
     FullPipeArg := result
-    Loop, Parse, result, `n, `r
+    if (!InStr(result, " | "))
     {
-        Arg .= Trim(StrSplit(A_LoopField, " | ")[3]) " "
-        if (Arg == " ")
+        Arg .= StrReplace(result, "`n", " ")
+        Arg := StrReplace(Arg, "`r")
+    }
+    else
+    {
+        Loop, Parse, result, `n, `r
         {
-            Arg .= A_LoopField " "
+            Arg .= Trim(StrSplit(A_LoopField, " | ")[3]) " "
         }
     }
 
