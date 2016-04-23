@@ -926,7 +926,11 @@ FilterResult(text, needle)
     result := ""
     Loop, Parse, text, `n, `r
     {
-        if (MatchResult(StrReplace(SubStr(A_LoopField, 10), "\", " "), needle))
+        if (!InStr(A_LoopField, " | ") && MatchResult(A_LoopField, needle))
+        {
+            result .= A_LoopField "`n"
+        }
+        else if (MatchResult(StrReplace(SubStr(A_LoopField, 10), "\", " "), needle))
         {
             result .= A_LoopField "`n"
         }
@@ -1782,7 +1786,11 @@ SaveResultAsArg:
     FullPipeArg := result
     Loop, Parse, result, `n, `r
     {
-        Arg .= Trim(StrSplit(A_LoopField, " | ")[3])" "
+        Arg .= Trim(StrSplit(A_LoopField, " | ")[3]) " "
+        if (Arg == " ")
+        {
+            Arg .= A_LoopField " "
+        }
     }
 
     Arg := Trim(Arg)
