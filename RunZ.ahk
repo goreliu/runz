@@ -213,10 +213,7 @@ if (g_Conf.Config.ExitIfInactivate)
     OnMessage(0x06, "WM_ACTIVATE")
 }
 
-if (g_Conf.Config.ChangeCommandOnMouseMove)
-{
-    OnMessage(0x0200, "WM_MOUSEMOVE")
-}
+OnMessage(0x0200, "WM_MOUSEMOVE")
 
 Hotkey, IfWinActive, % g_WindowName
 Hotkey, Enter, RunCurrentCommand
@@ -1596,6 +1593,16 @@ return
 
 WM_MOUSEMOVE(wParam, lParam)
 {
+    if (wparam = 1) ; LButton
+    {
+        PostMessage, 0xA1, 2, , , A ; WM_NCLBUTTONDOWN
+    }
+
+    if (!g_Conf.Config.ChangeCommandOnMouseMove)
+    {
+        return
+    }
+
     MouseGetPos, , mouseY, , classnn,
     if (classnn != g_DisplayArea)
     {
