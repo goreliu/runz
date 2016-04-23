@@ -864,7 +864,8 @@ SearchCommand(command = "", firstRun = false)
         else
         {
             elementToShow := splitedElement[1] " | " splitedElement[2]
-            elementToSearch := splitedElement[2]
+            elementToSearch := StrReplace(splitedElement[2], "/", " ")
+            elementToSearch := StrReplace(elementToSearch, "\", " ")
 
             if (splitedElement.Length() >= 3)
             {
@@ -930,6 +931,7 @@ SearchCommand(command = "", firstRun = false)
     result := StrReplace(result, "file | ", "文件 | ")
     result := StrReplace(result, "function | ", "功能 | ")
     result := StrReplace(result, "cmd | ", "命令 | ")
+    result := StrReplace(result, "url | ", "网址 | ")
 
     DisplaySearchResult(result)
     return result
@@ -1142,6 +1144,16 @@ RunCommand(originCmd)
     else if (splitedOriginCmd[1] == "cmd")
     {
         RunWithCmd(cmd)
+    }
+    else if (splitedOriginCmd[1] == "url")
+    {
+        url := splitedOriginCmd[2]
+        if (!Instr(url, "http"))
+        {
+            url := "http://" . url
+        }
+
+        Run, %url%
     }
 
     if (g_Conf.Config.SaveHistory && cmd != "DisplayHistoryCommands")
@@ -1460,6 +1472,7 @@ DisplayHistoryCommands:
     result := StrReplace(result, "file | ", "文件 | ")
     result := StrReplace(result, "function | ", "功能 | ")
     result := StrReplace(result, "cmd | ", "命令 | ")
+    result := StrReplace(result, "url | ", "网址 | ")
 
     DisplayControlText(result)
 return
