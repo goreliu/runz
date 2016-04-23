@@ -303,10 +303,10 @@ InstallPlugin:
         }
 
         FileMove, %pluginPath%, %A_ScriptDir%\Plugins\%pluginName%.ahk
-		FileAppend, #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk`n
-			, %A_ScriptDir%\Core\Plugins.ahk
+        FileAppend, #include *i `%A_ScriptDir`%\Plugins\%pluginName%.ahk`n
+            , %A_ScriptDir%\Core\Plugins.ahk
 
-		DisplayResult(pluginName " 插件安装成功，RunZ 将重启并启用该插件")
+        DisplayResult(pluginName " 插件安装成功，RunZ 将重启并启用该插件")
         Sleep, 1000
         GoSub, RestartRunZ
     }
