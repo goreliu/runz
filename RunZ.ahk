@@ -196,7 +196,14 @@ if (g_SkinConf.HideTitle)
     Gui -Caption
 }
 
-Gui, Show, % windowY " w" border * 2 + g_SkinConf.WidgetWidth " h" windowHeight, % g_WindowName
+cmdlineArg = %1%
+if (cmdlineArg == "--hide")
+{
+    hideWindow := " Hide"
+}
+
+Gui, Show, % windowY " w" border * 2 + g_SkinConf.WidgetWidth " h" windowHeight hideWindow
+    , % g_WindowName
 
 if (g_Conf.Config.SwitchToEngIME)
 {
@@ -1735,7 +1742,7 @@ UpdateStartupLnk(create = true, overwrite = false)
     if (!FileExist(lnkFilePath) || overwrite)
     {
         FileCreateShortcut, % A_ScriptDir "\RunZ.exe", %lnkFilePath%
-            , , , RunZ, % A_ScriptDir "\RunZ.ico"
+            , %A_ScriptDir%, RunZ.ahk --hide, RunZ, % A_ScriptDir "\RunZ.ico"
     }
 }
 
