@@ -1182,7 +1182,7 @@ RunCommand(originCmd)
 
     if (g_Conf.Config.RunOnce && !g_UseDisplay)
     {
-        if (g_Conf.Config.ClearInputWithEsc)
+        if (!g_Conf.Config.KeepInputText)
         {
             GoSub, ClearInput
         }
