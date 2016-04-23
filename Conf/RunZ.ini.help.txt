@@ -100,6 +100,8 @@ BackgroundPicture=Background1.jpg
 ; 如果闪屏依然明显，请将图片上文本框的位置挖空填充为和文本背景相似的颜色，或者修改成 png 的透明色
 BorderSize=15
 ; 边框宽度
+ShowInputBoxOnlyIfEmpty=0
+; 启动时只显示输入框
 
 [Command]
 

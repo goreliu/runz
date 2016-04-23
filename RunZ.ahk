@@ -184,12 +184,19 @@ if (g_SkinConf.ShowCurrentCommand)
     windowHeight += border + g_SkinConf.EditHeight
 }
 
+if (g_SkinConf.ShowInputBoxOnlyIfEmpty)
+{
+    windowHeight := border * 2 + g_SkinConf.EditHeight
+    SysGet, screenHeight, 79
+    windowY := "y" (screenHeight - border * 2 - g_SkinConf.EditHeight - g_SkinConf.DisplayAreaHeight) / 2
+}
+
 if (g_SkinConf.HideTitle)
 {
     Gui -Caption
 }
 
-Gui, Show, % "w" border * 2 + g_SkinConf.WidgetWidth " h" windowHeight, % g_WindowName
+Gui, Show, % windowY " w" border * 2 + g_SkinConf.WidgetWidth " h" windowHeight, % g_WindowName
 
 if (g_Conf.Config.SwitchToEngIME)
 {
@@ -691,6 +698,29 @@ return
 
 ProcessInputCommand:
     ControlGetText, g_CurrentInput, %g_InputArea%
+
+    if (g_SkinConf.ShowInputBoxOnlyIfEmpty)
+    {
+        if (g_CurrentInput != "")
+        {
+            if (g_SkinConf.ShowCurrentCommand)
+            {
+                windowHeight := g_SkinConf.BorderSize * 4
+                    + g_SkinConf.EditHeight * 2 + g_SkinConf.DisplayAreaHeight
+            }
+            else
+            {
+                windowHeight := g_SkinConf.BorderSize * 3
+                    + g_SkinConf.EditHeight + g_SkinConf.DisplayAreaHeight
+            }
+            WinMove, %g_WindowName%, , , , , %windowHeight%
+        }
+        else
+        {
+            windowHeight := g_SkinConf.BorderSize * 2 + g_SkinConf.EditHeight
+            WinMove, %g_WindowName%, , , , , %windowHeight%
+        }
+    }
 
     SearchCommand(g_CurrentInput)
 return
