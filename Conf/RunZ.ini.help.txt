@@ -149,6 +149,8 @@ ShowInputBoxOnlyIfEmpty=0
 [Plugins]
 Core=1
 ; 核心功能，禁用需谨慎
+System=1
+; 操作系统相关功能
 Misc=1
 ; 实用工具集合
 QRCode=1
