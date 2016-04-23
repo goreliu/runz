@@ -38,6 +38,8 @@ Core:
     @("ListPlugin", "列出插件")
     @("CleanupPlugin", "清理插件")
     @("CountNumber", "计算数量 wc")
+    @("ListRunningService", "列出运行的服务")
+    @("ListAllService", "列出运行的服务")
 return
 
 CmdRun:
@@ -150,7 +152,9 @@ ListProcess:
     result := ""
 
     for process in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Process")
+    {
         result .= "* | 进程 | " process.Name " | " process.CommandLine "`n"
+    }
     Sort, result
 
     SetCommandFilter("KillProcess|CountNumber")
@@ -388,4 +392,33 @@ CountNumber:
     }
 
     DisplayResult(AlignText(result))
+return
+
+ListAllService:
+    result :=
+    for service in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Service")
+    {
+        result .= "* | 服务 | " service.Name " | " service.DisplayName "`n"
+    }
+    Sort, result
+
+    SetCommandFilter("CountNumber")
+    DisplayResult(FilterResult(AlignText(result), Arg))
+    TurnOnResultFilter()
+return
+
+ListRunningService:
+    result :=
+    for service in ComObjGet("winmgmts:").ExecQuery("Select * from Win32_Service")
+    {
+        if (service.Started != 0)
+        {
+            result .= "* | 服务 | " service.Name " | " service.DisplayName "`n"
+        }
+    }
+    Sort, result
+
+    SetCommandFilter("CountNumber")
+    DisplayResult(FilterResult(AlignText(result), Arg))
+    TurnOnResultFilter()
 return
