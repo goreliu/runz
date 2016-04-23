@@ -94,6 +94,7 @@ return
 
 Logoff:
     MsgBox, 4, , 将要注销，是否执行？
+    IfMsgBox Yes
     {
         Shutdown, 0
     }
