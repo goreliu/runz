@@ -377,7 +377,7 @@ CleanupPlugin:
 return
 
 CountNumber:
-    result := ""
+msgbox % FullPipeArg
     result .= "* | 数量 | " StrSplit(Arg, " ").Length() " | 以空格为分隔符`n"
     if (SubStr(FullPipeArg, 0, -1) = "`n")
     {
