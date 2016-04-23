@@ -377,5 +377,9 @@ CleanupPlugin:
 return
 
 CountNumber:
-    DisplayResult(AlignText("* | 数量 | " StrSplit(Arg, " ").Length() " | 以空格为分隔符"))
+    result := ""
+    result .= "* | 数量 | " StrSplit(Arg, " ").Length() " | 以空格为分隔符`n"
+    result .= "* | 数量 | " StrSplit(FullPipeArg, "`n").Length()  - 1 " | 以换行为分隔符`n"
+
+    DisplayResult(AlignText(result))
 return
