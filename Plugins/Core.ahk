@@ -13,7 +13,7 @@ Core:
     @("EditConfig", "编辑配置文件")
     @("RunClipboard", "使用 ahk 的 Run 运行剪切板内容")
     @("CleanupRank", "清理命令权重中的无效命令")
-    @("ArgTest", "参数测试：ArgTest arg1 arg2 ...")
+    @("ShowArg", "显示参数：ShowArg arg1 arg2 ...")
     @("AhkTest", "运行参数或者剪切板中的 AHK 代码")
     @("InstallPlugin", "安装插件")
     @("RemovePlugin", "卸载插件")
@@ -34,7 +34,7 @@ AhkRun:
     Run, %Arg%
 return
 
-ArgTest:
+ShowArg:
     args := StrSplit(Arg, " ")
     result := "共有 " . args.Length() . " 个参数。`n`n"
 
