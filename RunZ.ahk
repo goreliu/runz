@@ -202,8 +202,8 @@ if (cmdlineArg == "--hide")
     hideWindow := " Hide"
 }
 
-Gui, Show, % windowY " w" border * 2 + g_SkinConf.WidgetWidth " h" windowHeight hideWindow
-    , % g_WindowName
+Gui, Show, % windowY " w" border * 2 + g_SkinConf.WidgetWidth
+    . " h" windowHeight hideWindow, % g_WindowName
 
 if (g_Conf.Config.SwitchToEngIME)
 {
