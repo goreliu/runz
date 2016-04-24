@@ -157,6 +157,8 @@ QRCode=1
 ; 生成二维码
 Kanji=0
 ; 简体繁体转换
+Everything=0
+; 使用 Everything 搜索
 Demo=0
 ; 插件示例
 

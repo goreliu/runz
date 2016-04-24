@@ -2,7 +2,7 @@
 ; 生成二维码
 
 QRCode:
-    if (!FileExist(A_ScriptDir "\Lib\Reserved"))
+    if (!FileExist(A_ScriptDir "\Lib\Reserved\quricol32.dll"))
     {
         return
     }

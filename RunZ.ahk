@@ -1519,12 +1519,16 @@ return
 RunAndGetOutput(command)
 {
     tempFileName := "RunZ.stdout.log"
+    fullCommand = %ComSpec% /C "%command% > %tempFileName%"
+
+    /*
     fullCommand = bash -c "%command% &> %tempFileName%"
 
     if (!FileExist("c:\msys64\usr\bin\bash.exe"))
     {
         fullCommand = %ComSpec% /C "%command% > %tempFileName%"
     }
+    */
 
     RunWait, %fullCommand%, %A_Temp%, Hide
     FileRead, result, %A_Temp%\%tempFileName%
