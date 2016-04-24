@@ -215,6 +215,10 @@ Eval@(x) {                             ; EVALUATE PRE-PROCESSED EXPRESSIONS [dec
 }
 
 ToBin(n) {      ; Binary representation of n. 1st bit is SIGN: -8 -> 1000, -1 -> 1, 0 -> 0, 8 -> 01000
+   if (n == "")
+   {
+       return 0
+   }
    Return n=0||n=-1 ? -n : ToBin(n>>1) . n&1
 }
 ToBinW(n,W=8) { ; LS W-bits of Binary representation of n
