@@ -473,6 +473,10 @@ EscFunction:
     }
     else
     {
+        if (!g_Conf.Config.KeepInputText)
+        {
+            ControlSetText, %g_InputArea%, , %g_WindowName%
+        }
         GoSub, HideOrExit
     }
 return
