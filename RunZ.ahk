@@ -672,9 +672,20 @@ GenerateSearchFileList()
 }
 
 ReindexFiles:
+    if (WinActive(g_WindowName))
+    {
+        ToolTip, 正在重建索引，请稍后...
+    }
+
     GenerateSearchFileList()
 
     GoSub, CleanupRank
+
+    if (WinActive(g_WindowName))
+    {
+        ToolTip, 重建索引完毕
+        SetTimer, RemoveToolTip, 800
+    }
 return
 
 EditConfig:
