@@ -2,11 +2,11 @@
 ; 实用工具集合
 
 Misc:
-    @("Dictionary", "有道词典在线翻译", true)
+    @("Dictionary", "有道词典在线翻译")
     @("Calc", "计算器")
-    @("SearchOnBaidu", "使用 Baidu（百度）搜索剪切板或输入内容", true)
-    @("SearchOnGoogle", "使用 Google（谷歌）搜索剪切板或输入内容", true)
-    @("SearchOnBing", "使用 Bing（必应）搜索剪切板或输入内容", true)
+    @("SearchOnBaidu", "使用 Baidu（百度）搜索剪切板或输入内容")
+    @("SearchOnGoogle", "使用 Google（谷歌）搜索剪切板或输入内容")
+    @("SearchOnBing", "使用 Bing（必应）搜索剪切板或输入内容")
     @("SearchOnTaobao", "使用 Taobao（淘宝）搜索剪切板或输入内容")
     @("SearchOnJingdong", "使用 JD（京东）搜索剪切板或输入内容")
     @("ShowIp", "显示 IP")

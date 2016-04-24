@@ -1367,6 +1367,7 @@ LoadFiles(loadRank := true)
         }
     }
 
+
     for key, value in g_Conf.Command
     {
         if (value != "")
@@ -1389,6 +1390,20 @@ LoadFiles(loadRank := true)
         {
             MsgBox, 未在 %A_ScriptDir%\Plugins\%element%.ahk 中发现 %element% 标签，请修改！
         }
+    }
+
+    g_FallbackCommands := Object()
+    for key, value in g_Conf.FallbackCommand
+    {
+        if (IsLabel(StrSplit(key, " | ")[2]))
+        {
+            g_FallbackCommands.Push(key)
+        }
+    }
+
+    if (g_FallbackCommands.Length() == 0)
+    {
+        g_FallbackCommands.Push("function | AhkRun | 使用 Ahk 的 Run() 运行")
     }
 
     if (FileExist(A_ScriptDir "\Conf\UserFunctionsAuto.txt"))
@@ -1496,6 +1511,7 @@ DisplayHistoryCommands:
     DisplayControlText(result)
 return
 
+; 第三个参数不再是 fallback，备用，为了兼容不改变第四个参数的含义
 @(label, info, fallback = false, key = "")
 {
     if (!IsLabel(label))
@@ -1505,10 +1521,6 @@ return
     }
 
     g_Commands.Push("function | " . label . " | " . info )
-    if (fallback)
-    {
-        g_FallbackCommands.Push("function | " . label . " | " . info)
-    }
 
     if (key != "")
     {
