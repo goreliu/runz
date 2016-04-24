@@ -8,7 +8,7 @@
 
 [下载地址](https://github.com/goreliu/runz/releases)
 
-[用户手册](https://github.com/goreliu/runz/wiki/RunZ-用户手册)
+[用户手册](https://github.com/goreliu/runz/wiki/用户手册)
 
 [常见问题](https://github.com/goreliu/runz/wiki/常见问题)
 
