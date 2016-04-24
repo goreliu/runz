@@ -345,8 +345,8 @@ NextPage:
     }
 
     ControlFocus, %g_DisplayArea%
-
     Send, {pgdn}
+    ControlFocus, %g_InputArea%
 return
 
 PrevPage:
@@ -356,8 +356,8 @@ PrevPage:
     }
 
     ControlFocus, %g_DisplayArea%
-
     Send, {pgup}
+    ControlFocus, %g_InputArea%
 return
 
 ActivateRunZ:
