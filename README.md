@@ -14,7 +14,7 @@
 
 [问题反馈](https://github.com/goreliu/runz/wiki/问题反馈)
 
-[更新历史](https://github.com/goreliu/runz/wiki/HISTORY)
+[更新历史](https://github.com/goreliu/runz/wiki/更新历史)
 
 #### 截图
 
