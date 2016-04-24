@@ -13,7 +13,8 @@ return
 
 ; 功能待完善
 SearchWithEverything:
-	result := RunAndGetOutput(A_ScriptDir "\Lib\Reserved\es.exe -n 15 " Arg)
+    result := RunAndGetOutput(A_ScriptDir "\Lib\Reserved\es.exe -n 15 " Arg)
     DisplayResult(result)
-	TurnOnRealtimeExec()
+    TurnOnRealtimeExec()
+    SetCommandFilter("Open")
 return

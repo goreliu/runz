@@ -20,6 +20,7 @@ Core:
     @("ListPlugin", "列出插件")
     @("CleanupPlugin", "清理插件")
     @("CountNumber", "计算数量 wc")
+    @("Open", "打开")
 return
 
 CmdRun:
@@ -187,4 +188,8 @@ CountNumber:
     }
 
     DisplayResult(AlignText(result))
+return
+
+Open:
+    Run, % StrSplit(FullPipeArg, "`r")[1]
 return
