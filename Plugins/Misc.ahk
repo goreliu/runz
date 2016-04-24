@@ -4,11 +4,11 @@
 Misc:
     @("Dictionary", "有道词典在线翻译")
     @("Calc", "计算器")
-    @("SearchOnBaidu", "使用 Baidu（百度）搜索剪切板或输入内容")
-    @("SearchOnGoogle", "使用 Google（谷歌）搜索剪切板或输入内容")
-    @("SearchOnBing", "使用 Bing（必应）搜索剪切板或输入内容")
-    @("SearchOnTaobao", "使用 Taobao（淘宝）搜索剪切板或输入内容")
-    @("SearchOnJingdong", "使用 JD（京东）搜索剪切板或输入内容")
+    @("SearchOnBaidu", "使用 百度 搜索剪切板或输入内容")
+    @("SearchOnGoogle", "使用 谷歌 搜索剪切板或输入内容")
+    @("SearchOnBing", "使用 必应 搜索剪切板或输入内容")
+    @("SearchOnTaobao", "使用 淘宝 搜索剪切板或输入内容")
+    @("SearchOnJD", "使用 京东 搜索剪切板或输入内容")
     @("ShowIp", "显示 IP")
     @("Calendar", "用浏览器打开万年历")
     @("CurrencyRate", "汇率 使用示例： hl JPY EUR 2")
@@ -160,7 +160,7 @@ SearchOnTaobao:
     Run, https://s.taobao.com/search?q=%word%
 return
 
-SearchOnJingdong:
+SearchOnJD:
     word := Arg == "" ? clipboard : Arg
 
     Run, http://search.jd.com/Search?keyword=%word%&enc=utf-8
