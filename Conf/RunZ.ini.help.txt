@@ -79,7 +79,8 @@ HideCol4IfEmpty=1
 FontName=宋体
 ; 字体名称
 ; 如果想更换，需要使用等宽字体，可以用 Inziu Iosevka Slab SC，在 http://pan.baidu.com/s/1i5Ndii5
-; 可下载，其中也包含一张截图
+; 可下载，其中也包含一张截图。下载后安装，然后 FontName=Inziu Iosevka Slab SC 即可
+; 但需要合理修改 FontSize DisplayRows DisplayCol3MaxLength DisplayCol4MaxLength 等字段，以免折行
 FontSize=12
 ; 字体大小
 FontColor=000000
