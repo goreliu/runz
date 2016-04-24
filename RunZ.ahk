@@ -925,6 +925,12 @@ SearchCommand(command = "", firstRun = false)
 
     if (result == "")
     {
+        if (IsLabel("Calc") && Eval(g_CurrentInput) != 0)
+        {
+            DisplayResult(Eval(g_CurrentInput))
+            return
+        }
+
         g_UseFallbackCommands := true
         g_CurrentCommand := g_FallbackCommands[1]
         g_CurrentCommandList := g_FallbackCommands
