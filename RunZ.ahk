@@ -1827,6 +1827,11 @@ AlignText(text)
 
 WatchUserFileList:
     FileGetTime, newUserFileListModifyTime, %g_UserFileList%
+    if (newUserFileListModifyTime == "")
+    {
+        FileAppend, , %g_UserFileList%
+    }
+
     if (lastUserFileListModifyTime != "" && lastUserFileListModifyTime != newUserFileListModifyTime)
     {
         LoadFiles()
