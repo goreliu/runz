@@ -1845,7 +1845,11 @@ SaveResultAsArg:
     Arg := ""
     ControlGetText, result, %g_DisplayArea%
     FullPipeArg := result
-    if (!InStr(result, " | "))
+    if (InStr(g_CurrentCommand, "file | ") == 1)
+    {
+        Arg .= StrSplit(g_CurrentCommand, " | ")[2]
+    }
+    else if (!InStr(result, " | "))
     {
         Arg .= StrReplace(result, "`n", " ")
         Arg := StrReplace(Arg, "`r")
