@@ -108,7 +108,9 @@ BackgroundPicture=Background1.jpg
 BorderSize=15
 ; 边框宽度
 ShowInputBoxOnlyIfEmpty=0
-; 启动时只显示输入框
+; 当输入框为空时只显示输入框
+RoundCorner=0
+; 如果不为 0，使用圆形边角，数字代表程度，大于 10 才比较明显，可以修改后试验效果
 
 [Command]
 
