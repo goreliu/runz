@@ -5,6 +5,7 @@ CreateStartupLnk=0
 ; 是否开机自启动
 SearchFileDir=A_ProgramsCommon | A_StartMenu
 ; 搜索的目录，可以使用 全路径 或 ahk 以 A_ 开头的变量，必须以 " | " 分隔
+; 路径可包含空格，无需加引号
 SearchFileType=*.lnk | *.exe
 ; 搜索的文件类型，必须以 " | " 分隔
 SearchFileExclude=卸载
