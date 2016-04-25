@@ -953,10 +953,20 @@ SearchCommand(command = "", firstRun = false)
         g_UseFallbackCommands := false
     }
 
-    result := StrReplace(result, "file | ", "文件 | ")
-    result := StrReplace(result, "function | ", "功能 | ")
-    result := StrReplace(result, "cmd | ", "命令 | ")
-    result := StrReplace(result, "url | ", "网址 | ")
+    if (g_SkinConf.HideCol2)
+    {
+        result := StrReplace(result, "file | ")
+        result := StrReplace(result, "function | ")
+        result := StrReplace(result, "cmd | ")
+        result := StrReplace(result, "url | ")
+    }
+    else
+    {
+        result := StrReplace(result, "file | ", "文件 | ")
+        result := StrReplace(result, "function | ", "功能 | ")
+        result := StrReplace(result, "cmd | ", "命令 | ")
+        result := StrReplace(result, "url | ", "网址 | ")
+    }
 
     DisplaySearchResult(result)
     return result
@@ -1792,18 +1802,41 @@ AlignText(text)
 {
     col3MaxLen := g_SkinConf.DisplayCol3MaxLength
     col4MaxLen := g_SkinConf.DisplayCol4MaxLength
+    col3Pos := 10
 
     StrSpace := " "
     Loop, % col3MaxLen + col4MaxLen
         StrSpace .= " "
 
-    result =
+    result := ""
+
+    if (g_SkinConf.HideCol2)
+    {
+        ; 隐藏第二列的话，把第二列的空间分给第三列
+        col3MaxLen += 7
+        col3Pos := 5
+
+        hasCol2 := true
+        Loop, Parse, text, `n, `r
+        {
+            if (SubStr(text, 3, 1) != "|" || SubStr(text, 8, 1) != "|")
+            {
+                hasCol2 := false
+                break
+            }
+        }
+
+        if (hasCol2)
+        {
+            col3Pos := 10
+        }
+    }
 
     if (g_SkinConf.HideCol4IfEmpty)
     {
         Loop, Parse, text, `n, `r
         {
-            if (StrSplit(SubStr(A_LoopField, 10), " | ")[2] != "")
+            if (StrSplit(SubStr(A_LoopField, col3Pos), " | ")[2] != "")
             {
                 hasCol4 := true
                 break
@@ -1826,9 +1859,17 @@ AlignText(text)
             continue
         }
 
-        result .= SubStr(A_LoopField, 1, 9)
+        if (hasCol2)
+        {
+            ; 内容包含第二列，需要去掉
+            result .= SubStr(A_LoopField, 1, 4)
+        }
+        else
+        {
+            result .= SubStr(A_LoopField, 1, col3Pos - 1)
+        }
 
-        splitedLine := StrSplit(SubStr(A_LoopField, 10), " | ")
+        splitedLine := StrSplit(SubStr(A_LoopField, col3Pos), " | ")
         col3RealLen := StrLen(RegExReplace(splitedLine[1], "[^\x00-\xff]", "`t`t"))
 
         if (col3RealLen > col3MaxLen)
@@ -1886,7 +1927,21 @@ return
 SaveResultAsArg:
     Arg := ""
     ControlGetText, result, %g_DisplayArea%
-    FullPipeArg := result
+
+    ; 处理隐藏第二列的情况
+    if (g_SkinConf.HideCol2)
+    {
+        FullPipeArg := ""
+        Loop, Parse, result, `n, `r
+        {
+            FullPipeArg .= SubStr(A_LoopField, 1, 2) "| 占位 | " SubStr(A_LoopField, 5) "`n"
+        }
+    }
+    else
+    {
+        FullPipeArg := result
+    }
+
     if (InStr(g_CurrentCommand, "file | ") == 1)
     {
         Arg .= StrSplit(g_CurrentCommand, " | ")[2]
@@ -1898,9 +1953,19 @@ SaveResultAsArg:
     }
     else
     {
-        Loop, Parse, result, `n, `r
+        if (g_SkinConf.HideCol2)
         {
-            Arg .= Trim(StrSplit(A_LoopField, " | ")[3]) " "
+            Loop, Parse, result, `n, `r
+            {
+                Arg .= Trim(StrSplit(A_LoopField, " | ")[2]) " "
+            }
+        }
+        else
+        {
+            Loop, Parse, result, `n, `r
+            {
+                Arg .= Trim(StrSplit(A_LoopField, " | ")[3]) " "
+            }
         }
     }
 

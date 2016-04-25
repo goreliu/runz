@@ -74,6 +74,9 @@ DisplayCol3MaxLength=30
 ; 在列表中第三列的宽度
 DisplayCol4MaxLength=36
 ; 在列表中第四列的宽度
+HideCol2=0
+; 隐藏第二列，即显示 文件、功能 的一列
+; 如果隐藏，第二列的空间会分给第三列
 HideCol4IfEmpty=1
 ; 当第四列内容为空时，隐藏第四列，展开第三列
 FontName=宋体
