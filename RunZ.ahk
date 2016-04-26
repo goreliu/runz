@@ -1705,6 +1705,11 @@ WM_ACTIVATE(wParam, lParam)
 ToExit:
     if (!WinExist("RunZ.ahk"))
     {
+        if (!g_Conf.Config.KeepInputText)
+        {
+            ControlSetText, %g_InputArea%, , %g_WindowName%
+        }
+
         GoSub, HideOrExit
     }
 
