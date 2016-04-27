@@ -33,12 +33,12 @@ else if (!FileExist(g_AutoConfFile))
         . "[Auto]`n[Rank]`n[History]" , % g_AutoConfFile
 }
 
-global g_Conf := class_EasyINI(g_ConfFile)
-global g_AutoConf := class_EasyINI(g_AutoConfFile)
+global g_Conf := class_EasyIni(g_ConfFile)
+global g_AutoConf := class_EasyIni(g_AutoConfFile)
 
 if (g_Conf.Gui.Skin != "")
 {
-    global g_SkinConf := class_EasyINI(A_ScriptDir "\Conf\Skins\" g_Conf.Gui.Skin ".ini").Gui
+    global g_SkinConf := class_EasyIni(A_ScriptDir "\Conf\Skins\" g_Conf.Gui.Skin ".ini").Gui
 }
 else
 {
