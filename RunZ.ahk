@@ -170,10 +170,11 @@ if (g_SkinConf.BorderSize >= 0)
 windowHeight := border * 3 + g_SkinConf.EditHeight + g_SkinConf.DisplayAreaHeight
 
 Gui, Font, % "C" g_SkinConf.FontColor " S" g_SkinConf.FontSize, % g_SkinConf.FontName
-Gui, Add, Edit, % "x" border " y" border " gProcessInputCommand "
+Gui, Add, Edit, % "x" border " y" border " gProcessInputCommand -WantReturn"
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.EditHeight,
-Gui, Add, Edit, y+0 w0 h0 ReadOnly,
-Gui, Add, Edit, % "y+" border " -VScroll ReadOnly "
+Gui, Add, Edit, y+0 w0 h0 ReadOnly -WantReturn
+Gui, Add, Button, y+0 w0 h0 Default gRunCurrentCommand
+Gui, Add, Edit, % "y+" border " -VScroll ReadOnly -WantReturn"
         . " w" g_SkinConf.WidgetWidth " h" g_SkinConf.DisplayAreaHeight
         , % AlignText(SearchCommand("", true))
 
@@ -229,7 +230,6 @@ if (g_Conf.Config.ExitIfInactivate)
 OnMessage(0x0200, "WM_MOUSEMOVE")
 
 Hotkey, IfWinActive, % g_WindowName
-Hotkey, Enter, RunCurrentCommand
 
 Hotkey, Esc, EscFunction
 Hotkey, !F4, ExitRunZ
