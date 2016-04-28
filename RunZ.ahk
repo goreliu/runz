@@ -1774,29 +1774,8 @@ UpdateSendTo(create = true, overwrite = false)
         return
     }
 
-    ; 注意引号和空格！
-    fileContent := "var RunZCmdTool = ""\"""
-    fileContent .= StrReplace(A_ScriptDir, "\", "\\") "\\RunZ.exe\"" "
-    fileContent .= " \""" . StrReplace(A_ScriptDir, "\", "\\") . "\\Core\\RunZCmdTool.ahk\"" ""`n"
-
-    jsText =
-(
-var ws = new ActiveXObject("WScript.Shell")
-
-var arg = ""
-for (var i = 0; i < WScript.Arguments.Count(); i++)
-{
-    arg += " \"" + WScript.Arguments(i) + "\" "
-}
-
-ws.Run(RunZCmdTool + arg)
-)
-    fileContent .= jsText
-
-    FileDelete, % A_ScriptDir "\Core\SendToRunZ.js"
-    FileAppend, % fileContent, % A_ScriptDir "\Core\SendToRunZ.js", CP936
-    FileCreateShortcut, % A_ScriptDir "\Core\SendToRunZ.js", % A_ScriptDir "\Core\SendToRunZ.lnk"
-        , , , 发送到 RunZ, % A_ScriptDir "\RunZ.ico"
+    FileCreateShortcut, % A_ScriptDir "\RunZ.exe", % A_ScriptDir "\Core\SendToRunZ.lnk"
+        , , "%A_ScriptDir%\Core\RunZCmdTool.ahk", 发送到 RunZ, % A_ScriptDir "\RunZ.ico"
     FileCopy, % A_ScriptDir "\Core\SendToRunZ.lnk"
         , % StrReplace(A_StartMenu, "\Start Menu", "\SendTo\") "RunZ.lnk", 1
 }
