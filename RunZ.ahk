@@ -724,6 +724,14 @@ return
 ProcessInputCommand:
     ControlGetText, g_CurrentInput, %g_InputArea%
 
+    ; 为了避免搜索时间过长导致不再调用 ProcessInputCommand
+    ; 不清楚这样做是否有其他问题
+    SetTimer, ProcessInputCommandCallBack, 0
+return
+
+ProcessInputCommandCallBack:
+    SetTimer, ProcessInputCommandCallBack, Off
+
     if (g_SkinConf.ShowInputBoxOnlyIfEmpty)
     {
         if (g_CurrentInput != "")
