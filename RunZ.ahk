@@ -724,6 +724,13 @@ return
 ProcessInputCommand:
     ControlGetText, g_CurrentInput, %g_InputArea%
 
+    ; 如果使用异步的方式，TurnOnResultFilter 后会出问题，先绕一下
+    if (SubStr(g_CurrentInput, 0, 1) == " ")
+    {
+        GoSub, ProcessInputCommandCallBack
+        return
+    }
+
     ; 为了避免搜索时间过长导致不再调用 ProcessInputCommand
     ; 不清楚这样做是否有其他问题
     SetTimer, ProcessInputCommandCallBack, 0
@@ -1017,7 +1024,7 @@ FilterResult(text, needle)
         {
             result .= A_LoopField "`n"
         }
-        else if (MatchResult(StrReplace(SubStr(A_LoopField, 10), "\", " "), needle))
+        else if (MatchResult(StrReplace(SubStr(A_LoopField, 5), "\", " "), needle))
         {
             result .= A_LoopField "`n"
         }
