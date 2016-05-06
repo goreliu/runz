@@ -33,3 +33,4 @@ file | mspaint.exe | 画图
 file | cmd.exe | 命令提示符 DOS（cmd.exe）
 file | C:\Program Files\Internet Explorer\iexplore.exe | IE浏览器
 file | regedit.exe | 注册表
+file | write.exe | 写字板
