@@ -19,3 +19,5 @@
 #### 截图
 
 ![主界面](https://raw.githubusercontent.com/wiki/goreliu/runz/Images/main.png)
+![](https://github.com/goreliu/runz/wiki/Images/process_list.gif)
+![](https://github.com/goreliu/runz/wiki/Images/list_window.gif)
