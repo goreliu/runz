@@ -21,7 +21,7 @@ System:
     @("ListWindow", "窗口列表")
     @("ActivateWindow", "激活窗口")
     @("ListRunningService", "列出运行的服务")
-    @("ListAllService", "列出运行的服务")
+    @("ListAllService", "列出所有的服务")
     @("ShowService", "显示服务详情")
     @("ShowProcess", "显示进程详情")
 return
