@@ -32,13 +32,20 @@ CmdRunOnly:
 return
 
 AhkRun:
-    try
+    if (!g_Conf.Config.DebugMode)
+    {
+        try
+        {
+            Run, %Arg%
+        }
+        catch e
+        {
+            MsgBox, 运行命令 %Arg% 失败`n设置配置文件中 DebugMode 为 1 可查看错误详情
+        }
+    }
+    else
     {
         Run, %Arg%
-    }
-    catch e  
-    {
-        MsgBox, 运行命令 %Arg% 失败
     }
 return
 
