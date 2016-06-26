@@ -32,7 +32,14 @@ CmdRunOnly:
 return
 
 AhkRun:
-    Run, %Arg%
+    try
+    {
+        Run, %Arg%
+    }
+    catch e  
+    {
+        MsgBox, 运行命令 %Arg% 失败
+    }
 return
 
 ShowArg:
