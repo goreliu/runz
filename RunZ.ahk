@@ -372,6 +372,17 @@ ActivateRunZ:
     {
         SwitchToEngIME()
     }
+
+    Loop, 5
+    {
+        if (WinActive(g_WindowName))
+        {
+            break
+        }
+
+        Gui, Show, , % g_WindowName
+        Sleep, 50
+    }
 return
 
 ToggleWindow:
