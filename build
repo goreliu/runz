@@ -1,0 +1,41 @@
+#!/bin/zsh
+
+mkdir -p RunZ
+cp * RunZ -r 2>/dev/null
+
+cd RunZ
+
+cp /mnt/c/mine/app/AutoHotkey/AutoHotkeyU32.exe RunZ.exe
+rm -f build
+rm -f Core/*.js
+rm -f Core/*.lnk
+rm -f Core/Plugins.ahk
+rm -f Conf/RunZ.ini
+rm -f Conf/RunZ.auto.ini
+rm -f Conf/SearchFileList.txt
+rm -f Conf/UserFunctionsAuto.txt
+rm -f Conf/UserFunctionsAuto.txt.bak
+rm -f Conf/UserFileList.txt
+rm -rf RunZ
+rm -rf Doc/.git
+rm -rf Doc/Icons
+rm -rf Doc/Images
+
+echo -e "历史版本详见 Releases · goreliu/runz · GitHub" > Doc/更新历史.md.new
+echo "https://github.com/goreliu/runz/releases" >> Doc/更新历史.md.new
+echo  >> Doc/更新历史.md.new
+cat Doc/更新历史.md >> Doc/更新历史.md.new
+
+for i in Doc/*.md*; do
+    sed -i "1s/^/\xEF\xBB\xBF/g" $i
+    unix2dos $i
+done
+
+mv Doc/更新历史.md.new Doc/更新历史.md
+mv Doc/Home.md Doc/介绍.md
+cp Doc/更新历史.md ~/tmp/RunZ\ 更新历史.txt
+
+cd ..
+apack RunZ-$1.7z RunZ
+rm -rf RunZ
+mv RunZ-$1.7z ~/tmp
