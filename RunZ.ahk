@@ -1192,13 +1192,15 @@ RunCommand(originCmd)
             }
         }
 
+        SplitPath, cmd, , fileDir, ,
+
         if (Arg == "")
         {
-            Run, %cmd%
+            Run, %cmd%, %fileDir%
         }
         else
         {
-            Run, %cmd% "%Arg%"
+            Run, %cmd% "%Arg%", %fileDir%
         }
     }
     else if (splitedOriginCmd[1] == "function")
