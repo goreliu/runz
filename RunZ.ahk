@@ -1100,11 +1100,6 @@ ClearInput()
 }
 
 RunCurrentCommand:
-    if (GetInputState() == 1)
-    {
-        Send, {enter}
-    }
-
     RunCommand(g_CurrentCommand)
 return
 
