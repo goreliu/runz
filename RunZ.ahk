@@ -437,7 +437,7 @@ ClickFunction:
 
     if (g_Conf.Config.ClickToRun)
     {
-        GoSub, RunCurrentCommand
+        RunCommand(g_CurrentCommand)
     }
 return
 
