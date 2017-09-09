@@ -3,11 +3,10 @@
 mkdir -p RunZ
 cp * RunZ -r 2>/dev/null
 
-cd RunZ
+cd RunZ || exit 1
 
 cp /mnt/c/mine/app/AutoHotkey/AutoHotkeyU32.exe RunZ.exe
 rm -f build
-rm -f Core/*.js
 rm -f Core/*.lnk
 rm -f Core/Plugins.ahk
 rm -f Conf/RunZ.ini
@@ -26,10 +25,11 @@ echo "https://github.com/goreliu/runz/releases" >> Doc/更新历史.md.new
 echo  >> Doc/更新历史.md.new
 cat Doc/更新历史.md >> Doc/更新历史.md.new
 
-for i in Doc/*.md*; do
+for i (Doc/*.md*) {
     sed -i "1s/^/\xEF\xBB\xBF/g" $i
-    unix2dos $i
-done
+    # unix2dos $i
+    sed -i 's/$//g' $i
+}
 
 mv Doc/更新历史.md.new Doc/更新历史.md
 mv Doc/Home.md Doc/介绍.md
