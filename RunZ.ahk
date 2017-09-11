@@ -375,13 +375,14 @@ ActivateRunZ:
 
     Loop, 5
     {
+        Sleep, 50
+
         if (WinActive(g_WindowName))
         {
             break
         }
 
         Gui, Show, , % g_WindowName
-        Sleep, 20
     }
 return
 
