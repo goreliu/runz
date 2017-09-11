@@ -28,7 +28,7 @@ cat Doc/更新历史.md >> Doc/更新历史.md.new
 for i (Doc/*.md*) {
     sed -i "1s/^/\xEF\xBB\xBF/g" $i
     # unix2dos $i
-    sed -i 's/$//g' $i
+    sed -i 's/$/\r/' $i
 }
 
 mv Doc/更新历史.md.new Doc/更新历史.md
