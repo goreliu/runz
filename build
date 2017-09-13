@@ -36,6 +36,6 @@ mv Doc/Home.md Doc/介绍.md
 cp Doc/更新历史.md ~/tmp/RunZ\ 更新历史.txt
 
 cd ..
-apack RunZ-$1.7z RunZ
+a RunZ-$1.7z RunZ
 rm -rf RunZ
 mv RunZ-$1.7z ~/tmp
