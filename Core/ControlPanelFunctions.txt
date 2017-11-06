@@ -1,4 +1,5 @@
-﻿file | control sysdm.cpl | 系统属性
+﻿file | control | 控制面板
+file | control sysdm.cpl | 系统属性
 file | control Access.cpl | 辅助功能选项
 file | control Appwiz.cpl | 添加删除程序 删除软件 程序和功能
 file | control Desk.cpl | 显示
@@ -7,23 +8,33 @@ file | control Hdwwiz.cpl | 添加删除硬件
 file | control Intl.cpl | 区域语言选项
 file | control Joy.cpl | 游戏控制器
 file | control Liccpa.cpl | 许可
-file | control Main.cpl | 鼠标
+file | control Main.cpl | 鼠标属性
 file | control Mmsys.cpl | 声音和音频设备
 file | control Modem.cpl | 电话和调制解调器选项
 file | control Ncpa.cpl | 网络连接
 file | control Netcpl.cpl | 网络和拨号连接
 file | control Nwc.cpl | Netware客户端连接
 file | control Odbccp32.cpl | ODBC数据源
-file | control Powercfg.cpl | 电源管理
+file | control Powercfg.cpl | 电源管理 电源选项
 file | control Sticpl.cpl | 扫描仪和照相机
 file | control Sysdm.cpl | 系统
 file | control Telephon.cpl | 拨号规则和调制解调器
 file | control Timedate.cpl | 日期和时间
+file | control admintools | 管理工具
+file | control desktop | 显示属性
+file | control firewall.cpl | 防火墙配置
+file | control folders | 文件夹选项
+file | control fonts | 字体
+file | control inetcpl.cpl,,4 | Internet 属性
+file | control printers | 打印机和传真
+file | control sysdm.cpl | 高级系统配置
+file | control userpasswords | 用户账户
 file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0 | 桌面图标
 file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,1 | 屏幕保护
 file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,2 | 外观和个性化
 file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,3 | 系统设置
-file | rundll32.exe shell32.dll,Control_RunDLL main.cpl @1 | 键盘
+file | rundll32.exe shell32.dll,Control_RunDLL main.cpl @1 | 键盘属性
+file | rundll32.exe shell32.dll,Options_RunDLL 1 | 任务栏和开始菜单
 file | devmgmt.msc | 设备管理器
 file | eventvwr.msc | 事件查看器
 file | compmgmt.msc | 计算机管理
@@ -34,3 +45,15 @@ file | cmd.exe | 命令提示符 DOS（cmd.exe）
 file | C:\Program Files\Internet Explorer\iexplore.exe | IE浏览器
 file | regedit.exe | 注册表
 file | write.exe | 写字板
+file | cleanmgr.exe | 磁盘清理
+file | gpedit.msc | 组策略
+file | comexp.msc | 组件服务
+file | diskmgmt.msc | 磁盘管理
+file | dxdiag.exe | DirectX 诊断工具
+file | WF.msc | 防火墙
+file | lusrmgr.msc | 本地用户和组
+file | msconfig.exe | 系统配置工具
+file | perfmon.exe /res | 资源监视器
+file | perfmon.exe | 性能监视器
+file | winver.exe | 关于 Windows
+file | services.msc | 服务
