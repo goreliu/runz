@@ -2,7 +2,7 @@
 ; 生成二维码
 
 QRCode:
-    if (!FileExist(A_ScriptDir "\Lib\Reserved\quricol32.dll"))
+    if (!FileExist(A_ScriptDir "\Lib\Reserved\quricol" A_PtrSize * 8 ".dll"))
     {
         return
     }
@@ -76,7 +76,7 @@ GenerateQR(string, file = "")
         file := A_Temp "\RunZ.QR.png"
     }
 
-    hModule := DllCall(A_ScriptDir "\Lib\Reserved\quricol32.dll\GeneratePNG"
+    hModule := DllCall(A_ScriptDir "\Lib\Reserved\quricol" A_PtrSize * 8 ".dll\GeneratePNG"
         , "str", file, "str", string, "int", 4, "int", 12, "int", 0)
     DllCall("FreeLibrary", "Ptr", hModule)
     return file

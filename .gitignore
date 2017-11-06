@@ -42,5 +42,6 @@ UserFunctionsAuto.txt
 UserFunctionsAuto.txt.bak
 UserFileList.txt
 tcmatch.dll
+tcmatch64.dll
 tcmatch.tbl
 Plugins.ahk

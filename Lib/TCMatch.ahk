@@ -51,5 +51,10 @@ TCMatch(aHaystack, aNeedle)
         matchTimes := 0
     }
 
+    if (A_PtrSize == 8)
+    {
+        return DllCall("TCMatch64\MatchFileW", "WStr", aNeedle, "WStr", aHaystack)
+    }
+
     return DllCall("TCMatch\MatchFileW", "WStr", aNeedle, "WStr", aHaystack)
 }

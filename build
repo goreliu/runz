@@ -1,7 +1,11 @@
 #!/bin/zsh
 
+set -e
+
+version=$(cat VERSION)
+
 mkdir -p RunZ
-cp * RunZ -r 2>/dev/null
+cp * RunZ -r 2>/dev/null || true
 
 cd RunZ || exit 1
 
@@ -19,6 +23,7 @@ rm -rf RunZ
 rm -rf Doc/.git
 rm -rf Doc/Icons
 rm -rf Doc/Images
+rm -f **/*64.dll
 
 echo -e "历史版本详见 Releases · goreliu/runz · GitHub" > Doc/更新历史.md.new
 echo "https://github.com/goreliu/runz/releases" >> Doc/更新历史.md.new
@@ -36,6 +41,21 @@ mv Doc/Home.md Doc/介绍.md
 cp Doc/更新历史.md ~/tmp/RunZ\ 更新历史.txt
 
 cd ..
-a RunZ-$1.7z RunZ
+a RunZ-$version.7z RunZ
+
+# 64 位版本
+
+cd RunZ
+cp /mnt/c/mine/app/AutoHotkey/AutoHotkeyU64.exe RunZ.exe
+rm -f Lib/Reserved/quricol32.dll
+cp ../Lib/Reserved/quricol64.dll Lib/Reserved/quricol64.dll
+rm -f Lib/TCMatch/tcmatch.dll
+cp ../Lib/TCMatch/tcmatch64.dll Lib/TCMatch/tcmatch64.dll
+sed -i 's/tcmatch.dll/tcmatch64.dll/g' Conf/RunZ.ini.help.txt
+
+cd ..
+a RunZ-x86_64-$version.7z RunZ
+
+mv RunZ-$version.7z ~/tmp
+mv RunZ-x86_64-$version.7z ~/tmp
 rm -rf RunZ
-mv RunZ-$1.7z ~/tmp
