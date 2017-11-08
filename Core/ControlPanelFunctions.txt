@@ -35,6 +35,7 @@ file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,2 | 外观和个性化
 file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,3 | 系统设置
 file | rundll32.exe shell32.dll,Control_RunDLL main.cpl @1 | 键盘属性
 file | rundll32.exe shell32.dll,Options_RunDLL 1 | 任务栏和开始菜单
+file | rundll32.exe sysdm.cpl,EditEnvironmentVariables | 环境变量
 file | devmgmt.msc | 设备管理器
 file | eventvwr.msc | 事件查看器
 file | compmgmt.msc | 计算机管理
