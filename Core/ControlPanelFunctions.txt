@@ -29,6 +29,7 @@ file | control inetcpl.cpl,,4 | Internet 属性
 file | control printers | 打印机和传真
 file | control sysdm.cpl | 高级系统配置
 file | control userpasswords | 用户账户
+file | control schedtasks | 计划任务
 file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0 | 桌面图标
 file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,1 | 屏幕保护
 file | rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,2 | 外观和个性化
