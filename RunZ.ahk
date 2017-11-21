@@ -100,8 +100,6 @@ global g_InputArea := "Edit1"
 global g_DisplayArea := "Edit3"
 global g_CommandArea := "Edit4"
 
-global g_WaitCurrentCommand := False
-
 FileRead, currentPlugins, %A_ScriptDir%\Core\Plugins.ahk
 needRestart := false
 
@@ -736,9 +734,10 @@ return
 
 
 ProcessInputCommand:
-    g_WaitCurrentCommand := True
-
     ControlGetText, g_CurrentInput, %g_InputArea%
+    ; https://github.com/goreliu/runz/issues/40
+    GoSub, ProcessInputCommandCallBack
+    return
 
     ; 如果使用异步的方式，TurnOnResultFilter 后会出问题，先绕一下
     if (SubStr(g_CurrentInput, 0, 1) == " ")
@@ -785,8 +784,6 @@ ProcessInputCommandCallBack:
     }
 
     SearchCommand(g_CurrentInput)
-
-    g_WaitCurrentCommand := False
 return
 
 SearchCommand(command = "", firstRun = false)
@@ -1107,12 +1104,6 @@ ClearInput()
 }
 
 RunCurrentCommand:
-    ; https://github.com/goreliu/runz/issues/40
-    while (g_WaitCurrentCommand)
-    {
-        Sleep, 50
-    }
-
     RunCommand(g_CurrentCommand)
 return
 
