@@ -379,6 +379,7 @@ ActivateRunZ:
 
         if (WinActive(g_WindowName))
         {
+            Send, ^a
             break
         }
 
