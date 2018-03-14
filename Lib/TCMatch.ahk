@@ -24,11 +24,6 @@ TCMatchOn(dllPath = "")
         }
     }
 
-    if (!g_ReloadTCMatchInternal > 0)
-    {
-        g_ReloadTCMatchInternal := 1000
-    }
-
     g_TCMatchModule := DllCall("LoadLibrary", "Str", TCMatchDllPath, "Ptr")
     return g_TCMatchModule
 }
@@ -41,16 +36,6 @@ TCMatchOff()
 
 TCMatch(aHaystack, aNeedle)
 {
-    ; 这个函数有内存泄漏...
-    static matchTimes := 0
-    matchTimes++
-    if (matchTimes > g_ReloadTCMatchInternal)
-    {
-        TCMatchOff()
-        TCMatchOn()
-        matchTimes := 0
-    }
-
     if (A_PtrSize == 8)
     {
         return DllCall("TCMatch64\MatchFileW", "WStr", aNeedle, "WStr", aHaystack)
