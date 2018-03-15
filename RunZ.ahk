@@ -735,8 +735,9 @@ return
 ProcessInputCommand:
     ControlGetText, g_CurrentInput, %g_InputArea%
     ; https://github.com/goreliu/runz/issues/40
-    GoSub, ProcessInputCommandCallBack
-    return
+    ; 但如果改了这个，快速输入的话，搜索结果可能不更新
+    ;GoSub, ProcessInputCommandCallBack
+    ;return
 
     ; 如果使用异步的方式，TurnOnResultFilter 后会出问题，先绕一下
     if (SubStr(g_CurrentInput, 0, 1) == " ")
