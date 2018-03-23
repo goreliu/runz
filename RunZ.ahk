@@ -129,7 +129,7 @@ if (g_SkinConf.ShowTrayIcon)
 {
     Menu, Tray, Icon
     Menu, Tray, NoStandard
-    if (!g_Conf.Config.ExitIfInactivate)
+    if (g_Conf.Config.RunInBackground)
     {
         Menu, Tray, Add, 显示 &S, ActivateRunZ
         Menu, Tray, Default, 显示 &S
