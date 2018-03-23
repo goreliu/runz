@@ -1725,23 +1725,20 @@ WM_ACTIVATE(wParam, lParam)
     }
     else if (wParam <= 0) ; 窗口非激活
     {
-        SetTimer, ToExit, 50
+        ; 这样有可能第一次显示主界面时，窗口失去焦点后不关闭
+        ; 暂时没有好的解决方法，如果改用 SetTimer 调用，会导致用快捷键显示主窗口失败
+
+		if (!WinExist("RunZ.ahk"))
+		{
+			if (!g_Conf.Config.KeepInputText)
+			{
+				ControlSetText, %g_InputArea%, , %g_WindowName%
+			}
+
+			GoSub, HideOrExit
+		}
     }
 }
-
-ToExit:
-    if (!WinExist("RunZ.ahk"))
-    {
-        if (!g_Conf.Config.KeepInputText)
-        {
-            ControlSetText, %g_InputArea%, , %g_WindowName%
-        }
-
-        GoSub, HideOrExit
-    }
-
-    SetTimer, ToExit, Off
-return
 
 KeyHelpText()
 {
