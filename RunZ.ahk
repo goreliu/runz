@@ -1,6 +1,7 @@
 ﻿#NoEnv
 #SingleInstance, Force
 #NoTrayIcon
+#MaxHotkeysPerInterval 200
 
 FileEncoding, utf-8
 SendMode Input
