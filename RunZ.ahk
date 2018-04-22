@@ -366,6 +366,7 @@ return
 
 ActivateRunZ:
     Gui, Show, , % g_WindowName
+
     if (g_Conf.Config.SwitchToEngIME)
     {
         SwitchToEngIME()
@@ -377,6 +378,7 @@ ActivateRunZ:
 
         if (WinActive(g_WindowName))
         {
+            ControlFocus, %g_InputArea%
             Send, ^a
             break
         }
