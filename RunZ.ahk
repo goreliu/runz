@@ -288,11 +288,6 @@ for key, label in g_Conf.Hotkey
 
 Hotkey, IfWinActive
 
-if (g_Conf.Config.EnableGlobalMenu)
-{
-    HotKey, #RButton, GlobalMenu
-}
-
 for key, label in g_Conf.GlobalHotkey
 {
     if (label != "Default")
@@ -2026,7 +2021,6 @@ return
 #include %A_ScriptDir%\Lib\EasyIni.ahk
 #include %A_ScriptDir%\Lib\TCMatch.ahk
 #include %A_ScriptDir%\Core\Common.ahk
-#include %A_ScriptDir%\Core\GlobalMenu.ahk
 #include *i %A_ScriptDir%\Core\Plugins.ahk
 ; 发送到菜单自动生成的命令
 #include *i %A_ScriptDir%\Conf\UserFunctionsAuto.txt
