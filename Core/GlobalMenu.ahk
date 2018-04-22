@@ -3,6 +3,7 @@
 GlobalMenu:
     AddToGlobalMenu("查看剪切板内容", "Clip")
     AddToGlobalMenu("窗口置顶", "AlwaysOnTop")
+    AddToGlobalMenu("取消窗口置顶", "CancelAlwaysOnTop")
     ; AddToGlobalMenu("发送文件到记事本", "OpenWithNotepad", "Notepad++")
 
     WinGetClass, lastWindowClass, A
@@ -38,4 +39,8 @@ return
 
 AlwaysOnTop:
     WinSet, AlwaysOnTop, on, A
+return
+
+CancelAlwaysOnTop:
+    WinSet, AlwaysOnTop, off, A
 return
