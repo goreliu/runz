@@ -2,6 +2,7 @@
 
 GlobalMenu:
     AddToGlobalMenu("查看剪切板内容", "Clip")
+    AddToGlobalMenu("窗口置顶", "AlwaysOnTop")
     ; AddToGlobalMenu("发送文件到记事本", "OpenWithNotepad", "Notepad++")
 
     WinGetClass, lastWindowClass, A
@@ -33,4 +34,8 @@ OpenWithNotepad:
     StringReplace, title, title, - Notepad++, , All
 
     Run, notepad "%title%"
+return
+
+AlwaysOnTop:
+    WinSet, AlwaysOnTop, on, A
 return
