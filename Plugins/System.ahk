@@ -80,7 +80,8 @@ return
 
 TurnMonitorOff:
     ; 关闭显示器:
-    SendMessage, 0x112, 0xF170, 2,, Program Manager
+    Sleep, 100
+    SendMessage, 0x112, 0xF170, 2, , Program Manager
     ; 0x112 is WM_SYSCOMMAND, 0xF170 is SC_MONITORPOWER.
     ; 对上面命令的注释: 使用 -1 代替 2 来打开显示器.
     ; 使用 1 代替 2 来激活显示器的节能模式.
