@@ -88,10 +88,14 @@ TurnMonitorOff:
 return
 
 EmptyRecycle:
-    MsgBox, 4, , 将要清空回收站，是否执行？
+    Text := "回收站中内容：`n`n"
+    For F in ComObjCreate("Shell.Application").Namespace(10).Items()
+        Text .= F.Name . " （" . (F.IsFolder == 0 ? F.Size . " 字节）" : "目录）") . "`n"
+
+    MsgBox, 4, , % Text . "`n将要清空回收站，是否执行？"
     IfMsgBox Yes
     {
-        FileRecycleEmpty,
+        FileRecycleEmpty
     }
 return
 
