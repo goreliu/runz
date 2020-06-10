@@ -88,14 +88,21 @@ TurnMonitorOff:
 return
 
 EmptyRecycle:
-    Text := "回收站中内容：`n`n"
+    Text := "回收站中内容（取消可以管理回收站文件）：`n`n"
     For F in ComObjCreate("Shell.Application").Namespace(10).Items()
         Text .= F.Name . " （" . (F.IsFolder == 0 ? F.Size . " 字节）" : "目录）") . "`n"
 
-    MsgBox, 4, , % Text . "`n将要清空回收站，是否执行？"
+    MsgBox, 3, , % Text . "`n将要清空回收站，是否执行？"
+
     IfMsgBox Yes
     {
         FileRecycleEmpty
+        return
+    }
+
+    IfMsgBox Cancel
+    {
+        Run, explorer.exe ::{645ff040-5081-101b-9f08-00aa002f954e}
     }
 return
 
