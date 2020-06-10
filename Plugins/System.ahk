@@ -102,6 +102,11 @@ EmptyRecycle:
         Text .= F.Name . " （" . (F.IsFolder == 0 ? F.Size . " 字节）" : "目录）") . "`n"
     }
 
+    if (Lines == 0) {
+        MsgBox, , , 回收站是空的，将自动关闭, 1
+        return
+    }
+
     MsgBox, 3, , % Text . "`n将要清空回收站，是否执行？"
 
     IfMsgBox Yes
