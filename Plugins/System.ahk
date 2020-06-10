@@ -89,8 +89,18 @@ return
 
 EmptyRecycle:
     Text := "回收站中内容（取消可以管理回收站文件）：`n`n"
-    For F in ComObjCreate("Shell.Application").Namespace(10).Items()
+
+    Lines := 0
+    For F in ComObjCreate("Shell.Application").Namespace(10).Items() {
+        if (Lines >= 30) {
+            Text .= "……`n"
+            break
+        }
+
+        Lines += 1
+
         Text .= F.Name . " （" . (F.IsFolder == 0 ? F.Size . " 字节）" : "目录）") . "`n"
+    }
 
     MsgBox, 3, , % Text . "`n将要清空回收站，是否执行？"
 
