@@ -88,10 +88,11 @@ TurnMonitorOff:
 return
 
 EmptyRecycle:
-    Text := "回收站中内容（取消可以管理回收站文件）：`n`n"
+    Items := ComObjCreate("Shell.Application").Namespace(10).Items()
+    Text := "回收站中共有 " . Items.Count() . " 项 （取消可以管理回收站文件）：`n`n"
 
     Lines := 0
-    For F in ComObjCreate("Shell.Application").Namespace(10).Items() {
+    For F in Items {
         if (Lines >= 30) {
             Text .= "……`n"
             break
@@ -103,7 +104,7 @@ EmptyRecycle:
     }
 
     if (Lines == 0) {
-        MsgBox, , , 回收站是空的，将自动关闭, 1
+        MsgBox, , , 回收站是空的，将自动关闭, 0.5
         return
     }
 
