@@ -145,13 +145,15 @@ DiskSpace:
         drive := A_LoopField ":"
         DriveGet, label, label, %drive%
         DriveGet, cap, capacity, %drive%
-        DrivespaceFree, free, %drive%
-        SetFormat, float, 5.2
-        percent := 100 * (cap - free) / cap
-        SetFormat, float, 6.2
+        DriveSpaceFree, free, %drive%
+        used := cap - free
+        ;SetFormat, float, 5.2
+        ;percent := 100 * (cap - free) / cap
+        SetFormat, float, 7.2
         cap /= 1024.0
         free /= 1024.0
-        result = %result%* | %drive% | 总共: %cap% G  可用: %free% G | 已使用：%percent%`%  卷标: %label%`n
+        used /= 1024.0
+        result = %result%* | %drive% | 总共: %cap% G  可用: %free% G | 已用：%used%  卷标: %label%`n
     }
 
     DisplayResult(AlignText(result))
