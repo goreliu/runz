@@ -1837,7 +1837,7 @@ AlignText(text)
         hasCol2 := true
         Loop, Parse, text, `n, `r
         {
-            if (SubStr(text, 3, 1) != "|" || SubStr(text, 8, 1) != "|")
+            if (SubStr(A_LoopField, 3, 1) != "|" || SubStr(A_LoopField, 8, 1) != "|")
             {
                 hasCol2 := false
                 break
