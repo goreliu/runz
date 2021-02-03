@@ -60,3 +60,4 @@ file | perfmon.exe | 性能监视器
 file | winver.exe | 关于 Windows
 file | services.msc | 服务
 file | netplwiz | 用户帐户
+file | SndVol.exe | 音量合成器
