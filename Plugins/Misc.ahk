@@ -2,7 +2,7 @@
 ; 实用工具集合
 
 Misc:
-    @("Dictionary", "有道词典在线翻译")
+    ; @("Dictionary", "有道词典在线翻译")
     @("Calc", "计算器")
     @("SearchOnBaidu", "使用 百度 搜索剪切板或输入内容")
     @("SearchOnGoogle", "使用 谷歌 搜索剪切板或输入内容")
@@ -11,12 +11,13 @@ Misc:
     @("SearchOnJD", "使用 京东 搜索剪切板或输入内容")
     @("ShowIp", "显示 IP")
     @("Calendar", "用浏览器打开万年历")
-    @("CurrencyRate", "汇率 使用示例： hl JPY EUR 2")
-    @("CNY2USD", "汇率 人民币兑换美元")
-    @("USD2CNY", "汇率 美元兑换人民币")
+    ; @("CurrencyRate", "汇率 使用示例： hl JPY EUR 2")
+    ; @("CNY2USD", "汇率 人民币兑换美元")
+    ; k@("USD2CNY", "汇率 美元兑换人民币")
     @("UrlEncode", "URL 编码")
 return
 
+/*
 CNY2USD:
     DisplayResult("查询中，可能会比较慢或者查询失败，请稍后...")
     DisplayResult(QueryCurrencyRate("CNY", "USD", Arg))
@@ -58,6 +59,7 @@ QueryCurrencyRate(fromCurrency, toCurrency, amount)
 
     return result
 }
+*/
 
 ShowIp:
     DisplayResult(A_IPAddress1
@@ -66,6 +68,7 @@ ShowIp:
             . "`r`n" . A_IPAddress4)
 return
 
+/*
 Dictionary:
     word := Arg == "" ? clipboard : Arg
 
@@ -131,6 +134,7 @@ Dictionary:
     DisplayResult(result)
     clipboard := result
 return
+*/
 
 Calendar:
     Run % "http://www.baidu.com/baidu?wd=%CD%F2%C4%EA%C0%FA"
