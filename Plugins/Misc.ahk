@@ -2,7 +2,7 @@
 ; 实用工具集合
 
 Misc:
-    ; @("Dictionary", "有道词典在线翻译")
+    @("Dictionary", "有道词典在线翻译")
     @("Calc", "计算器")
     @("SearchOnBaidu", "使用 百度 搜索剪切板或输入内容")
     @("SearchOnGoogle", "使用 谷歌 搜索剪切板或输入内容")
@@ -72,65 +72,70 @@ return
 Dictionary:
     word := Arg == "" ? clipboard : Arg
 
-    url := "http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&"
-            . "type=data&doctype=json&version=1.2&q=" UrlEncode(word)
-
-    jsonText := StrReplace(UrlDownloadToString(url), "-phonetic", "_phonetic")
-
-    if (jsonText == "no query")
-    {
-        DisplayResult("未查到结果")
-        return
-    }
-
-    parsed := JSON.Load(jsonText)
-    result := parsed.query
-
-    if (parsed.basic.uk_phonetic != "" && parsed.basic.us_phonetic != "")
-    {
-        result .= " UK: [" parsed.basic.uk_phonetic "], US: [" parsed.basic.us_phonetic "]`n"
-    }
-    else if (parsed.basic.phonetic != "")
-    {
-        result .= " [" parsed.basic.phonetic "]`n"
-    }
-    else
-    {
-        result .= "`n"
-    }
-
-    if (parsed.basic.explains.Length() > 0)
-    {
-        result .= "`n"
-        for index, explain in parsed.basic.explains
-        {
-            result .= "    * " explain "`n"
+    EncodeDecodeURI(str, encode := true, component := true) {
+        static Doc, JS
+        if !Doc {
+            Doc := ComObjCreate("htmlfile")
+            Doc.write("<meta http-equiv=""X-UA-Compatible"" content=""IE=9"">")
+            JS := Doc.parentWindow
+            ( Doc.documentMode < 9 && JS.execScript() )
         }
+        Return JS[ (encode ? "en" : "de") . "codeURI" . (component ? "Component" : "") ](str)
+    }
+    
+    BingFanyi(word){
+        url := "https://cn.bing.com/dict/search?q=" . EncodeDecodeURI(word)
+
+        httpRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+        httpRequest.Open("GET", url)
+        httpRequest.Send()
+
+        responseBody := httpRequest.ResponseText
+
+        ; return BingExtract(SubStr(responseBody, 1, 2000))
+
+        html := ComObjCreate("HTMLFile")
+        html.write(responseBody)
+
+        div := html.getElementsByTagName("div")
+
+        ;翻译
+        result .= div[14].innerText
+        return result
     }
 
-    if (parsed.web.Length() > 0)
-    {
-        result .= "`n----`n"
+    YouDaoFanyi(word){
+        url := "https://www.youdao.com/result?lang=en&word=" . EncodeDecodeURI(word)
+        httpRequest := ComObjCreate("WinHttp.WinHttpRequest.5.1")
+        httpRequest.Open("GET", url)
+        httpRequest.Send()
 
-        for i, element in parsed.web
-        {
-            result .= "`n    * " element.key
-            for j, value in element.value
-            {
-                if (j == 1)
-                {
-                    result .= "`n       "
-                }
-                else
-                {
-                    result .= "`; "
-                }
+        HtmlText := httpRequest.ResponseText
 
-                result .= value
-            }
-        }
+        html := ComObjCreate("HTMLFile")
+        html.write(SubStr(HtmlText, 30000))
+
+        ul := html.getElementsByTagName("ul")
+        span := html.getElementsByTagName("span")
+
+        result := ""
+        ;音标
+        result .= span[17].innerText . " " . span[18].innerText . " " . span[19].innerText . " " . span[20].innerText  . "`n"
+        ;翻译
+        result .= ul[5].innerText . "`n"
+        ;语法
+        ; result .= html.getElementsByTagName("ul")[6].innerText . " "
+        ; network
+        result .= ul[8].innerText . "`n"
+        ; phrase
+        result .= ul[9].innerText . "`n"
+        result .= ul[11].innerText . "`n"
+        result .= ul[13].innerText . "`n"
+        return result
     }
 
+    ; result := BingFanyi(word)
+    result := YouDaoFanyi(word)
     DisplayResult(result)
     clipboard := result
 return
