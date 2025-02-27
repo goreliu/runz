@@ -1726,15 +1726,15 @@ WM_ACTIVATE(wParam, lParam)
         ; 这样有可能第一次显示主界面时，窗口失去焦点后不关闭
         ; 暂时没有好的解决方法，如果改用 SetTimer 调用，会导致用快捷键显示主窗口失败
 
-		if (!WinExist("RunZ.ahk"))
-		{
-			if (!g_Conf.Config.KeepInputText)
-			{
-				ControlSetText, %g_InputArea%, , %g_WindowName%
-			}
+        if (!WinExist("RunZ.ahk"))
+        {
+            if (!g_Conf.Config.KeepInputText)
+            {
+                ControlSetText, %g_InputArea%, , %g_WindowName%
+            }
 
-			GoSub, HideOrExit
-		}
+            GoSub, HideOrExit
+        }
     }
 }
 
